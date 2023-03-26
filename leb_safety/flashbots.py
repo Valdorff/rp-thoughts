@@ -3,13 +3,14 @@ import gzip
 import json
 import logging
 from pathlib import Path
+from typing import Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
 
 # raw data from https://flashbots-boost-relay-public.s3.us-east-2.amazonaws.com/index.html
-RAW_DIR = None  # use only processed data
-# RAW_DIR = Path(r'D:\Rocket Pool\Flashbots data')  # process raw data if needed
+RAW_DIR: Optional[Path] = None  # use only processed data
+# RAW_DIR = Path(r'D:\Rocket Pool\Flashbots data')  # process raw data into processed, as neeed
 PROCESSED_DIR = Path(__file__).parent / 'Flashbots best reward'
 
 
@@ -80,6 +81,7 @@ def main(percentiles=(50, 99, 99.5, 99.9, 99.99)):
             f'{percentile}%ile N({np.mean(results[percentile])}, {np.std(results[percentile])})')
         plt.plot(week, results[percentile], label=f'{percentile}%ile')
     plt.ylabel('Percent of blocks above a specific percentile')
+    plt.xlabel('Week (starting at the merge)')
     plt.legend()
     plt.grid()
 
@@ -87,6 +89,7 @@ def main(percentiles=(50, 99, 99.5, 99.9, 99.99)):
     for percentile in percentiles:
         plt.plot(week, 100 * np.array(survival_results[percentile]), label=f'{percentile}%ile')
     plt.ylabel('Percent of total value above a specific percentile')
+    plt.xlabel('Week (starting at the merge)')
     plt.legend()
     plt.grid()
 
@@ -102,4 +105,5 @@ if __name__ == '__main__':
     sh.setLevel(logging.DEBUG)  # Change as desired
     log.info('starting')
 
-    main(percentiles=(50, 99, 99.5, 99.9, 99.99))
+    # main(percentiles=(50, ))
+    main(percentiles=(99.7, 99.83, 99.9))
