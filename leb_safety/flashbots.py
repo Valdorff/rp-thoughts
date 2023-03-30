@@ -53,7 +53,7 @@ def parse_processed_data():
     return net
 
 
-def main(percentiles=(50, 99, 99.5, 99.9, 99.99)):
+def main(percentiles=(50, 99, 99.5, 99.9, 99.99), penalties=tuple()):
     if RAW_DIR is None:
         net = parse_processed_data()
     else:
@@ -62,7 +62,8 @@ def main(percentiles=(50, 99, 99.5, 99.9, 99.99)):
     blocks, values = zip(*list(net.items()))
     week = []
     results = defaultdict(list)
-    survival_results = defaultdict(list)
+    survival_results = defaultdict(list)  # value over this percentile
+    beyond_penalty_results = defaultdict(list)  # assuming penalty
 
     ct = 0
     # for start in range(min(blocks), max(blocks) + 1, 50400 // 4):  # 50400 blocks is a week
@@ -71,10 +72,14 @@ def main(percentiles=(50, 99, 99.5, 99.9, 99.99)):
         week.append(ct)
         ls = np.array([value for block, value in net.items() if start <= block < start + 50400])
         total = sum(ls)
-        for percentile in percentiles:
+        for i, percentile in enumerate(percentiles):
             tmp = np.percentile(ls, percentile)
             results[percentile].append(tmp)
             survival_results[percentile].append(sum(ls[ls > tmp]) / total)
+            if len(penalties) == len(percentiles):
+                # subtract out penalty from each block and sum any that still had losses
+                tmp = ls[ls > tmp] - penalties[i]
+                beyond_penalty_results[percentile].append(sum(tmp[tmp > 0]) / total)
 
     for percentile in percentiles:
         log.info(
@@ -88,10 +93,22 @@ def main(percentiles=(50, 99, 99.5, 99.9, 99.99)):
     plt.subplots(1)
     for percentile in percentiles:
         plt.plot(week, 100 * np.array(survival_results[percentile]), label=f'{percentile}%ile')
+        print(percentile, np.mean(survival_results[percentile]))
     plt.ylabel('Percent of total value above a specific percentile')
     plt.xlabel('Week (starting at the merge)')
     plt.legend()
     plt.grid()
+
+    if len(penalties) == len(percentiles):
+        plt.subplots(1)
+        for percentile in percentiles:
+            plt.plot(
+                week, 100 * np.array(beyond_penalty_results[percentile]), label=f'{percentile}%ile')
+            print(percentile, np.mean(beyond_penalty_results[percentile]))
+        plt.ylabel('Percent of total value above a specific percentile\nbeyond what penalty covers')
+        plt.xlabel('Week (starting at the merge)')
+        plt.legend()
+        plt.grid()
 
     plt.show()
 
@@ -106,4 +123,4 @@ if __name__ == '__main__':
     log.info('starting')
 
     # main(percentiles=(50, ))
-    main(percentiles=(99.7, 99.83, 99.9))
+    main(percentiles=(99.7, 99.83, 99.9), penalties=(6.8, 8, 10.4))
