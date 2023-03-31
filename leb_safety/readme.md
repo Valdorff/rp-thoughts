@@ -103,25 +103,32 @@ LEB4s with forced exits steal. These minipools become a drain to RP. If forced e
 exited; if not, they stick around stealing EL rewards.
 
 ### Value loss
-Here we see a chart showing the value above a specific percentile. We don't
-see great correlation, but it looks like when we have bigger lotto blocks they are more of the
-total value (ie, the increase in the lotto blocks outweighs any increase in common blocks).
+Here we see a chart showing the value above a specific percentile.
 
 ![](./imgs/value_in_lotto_blocks.png)
 
-Looking at all time, we'd expect to lose ~16% of execution layer rewards to large block theft.
-Looking at just the big lotto block weeks (2, 10, 27), we'd expect to lose ~22% of execution layer
-rewards to large block theft.
+Since we don't much correlation between large lotto block weeks and the plot above, we'll consider
+value above a threshold across the entire time-frame, instead of on a per-week basis.
 
-![](./imgs/value_in_lotto_blocks_beyond_penalty.png)
+The chart below shows value loss if we assume theft whenever that's greater the penalizable amount.
+The loss is the size of the block minus the penalty. This assumes we can force exit the minipool, if
+we cannot, we may have to keep a small reserve unpenalized to "bribe" the user into exiting.
 
-That said, much of that lost value will be covered by penalizing staked ETH and RPL. Accounting for
-that effect, we expect to lose ~6% and ~18% execution layer rewards to large block theft based off
-all time and just weeks (2, 10, 27) respectively.
+![](./imgs/value_loss.png)
 
-Execution layer rewards are around 1/3 of total rewards, so this would cause a loss of 2%/6%
-respectively. This is quite significant -- eg, compare with our 15% commission or the deposit pool,
-which we try to keep to a max of 5% drag.
+The general trend is clear, with increasing penalizable collateral allowing for much lower loss.
+While there was no obvious pattern, there was a lot of volatility, with 3 clearly "higher" weeks.
+I'd suggest padding 2-3x on this value loss chart to account for a potential bad market in terms; in
+this case bad means that value is concentrated in further outliers, as outliers are most difficult
+to defend against with penalties. I'll pad 3x for the rest of the analysis; since EL rewards are
+around 1/3 of total rewards, that lets us read directly off the chart as if it weren't just percent
+of total EL value, but net value.
+
+From the chart we see a loss of 7.7%/7%/6% for 6.8/8/10.4 ETH of penalty. This is quite significant.
+Eg, compare with our 15% commission or the deposit pool, which we try to keep to a max of 5% drag.
+
+We are able to further decrease losses to 4%/3.1%/2% at 20/30/50 ETH of penalty respectively.
+Finally, we see quite low losses around 0.9%/0.3% at 100/150 ETH of penalty.
 
 If we have no forced exits, we would also suffer the loss of execution rewards going forward, but
 it's a smaller effect than the large block theft damage. We'd see .005/3 = .17% for LEB8s, or
@@ -130,20 +137,25 @@ continues this way for many years, it would continue accruing - eg, after 2 year
 .34%/.54% respectively for LEB8s/LEB4s.
 
 ### It could be worse
-Remember, I'm using something like the worst 10% we've seen as a model. It's _entirely possible_
-that the market leaves the range we've seen entirely.
+Remember, I'm using something like the worst 10% we've seen as a model for lotto block frequency and
+something like 3x worse than the average for value in extrem outliers. It's _entirely possible_ that
+the market leaves these ranges entirely.
 
 I'll also note that I'm looking at just one relay here. Looking at more will certainly show more
 chances for lottery blocks, though I can't quantify by how much.
+
+(It's also worth noting it could be better; not everyone is trying to steal maximally, EL rewards
+may not grow, and outlier EL rewards may carry less of the total EL value. Maybe.)
 
 ## Mitigation
 
 ### Node-level collateral
 Large block theft relies on abusing events that are rare per validator and random. This means that a
-strong defense would be to penalize at the node level. For example, if you have 2 LEB4s with 2.8 ETH
-worth of RPL, the total bond is actually 13.6 ETH if we're able to penalize at the node level. This
+strong defense would be to penalize at the node level. For example, if you have 5 LEB4s with 2.8 ETH
+worth of RPL, the total bond is actually 34 ETH if we're able to penalize at the node level. This
 would require somewhat more complex code to determine safe cutoffs, but it would mitigate the attack
-an arbitrary amount.
+an arbitrary amount. Here we'd be literally trading off the ability for more folks to reach a
+particular level against the worst-case potential loss to the protocol.
 
 ### Assign Execution Layer Rewards to NOs (aka negative commission)
 This variant avoids the theft concept entirely by assigning EL rewards to NOs. The NOs would take on
@@ -156,16 +168,22 @@ A rough implementation outline:
   - Desired: `NO_apr = (NO_deposit*EL_apr + NO_deposit*CL_apr + commission*(32-NO_deposit)*EL_apr + commission*(32-NO_deposit)*CL_apr))/NO_deposit`
   - Assigning EL rewards to NO with correction factor:
     `NO_apr = (NO_deposit*EL_apr + NO_deposit*CL_apr + (32-NO_deposit)*EL_apr + corrected_commission*(32-NO_deposit)*CL_apr))/NO_deposit`
-  - And now we can solve for `corrected_commission`:
-    - `(NO_deposit*EL_apr + NO_deposit*CL_apr + commission*(32-NO_deposit)*EL_apr + commission*(32-NO_deposit)*CL_apr))/NO_deposit = (NO_deposit*EL_apr + NO_deposit*CL_apr + (32-NO_deposit)*EL_apr + corrected_commission*(32-NO_deposit)*CL_apr))/NO_deposit`
-    - `commission*(32-NO_deposit)*EL_apr + commission*(32-NO_deposit)*CL_apr = (32-NO_deposit)*EL_apr + corrected_commission*(32-NO_deposit)*CL_apr`
-    - `commission*EL_apr + commission*CL_apr = EL_apr + corrected_commission*CL_apr`
-    - `corrected_commission = (commission*EL_apr + commission*CL_apr - EL_apr)/CL_apr`
-    - `corrected_commission = commission*(EL_apr/CL_apr) + commission - (EL_apr/CL_apr)`
-    - `corrected_commission = (EL_apr/CL_apr)(commission-1) + commission`
-    - `corrected_commission = commission - (EL_apr/CL_apr)(1-commission)`
-    - Note that `corrected_commission` is likely negative. Eg, for 14% commision with EL being 1/3
-      of rewards: `corrected_commission = .14 - ((rewards/3)/(2*rewards/3)*(1-.14)) = -0.29`
+  - And now we can solve for `corrected_commission = commission - (EL_apr/CL_apr)(1-commission)`
+    <details> <summary> The math </summary>
+  
+    ```
+    - (NO_deposit*EL_apr + NO_deposit*CL_apr + commission*(32-NO_deposit)*EL_apr + commission*(32-NO_deposit)*CL_apr))/NO_deposit = (NO_deposit*EL_apr + NO_deposit*CL_apr + (32-NO_deposit)*EL_apr + corrected_commission*(32-NO_deposit)*CL_apr))/NO_deposit
+    - commission*(32-NO_deposit)*EL_apr + commission*(32-NO_deposit)*CL_apr = (32-NO_deposit)*EL_apr + corrected_commission*(32-NO_deposit)*CL_apr
+    - commission*EL_apr + commission*CL_apr = EL_apr + corrected_commission*CL_apr
+    - corrected_commission = (commission*EL_apr + commission*CL_apr - EL_apr)/CL_apr
+    - corrected_commission = commission*(EL_apr/CL_apr) + commission - (EL_apr/CL_apr)
+    - corrected_commission = (EL_apr/CL_apr)(commission-1) + commission
+    - corrected_commission = commission - (EL_apr/CL_apr)(1-commission)
+    - Note that corrected_commission is likely negative. Eg, for 14% commision with EL being 1/3
+      of rewards: corrected_commission = .14 - ((rewards/3)/(2*rewards/3)*(1-.14)) = -0.29
+    ```
+    
+    </details>
 - The pDAO votes in a corrected commission to account for EL rewards; quarterly is likely good
   enough
 - When claiming rewards the corrected commission is used
@@ -202,8 +220,9 @@ Users can choose to either:
   - No per-node minimum collateral
 - Accept penalties
   - Accept a decision-making body that assigns penalties
-  - Requires a specified amount of total ETH collateral on the node (start at 16?)
+  - Requires a specified amount of total collateral on the node (start at 30?)
   - Smoothing pool available
+    - Accept that very large blocks may be (rarely) stolen when they exceed the penalty possible 
 
 There should be a large time lock in swapping to prevent any gaming. I'd suggest that after a
 request to swap category there would need to be two updates for the negative commission. That would

@@ -1,4 +1,5 @@
 from collections import defaultdict
+from functools import lru_cache
 import gzip
 import json
 import logging
@@ -14,6 +15,7 @@ RAW_DIR: Optional[Path] = None  # use only processed data
 PROCESSED_DIR = Path(__file__).parent / 'Flashbots best reward'
 
 
+@lru_cache
 def parse_data():
     net = {}
     for path in sorted(RAW_DIR.glob('*.json.gz')):
@@ -41,6 +43,7 @@ def parse_data():
     return net
 
 
+@lru_cache
 def parse_processed_data():
     net = {}
     for path in sorted(PROCESSED_DIR.glob('*.json.gz')):
@@ -53,20 +56,38 @@ def parse_processed_data():
     return net
 
 
-def main(percentiles=(50, 99, 99.5, 99.9, 99.99), penalties=tuple()):
+def penalty_plot(penalties=(6.8, 8, 10.4, 20, 30, 50, 100, 150)):
     if RAW_DIR is None:
         net = parse_processed_data()
     else:
         net = parse_data()
     log.info(f'{len(net)} data files')
-    blocks, values = zip(*list(net.items()))
+    ls = np.array([value for block, value in net.items()])
+
+    total = sum(ls)
+    value_over_w_penalty = []
+    for penalty in penalties:
+        value_over_w_penalty.append(sum(ls[ls > penalty] - penalty) / total)
+    fig, ax = plt.subplots(1)
+    ax.plot(penalties, value_over_w_penalty, label='Post-penalty value over thresh', marker='o')
+    ax.set_xlabel('Penalty')
+    ax.set_ylabel('Percent of total value lost\nafter applying penalty')
+    ax.grid()
+
+
+def main(percentiles=(50, 99, 99.5, 99.9, 99.99)):
+    if RAW_DIR is None:
+        net = parse_processed_data()
+    else:
+        net = parse_data()
+    log.info(f'{len(net)} data files')
+
+    blocks, _values = zip(*list(net.items()))
     week = []
     results = defaultdict(list)
     survival_results = defaultdict(list)  # value over this percentile
-    beyond_penalty_results = defaultdict(list)  # assuming penalty
 
     ct = 0
-    # for start in range(min(blocks), max(blocks) + 1, 50400 // 4):  # 50400 blocks is a week
     for start in range(min(blocks), max(blocks) + 1, 50400):  # 50400 blocks is a week
         ct += 1
         week.append(ct)
@@ -76,19 +97,16 @@ def main(percentiles=(50, 99, 99.5, 99.9, 99.99), penalties=tuple()):
             tmp = np.percentile(ls, percentile)
             results[percentile].append(tmp)
             survival_results[percentile].append(sum(ls[ls > tmp]) / total)
-            if len(penalties) == len(percentiles):
-                # subtract out penalty from each block and sum any that still had losses
-                tmp = ls[ls > tmp] - penalties[i]
-                beyond_penalty_results[percentile].append(sum(tmp[tmp > 0]) / total)
 
+    fig, ax = plt.subplots(1)
     for percentile in percentiles:
         log.info(
             f'{percentile}%ile N({np.mean(results[percentile])}, {np.std(results[percentile])})')
-        plt.plot(week, results[percentile], label=f'{percentile}%ile')
-    plt.ylabel('Percent of blocks above a specific percentile')
-    plt.xlabel('Week (starting at the merge)')
-    plt.legend()
-    plt.grid()
+        ax.plot(week, results[percentile], label=f'{percentile}%ile')
+    ax.set_ylabel('Percent of blocks above a specific percentile')
+    ax.set_xlabel('Week (starting at the merge)')
+    ax.legend()
+    ax.grid()
 
     plt.subplots(1)
     for percentile in percentiles:
@@ -98,19 +116,6 @@ def main(percentiles=(50, 99, 99.5, 99.9, 99.99), penalties=tuple()):
     plt.xlabel('Week (starting at the merge)')
     plt.legend()
     plt.grid()
-
-    if len(penalties) == len(percentiles):
-        plt.subplots(1)
-        for percentile in percentiles:
-            plt.plot(
-                week, 100 * np.array(beyond_penalty_results[percentile]), label=f'{percentile}%ile')
-            print(percentile, np.mean(beyond_penalty_results[percentile]))
-        plt.ylabel('Percent of total value above a specific percentile\nbeyond what penalty covers')
-        plt.xlabel('Week (starting at the merge)')
-        plt.legend()
-        plt.grid()
-
-    plt.show()
 
 
 if __name__ == '__main__':
@@ -122,5 +127,7 @@ if __name__ == '__main__':
     sh.setLevel(logging.DEBUG)  # Change as desired
     log.info('starting')
 
-    # main(percentiles=(50, ))
-    main(percentiles=(99.7, 99.83, 99.9), penalties=(6.8, 8, 10.4))
+    main(percentiles=(50, ))
+    main(percentiles=(99.7, 99.83, 99.9))
+    penalty_plot(penalties=(6.8, 8, 10.4, 20, 30, 50, 100, 150))
+    plt.show()
