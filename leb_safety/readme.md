@@ -1,11 +1,5 @@
-# [DRAFT] Risk analyis for LEBs
+# Risk analyis for LEBs
 March 2023
-
-## Requests for reviewers:
-- General read through for feedback
-- Check the negative commission math
-- Consider anything else for mitigation, especially if it would enable an operator with a single
-  LEB4 to function 
 
 ## Abstract
 Previous work has looked into the amount of bond that's necessary for safety assuming various
@@ -17,6 +11,10 @@ Both of these analyses dramatically underestimate the potential for loss because
 the market they've been able to sample is truly representative of the future market. I will show
 that we already have strong evidence that the EL reward market varies significantly over time. I
 will use that understanding to estimate some "clearly" unsafe bond levels.
+
+In the end, I conclude that it's possible to enable LEB4s (or in theory smaller) using either a
+trust-based penalty system with node-level collateral OR a system relying on negative commission OR
+a hybrid system to try to gain benefits of both options.
 
 ## A brief aside about penalties
 Right now penalties allow 2 strikes and thereafter are 10% of the NO deposit amount (ie, 1.6 ETH per
@@ -149,7 +147,7 @@ may not grow, and outlier EL rewards may carry less of the total EL value. Maybe
 
 ## Mitigation
 
-### Node-level collateral
+### Node level penalties
 Large block theft relies on abusing events that are rare per validator and random. This means that a
 strong defense would be to penalize at the node level. For example, if you have 5 LEB4s with 2.8 ETH
 worth of RPL, the total bond is actually 34 ETH if we're able to penalize at the node level. This
@@ -157,7 +155,7 @@ would require somewhat more complex code to determine safe cutoffs, but it would
 an arbitrary amount. Here we'd be literally trading off the ability for more folks to reach a
 particular level against the worst-case potential loss to the protocol.
 
-### Assign Execution Layer Rewards to NOs (aka negative commission)
+### Negative Commission (aka, assign Execution Layer Rewards to NOs)
 This variant avoids the theft concept entirely by assigning EL rewards to NOs. The NOs would take on
 a negative commission for the CL rewards to prevent rETH from losing out.
 
@@ -218,7 +216,7 @@ Users can choose to either:
 - Accept the negative commission
   - Smoothing pool not available
   - No per-node minimum collateral
-- Accept penalties
+- Node level penalties
   - Accept a decision-making body that assigns penalties
   - Requires a specified amount of total collateral on the node (start at 30?)
   - Smoothing pool available
@@ -227,6 +225,32 @@ Users can choose to either:
 There should be a large time lock in swapping to prevent any gaming. I'd suggest that after a
 request to swap category there would need to be two updates for the negative commission. That would
 ensure that the NO had no relevant predictive information to game the system.
+
+An important consideration here is whether we'd be willing to _raise_ the required total collateral
+on the penalty option. If not (my assumption thus far), then we need to heavily defend against a
+worst case scenario including increased EL rewards, increased proprotion of value in outlier EL
+rewards, and everyone attempting to steal
+
+If, on the other hand, we are willing to raise this level in response to changes in context (with
+appropriate notice, etc), then we can have _dramatically_ looser requirements. If we monitor for
+theft and see that it begins to happen, we can simply increase the required collateral to prevent
+further losses.
+
+## Conclusion
+My suggestion would be for a hybrid approach:
+- Trustless negative commission available with no minimum collateral 
+- Penalty-based smoothing pool avaialable, with ~10 ETH of minimum collateral
+  - The minimum collateral is subject to change by vote with 2 months' notice before taking effect
+
+This enables the following options:
+
+| NO size | Option               | Trustless? | Predictable Rewards  |
+|---------|----------------------|------------|----------------------|
+| Small   | Negative Commission  | Yes        | No                   |
+| Medium  | Node level penalties | No         | Very                 |
+| Medium  | Negative Commission  | Yes        | Somewhat             |
+| Large   | Node level penalties | No         | Very                 |
+| Large   | Negative Commission  | Yes        | Yes                  |
 
 ## Acknowledgements
 Thanks to knoshua for early draft review and discussion.
