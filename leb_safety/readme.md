@@ -209,7 +209,9 @@ the Node Level Collateral previously mentioned, but it would not be possible for
 
 It's important to point out that this solution doesn't depend on the oDAO at all! There is no need
 for penalizing, tracking EL rewards, or manual force exiting (this could be done with a smart
-contract and a keeper bot that anyone can run).
+contract and a keeper bot that anyone can run). Since there are no penalties for stealing MEV, this
+also implies that NOs would be freely able to use `--min-bid` (an MEV-boost option that only uses)
+relays if they provide sufficient additional profit.
 
 ### Hybrid approach
 Users can choose to either:
