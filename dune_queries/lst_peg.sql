@@ -1,5 +1,10 @@
 -- TODO; there seem to be spikes on some days that are unlikely to be real; need to track down n fix the artifact
 
+-- Used for:
+--     Percent Discount (negative) or Premium (positive); line chart showing reth_peg_pct_divergence and steth_peg_pct_divergence
+--     rETH Exchange Rate Over Time; line chart showing NAV rate and market rate
+--     rETH Discount (-) or Premium (+); counter showing reth_peg_pct_divergence to 4 decimals
+
 /* The Rocket Pool oDAO reports the protocol balances every 19.2 hours which forms the rETH peg price. */
 /* This table has one row per peg price update, which includes: */
 /* - rETH peg price as reported by Rocket Pool oDAO */
@@ -169,6 +174,8 @@ WITH
   )
 SELECT
   *,
+  eth_reth_peg as "NAV rate (aka primary, peg, burn/mint)",
+  eth_reth_price as "Market rate (aka secondary)",
   (reth_price_peg_ratio - 1) AS reth_peg_pct_divergence,
   (eth_steth_price - 1) AS steth_peg_pct_divergence
 FROM
