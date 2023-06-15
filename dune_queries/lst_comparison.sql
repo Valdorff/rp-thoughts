@@ -109,7 +109,7 @@ from lido_ethereum.steth_evt_TokenRebased
 ),
 
 steth_evt as (
---old oralce
+--old oracle
 SELECT "evt_block_time" AS time,
  cast(("postTotalPooledEther" - "preTotalPooledEther")* 365 * 24 * 60 * 60 /("preTotalPooledEther") as double)/timeElapsed * .9*100 as apy
 FROM
@@ -119,7 +119,7 @@ FROM
 --new V2 oracle
 union all
 select  evt_block_time AS time,
-        (365*24*60*60*(post_share_rate - pre_share_rate) / pre_share_rate / timeElapsed * 100) /0.9 as apy
+        (365*24*60*60*(post_share_rate - pre_share_rate) / pre_share_rate / timeElapsed * 100) as apy
 from steth_shares
 ),
 
