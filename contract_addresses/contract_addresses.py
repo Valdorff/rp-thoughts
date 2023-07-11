@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 
-from web3 import Web3, HTTPProvider
+from web3 import HTTPProvider, Web3
 
 API_KEY = os.environ['INFURA']
 CLIENT = Web3(HTTPProvider(f"https://mainnet.infura.io/v3/{API_KEY}"))

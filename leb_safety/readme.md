@@ -1,4 +1,4 @@
-# Risk analyis for LEBs
+# Risk analysis for LEBs
 March 2023
 
 ## Abstract
