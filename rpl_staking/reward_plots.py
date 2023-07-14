@@ -31,6 +31,7 @@ def knosh_rules(row):
         return 0.1 * row['matched_eth']
 
 
+# The one I'm currently favoring
 def proposal_rules(row):
     if row['staked_rpl_value_in_eth'] < (0.1 * row['matched_eth']):
         return 0
@@ -40,35 +41,43 @@ def proposal_rules(row):
 
 
 def single_pool_plots(curr_total, knosh_total, prop_total):
-    # ruleset plots
-    fig, subs = plt.subplots(3, sharex='all', sharey='all')
     x = np.arange(0, 32, .1)
-    dftemp = pd.DataFrame({
+    df8 = pd.DataFrame({
         'staked_rpl_value_in_eth': x,
         'provided_eth': [8] * len(x),
         'matched_eth': [24] * len(x)
     })
-    dftemp['neth_pct'] = dftemp['staked_rpl_value_in_eth'] / dftemp['provided_eth']
-    dftemp['peth_pct'] = dftemp['staked_rpl_value_in_eth'] / dftemp['matched_eth']
-    dftemp['current_rule_weight'] = dftemp.apply(lambda row: current_rules(row), axis=1)
-    dftemp['knosh_rule_weight'] = dftemp.apply(lambda row: knosh_rules(row), axis=1)
-    dftemp['proposal_rule_weight'] = dftemp.apply(lambda row: proposal_rules(row), axis=1)
-    subs[0].plot(x, dftemp['current_rule_weight'] / curr_total, label='leb8')
-    subs[1].plot(x, dftemp['knosh_rule_weight'] / knosh_total, label='leb8')
-    subs[2].plot(x, dftemp['proposal_rule_weight'] / prop_total, label='leb8')
-    dftemp = pd.DataFrame({
+    df8['neth_pct'] = df8['staked_rpl_value_in_eth'] / df8['provided_eth']
+    df8['peth_pct'] = df8['staked_rpl_value_in_eth'] / df8['matched_eth']
+    df8['current_rule_weight'] = df8.apply(lambda row: current_rules(row), axis=1)
+    df8['current_rule_weight'] /= curr_total
+    df8['knosh_rule_weight'] = df8.apply(lambda row: knosh_rules(row), axis=1)
+    df8['knosh_rule_weight'] /= knosh_total
+    df8['proposal_rule_weight'] = df8.apply(lambda row: proposal_rules(row), axis=1)
+    df8['proposal_rule_weight'] /= prop_total
+
+    df16 = pd.DataFrame({
         'staked_rpl_value_in_eth': x,
         'provided_eth': [16] * len(x),
         'matched_eth': [16] * len(x)
     })
-    dftemp['neth_pct'] = dftemp['staked_rpl_value_in_eth'] / dftemp['provided_eth']
-    dftemp['peth_pct'] = dftemp['staked_rpl_value_in_eth'] / dftemp['matched_eth']
-    dftemp['current_rule_weight'] = dftemp.apply(lambda row: current_rules(row), axis=1)
-    dftemp['knosh_rule_weight'] = dftemp.apply(lambda row: knosh_rules(row), axis=1)
-    dftemp['proposal_rule_weight'] = dftemp.apply(lambda row: proposal_rules(row), axis=1)
-    subs[0].plot(x, dftemp['current_rule_weight'] / curr_total, label='eb16')
-    subs[1].plot(x, dftemp['knosh_rule_weight'] / knosh_total, label='eb16')
-    subs[2].plot(x, dftemp['proposal_rule_weight'] / prop_total, label='eb16')
+    df16['neth_pct'] = df16['staked_rpl_value_in_eth'] / df16['provided_eth']
+    df16['peth_pct'] = df16['staked_rpl_value_in_eth'] / df16['matched_eth']
+    df16['current_rule_weight'] = df16.apply(lambda row: current_rules(row), axis=1)
+    df16['current_rule_weight'] /= curr_total
+    df16['knosh_rule_weight'] = df16.apply(lambda row: knosh_rules(row), axis=1)
+    df16['knosh_rule_weight'] /= knosh_total
+    df16['proposal_rule_weight'] = df16.apply(lambda row: proposal_rules(row), axis=1)
+    df16['proposal_rule_weight'] /= prop_total
+
+    # all rules
+    fig, subs = plt.subplots(3, sharex='all', sharey='all')
+    subs[0].plot(x, df8['current_rule_weight'], label='leb8', c='r')
+    subs[1].plot(x, df8['knosh_rule_weight'], label='leb8', c='b')
+    subs[2].plot(x, df8['proposal_rule_weight'], label='leb8', c='g')
+    subs[0].plot(x, df16['current_rule_weight'], label='eb16', c='r', ls='--')
+    subs[1].plot(x, df16['knosh_rule_weight'], label='eb16', c='b', ls='--')
+    subs[2].plot(x, df16['proposal_rule_weight'], label='eb16', c='g', ls='--')
     fmt = mtick.FuncFormatter(ppm)
     for sub in subs:
         sub.set_yticks([0, .00005, .0001, .00015])
@@ -79,7 +88,169 @@ def single_pool_plots(curr_total, knosh_total, prop_total):
     subs[1].set_ylabel('Knoshua Rules\nppm of rewards')
     subs[2].set_ylabel('Proposed Rules\nppm of rewards')
     subs[2].set_xlabel('Staked RPL Value in ETH')
-    fig.savefig('single_pool_plots.png', bbox_inches='tight')
+    fig.savefig('./imgs/rule_summary.png', bbox_inches='tight')
+
+    # knoshua vs current
+    fig, ax = plt.subplots(1, sharex='all', sharey='all')
+    ax.plot(x, df8['current_rule_weight'], label='curr leb8', c='r')
+    ax.plot(x, df8['knosh_rule_weight'], label='knosh leb8', c='b')
+    ax.plot(x, df16['current_rule_weight'], label='curr eb16', c='r', ls='--')
+    ax.plot(x, df16['knosh_rule_weight'], label='knosh eb16', c='b', ls='--')
+    fmt = mtick.FuncFormatter(ppm)
+    ax.set_yticks([0, .00005, .0001, .00015])
+    ax.yaxis.set_major_formatter(fmt)
+    ax.grid()
+    ax.legend()
+    ax.set_ylabel('ppm of rewards')
+    ax.set_xlabel('Staked RPL Value in ETH')
+    fig.savefig('./imgs/rule_kc.png', bbox_inches='tight')
+
+    fig, ax = plt.subplots(1, sharex='all', sharey='all')
+    ax.plot(x, df8['knosh_rule_weight'] / df8['current_rule_weight'], label='leb8', c='k')
+    ax.plot(
+        x, df16['knosh_rule_weight'] / df16['current_rule_weight'], label='eb16', c='k', ls='--')
+    ax.yaxis.set_major_formatter(mtick.PercentFormatter(xmax=1))
+    ax.grid()
+    ax.legend()
+    ax.set_ylabel('Knoshua rule rewards as a percentage\nof Current rule rewards')
+    ax.set_xlabel('Staked RPL Value in ETH')
+    fig.savefig('./imgs/rulediff_kc.png', bbox_inches='tight')
+
+    # prop vs current
+    fig, ax = plt.subplots(1, sharex='all', sharey='all')
+    ax.plot(x, df8['current_rule_weight'], label='curr leb8', c='r')
+    ax.plot(x, df8['proposal_rule_weight'], label='prop leb8', c='b')
+    ax.plot(x, df16['current_rule_weight'], label='curr eb16', c='r', ls='--')
+    ax.plot(x, df16['proposal_rule_weight'], label='prop eb16', c='b', ls='--')
+    fmt = mtick.FuncFormatter(ppm)
+    ax.set_yticks([0, .00005, .0001, .00015])
+    ax.yaxis.set_major_formatter(fmt)
+    ax.grid()
+    ax.legend()
+    ax.set_ylabel('ppm of rewards')
+    ax.set_xlabel('Staked RPL Value in ETH')
+    fig.savefig('./imgs/rule_pc.png', bbox_inches='tight')
+
+    fig, ax = plt.subplots(1, sharex='all', sharey='all')
+    ax.plot(x, df8['proposal_rule_weight'] / df8['current_rule_weight'], label='leb8', c='k')
+    ax.plot(
+        x, df16['proposal_rule_weight'] / df16['current_rule_weight'], label='eb16', c='k', ls='--')
+    ax.yaxis.set_major_formatter(mtick.PercentFormatter(xmax=1))
+    ax.grid()
+    ax.legend()
+    ax.set_ylabel('Proposed rule rewards as a percentage\nof Current rule rewards')
+    ax.set_xlabel('Staked RPL Value in ETH')
+    fig.savefig('./imgs/rulediff_pc.png', bbox_inches='tight')
+
+    # knosh vs prop
+    fig, ax = plt.subplots(1, sharex='all', sharey='all')
+    ax.plot(x, df8['knosh_rule_weight'], label='knosh leb8', c='r')
+    ax.plot(x, df8['proposal_rule_weight'], label='prop leb8', c='b')
+    ax.plot(x, df16['knosh_rule_weight'], label='knosh eb16', c='r', ls='--')
+    ax.plot(x, df16['proposal_rule_weight'], label='prop eb16', c='b', ls='--')
+    fmt = mtick.FuncFormatter(ppm)
+    ax.set_yticks([0, .00005, .0001, .00015])
+    ax.yaxis.set_major_formatter(fmt)
+    ax.grid()
+    ax.legend()
+    ax.set_ylabel('ppm of rewards')
+    ax.set_xlabel('Staked RPL Value in ETH')
+    fig.savefig('./imgs/rule_kp.png', bbox_inches='tight')
+
+    fig, ax = plt.subplots(1, sharex='all', sharey='all')
+    ax.plot(x, df8['knosh_rule_weight'] / df8['proposal_rule_weight'], label='leb8', c='k')
+    ax.plot(
+        x, df16['knosh_rule_weight'] / df16['proposal_rule_weight'], label='eb16', c='k', ls='--')
+    ax.yaxis.set_major_formatter(mtick.PercentFormatter(xmax=1))
+    ax.grid()
+    ax.legend()
+    ax.set_ylabel('Knoshua rule rewards as a percentage\nof Proposed rule rewards')
+    ax.set_xlabel('Staked RPL Value in ETH')
+    fig.savefig('./imgs/rulediff_kp.png', bbox_inches='tight')
+
+
+def current_node_plots(df):
+    # knoshua vs current
+    fmt = mtick.FuncFormatter(ppmpct)
+    fig, ax = plt.subplots(1)
+    ax.plot(df['curr_pie'], ls='', marker='o', alpha=.5, c='r')
+    ax.plot(df['knosh_pie'], ls='', marker='o', alpha=.5, c='b')
+    ax.set_yscale('log')
+    ax.grid(which='both')
+    ax.yaxis.set_major_formatter(fmt)
+    ylims = ax.get_ylim()
+    ax.set_ylabel('Portion of all Rewards')
+    ax.set_xlabel('Matched ETH')
+    fig.savefig('./imgs/operators_kc.png', bbox_inches='tight')
+
+    fig, ax = plt.subplots(1)
+    ax.plot(df['knosh_pie'] / df['curr_pie'], ls='', marker='o', alpha=.5, c='k')
+    ax.yaxis.set_major_formatter(mtick.PercentFormatter(xmax=1))
+    ylimsdiff = ax.get_ylim()
+    ax.set_ylabel('Knoshua rule rewards as a percentage\nof Current rule rewards')
+    ax.set_xlabel('Matched ETH')
+    ax.violinplot(
+        (df['knosh_pie'] / df['curr_pie']).dropna(),
+        positions=[-200],
+        widths=[250],
+        showmedians=True,
+        showextrema=False)
+    ax.grid()
+    fig.savefig('./imgs/operatorsdiff_kc.png', bbox_inches='tight')
+
+    # prop vs current
+    fig, ax = plt.subplots(1)
+    ax.plot(df['curr_pie'], ls='', marker='o', alpha=.5, c='r')
+    ax.plot(df['prop_pie'], ls='', marker='o', alpha=.5, c='g')
+    ax.set_yscale('log')
+    ax.grid(which='both')
+    ax.yaxis.set_major_formatter(fmt)
+    ax.set_ylim(ylims)
+    ax.set_ylabel('Portion of all Rewards')
+    ax.set_xlabel('Matched ETH')
+    fig.savefig('./imgs/operators_pc.png', bbox_inches='tight')
+
+    fig, ax = plt.subplots(1)
+    ax.plot(df['prop_pie'] / df['curr_pie'], ls='', marker='o', alpha=.5, c='k')
+    ax.yaxis.set_major_formatter(mtick.PercentFormatter(xmax=1))
+    ax.set_ylim(ylimsdiff)
+    ax.set_ylabel('Proposed rule rewards as a percentage\nof Current rule rewards')
+    ax.set_xlabel('Matched ETH')
+    ax.violinplot(
+        (df['prop_pie'] / df['curr_pie']).dropna(),
+        positions=[-200],
+        widths=[250],
+        showmedians=True,
+        showextrema=False)
+    ax.grid()
+    fig.savefig('./imgs/operatorsdiff_pc.png', bbox_inches='tight')
+
+    # knosh vs prop
+    fig, ax = plt.subplots(1)
+    ax.plot(df['prop_pie'], ls='', marker='o', alpha=.5, c='g')
+    ax.plot(df['knosh_pie'], ls='', marker='o', alpha=.5, c='b')
+    ax.set_yscale('log')
+    ax.grid(which='both')
+    ax.yaxis.set_major_formatter(fmt)
+    ax.set_ylim(ylims)
+    ax.set_ylabel('Portion of all Rewards')
+    ax.set_xlabel('Matched ETH')
+    fig.savefig('./imgs/operators_kp.png', bbox_inches='tight')
+
+    fig, ax = plt.subplots(1)
+    ax.plot(df['knosh_pie'] / df['prop_pie'], ls='', marker='o', alpha=.5, c='k')
+    ax.yaxis.set_major_formatter(mtick.PercentFormatter(xmax=1))
+    ax.set_ylim(ylimsdiff)
+    ax.set_ylabel('Knoshua rule rewards as a percentage\nof Proposed rule rewards')
+    ax.set_xlabel('Matched ETH')
+    ax.violinplot(
+        (df['knosh_pie'] / df['prop_pie']).dropna(),
+        positions=[-200],
+        widths=[250],
+        showmedians=True,
+        showextrema=False)
+    ax.grid()
+    fig.savefig('./imgs/operatorsdiff_kp.png', bbox_inches='tight')
 
 
 def main():
@@ -90,51 +261,23 @@ def main():
     df['current_rule_weight'] = df.apply(lambda row: current_rules(row), axis=1)
     df['knosh_rule_weight'] = df.apply(lambda row: knosh_rules(row), axis=1)
     df['proposal_rule_weight'] = df.apply(lambda row: proposal_rules(row), axis=1)
-    # df.sort_values(['current_rule_weight'], inplace=True)
+    df['curr_pie'] = df['current_rule_weight'] / sum(df['current_rule_weight'])
+    df['knosh_pie'] = df['knosh_rule_weight'] / sum(df['knosh_rule_weight'])
+    df['prop_pie'] = df['proposal_rule_weight'] / sum(df['proposal_rule_weight'])
     df.sort_values(['matched_eth'], inplace=True)
+    df.reset_index(inplace=True)
 
-    curr_pie = list(df['current_rule_weight'] / sum(df['current_rule_weight']))
-    knosh_pie = list(df['knosh_rule_weight'] / sum(df['knosh_rule_weight']))
-    prop_pie = list(df['proposal_rule_weight'] / sum(df['proposal_rule_weight']))
+    assert np.isclose(sum(df['curr_pie']), 1)
+    assert np.isclose(sum(df['knosh_pie']), 1)
+    assert np.isclose(sum(df['prop_pie']), 1)
 
     single_pool_plots(
         curr_total=sum(df['current_rule_weight']),
         knosh_total=sum(df['knosh_rule_weight']),
         prop_total=sum(df['proposal_rule_weight']))
 
-    fmt = mtick.FuncFormatter(ppmpct)
-    fig, ax = plt.subplots(1)
-    ax.plot(curr_pie, ls='', marker='o', alpha=.5, c='r')
-    ax.plot(knosh_pie, ls='', marker='o', alpha=.5, c='b')
-    ax.set_yscale('log')
-    ax.grid(which='both')
-    ax.yaxis.set_major_formatter(fmt)
-    ylims = ax.get_ylim()
-    ax.set_ylabel('Portion of all Rewards')
-    ax.set_xlabel('Matched ETH')
-    fig.savefig('current_vs_knoshua.png', bbox_inches='tight')
-
-    fig, ax = plt.subplots(1)
-    ax.plot(curr_pie, ls='', marker='o', alpha=.5, c='r')
-    ax.plot(prop_pie, ls='', marker='o', alpha=.5, c='g')
-    ax.set_yscale('log')
-    ax.grid(which='both')
-    ax.yaxis.set_major_formatter(fmt)
-    ax.set_ylim(ylims)
-    ax.set_ylabel('Portion of all Rewards')
-    ax.set_xlabel('Matched ETH')
-    fig.savefig('current_vs_prop.png', bbox_inches='tight')
-
-    fig, ax = plt.subplots(1)
-    ax.plot(prop_pie, ls='', marker='o', alpha=.5, c='g')
-    ax.plot(knosh_pie, ls='', marker='o', alpha=.5, c='b')
-    ax.set_yscale('log')
-    ax.grid(which='both')
-    ax.yaxis.set_major_formatter(fmt)
-    ax.set_ylim(ylims)
-    ax.set_ylabel('Portion of all Rewards')
-    ax.set_xlabel('Matched ETH')
-    fig.savefig('knosh_vs_prop.png', bbox_inches='tight')
+    current_node_plots(df)
+    plt.show()
 
 
 if __name__ == '__main__':

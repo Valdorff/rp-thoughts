@@ -1,13 +1,13 @@
 # [DRAFT] RPL Staking Analysis and Initial Suggestion
 July 2023
 
-## High level options
+## High level RPL-staking options
 
-### Visualized rule sets
+### [DRAFT] Visualized rule sets
 
-![image](imgs/single_pool_plots.png)
+![image](./imgs/rule_summary.png)
 
-### Current rules
+### [DRAFT] Current rules
 
 - "Minimum" RPL stake is 10% of borrowed ETH (aka protocol ETH, pETH, matched ETH)
   - You must be over this threshold _including_ a new minipool to launch a new minipool
@@ -16,7 +16,7 @@ July 2023
   - Up to this much RPL at rewards snapshot time can be eligible for RPL rewards
 - The NO share of inflation gets split up per-effective-RPL
 
-### "Knoshua" rules
+### [DRAFT] "Knoshua" rules
 - "Minimum" RPL stake is 10% of borrowed ETH (aka protocol ETH, pETH, matched ETH)
   - You must be over this threshold _including_ a new minipool to launch a new minipool
   - You must be over this threshold at rewards snapshot time to be eligible for RPL rewards
@@ -24,80 +24,164 @@ July 2023
 - If you're below 10% of borrowed ETH, you get no rewards
 - The NO share of inflation gets split up per-effective-RPL
 
-### Proposed rules
+### [DRAFT] Proposed rules
 - "Minimum" RPL stake is 10% of borrowed ETH (aka protocol ETH, pETH, matched ETH)
   - You must be over this threshold _including_ a new minipool to launch a new minipool
   - You must be over this threshold at rewards snapshot time to be eligible for RPL rewards
-- Rewards are based on vote weight
-  - If you're below 10% borrowed ETH, vote weight is 0
-  - From 10%-15% borrowed ETH, vote weight is linear with the amount of borrowed ETH
-  - Above 15%, vote weight follows a logarithmic curve, risig forever, but ever-more-slowly
+- Rewards are based on weight
+  - If you're below 10% borrowed ETH, weight is 0
+  - From 10%-15% borrowed ETH, weight is linear with the amount of borrowed ETH
+  - Above 15%, weight follows a logarithmic curve, rising forever, but ever-more-slowly
 - The NO share of inflation gets split up per-vote-weight
 
-## Comparisons between rule sets
+## The proposed plan
+- Take up the "Proposed rules" above in order to:
+  - Reward primarily based on borrowed ETH, as this is what allows RP to meet rETH demand
+  - Discourage large-scale speculation while getting RPL yield from the protocol
+    - Encourages speculative holdings either exposed to inflation, or active in defi
+  - Avoid making RPL-staking high-touch. Importantly, there should be essentially no downside to
+    being slightly above the minimum
+- Move the minimum to withdraw to 15% borrowed ETH (the end of the linear region)
+  - This minimizes how "locked" users are, while also acknowledging that RPL is highly volatile; we
+    don't want to encourage users to end up below the "minimum" used to start a minipool
+- Keep some kind of time lock around staking to avoid gaming reward snapshot times
+  - There has been talk about tracking stake at all times instead of just at the snapshot time; I
+    believe this would be extremely challenging in a post-oDAO world, and we should be designing
+    with that in mind
+  - The current lock (can't unstake for 28 days after staking) is functional, which is a fairly
+    strong argument for keeping it as is
+    - One fairly modest suggestion that's been floated is to make an exception for claimAndStake.
+      The premise here is that there is little room for gaming with these amounts, and many folks
+      might inadvertently lock their stake by doing this.
 
-### Current vs Knoshua
-![image](imgs/current_vs_knoshua.png)
+## A more detailed comparisons between rule sets
+
+### [DRAFT] Current vs Knoshua
+|   ![image](./imgs/rule_kc.png)   |   ![image](./imgs/operators_kc.png)   |
+|:------------------------------:|:-----------------------------------:|
+| ![image](./imgs/rulediff_kc.png) | ![image](./imgs/operatorsdiff_kc.png) |
 
 - When providing the same amount of rETH supply (aka, at one point on the x axis), the current rules
-  have a massive variation in RPL rewards of up to 15x based on the amount of RPL staked.
-- The blue line is roughly in the middle of the red blob - maybe a bit higher. If it's in the
-  middle, we could judge that anyone at 75% bonded ETH collateral or lower would earn more RPL under
-  knoshua's plan
+  have a massive variation in RPL rewards of up to 15x based on the amount of RPL staked. Knoshua's
+  rules have zero variation.
 - Knoshua's plan _strongly_ favors people that are RPL-hesitant and want to join with low exposure.
-  For folks at the minimum, they'd likely see their rewards 7x or so.
-  - This also makes it easier to attract new NOs since the higher rewards can defray the up-fron
+  For folks at the minimum, they'd see their rewards ~4.3x
+  - This also makes it easier to attract new NOs since the higher rewards can defray the up-front
     RPL price risk
+- Knoshua's plan would see the median current NO get ~2x the rewards of the current plan
+  - A fair number of NOs end up lower than current rewards.
+- Knoshua's plan strongly favors LEB8s. This aligns RPL rewards to what helps the protocol (the
+  ability to meet rETH demand).
 
 ### [TODO] Current vs Proposed
-![image](imgs/current_vs_prop.png)
+|   ![image](./imgs/rule_pc.png)   |   ![image](./imgs/operators_pc.png)   |
+|:------------------------------:|:-----------------------------------:|
+| ![image](./imgs/rulediff_pc.png) | ![image](./imgs/operatorsdiff_pc.png) |
+
+- When providing the same amount of rETH supply (aka, at one point on the x axis), the current rules
+  have a massive variation in RPL rewards of up to 15x based on the amount of RPL staked. For the
+  proposed rules, that variation is down to ~3x (technically, the log gains continue indefinitely
+  but with aggressively lowering marginal benefit; here I used 12 ETH worth of RPL staked on an LEB8
+  as a realistic "limit")
+- The proposed plan's plan _strongly_ favors people that are RPL-hesitant and want to join with low
+  exposure. For folks at the minimum, they'd see their rewards ~2.44x
+  - This also makes it easier to attract new NOs since the higher rewards can defray the up-front
+    RPL price risk
+- The proposed plan would see the median current NO get over 2x the rewards of the current plan
+  - Very few NOs would see a decrease in their rewards (only 16-ETH minipool holders with more than
+    8.1 ETH of RPL staked per 16-ETH minipool)
+- The proposed plan strongly favors LEB8s. This aligns RPL rewards to what helps the protocol (the
+  ability to meet rETH demand).
 
 ### [TODO] Proposed vs Knoshua
-![image](imgs/knosh_vs_prop.png)
+|   ![image](./imgs/rule_kp.png)   |   ![image](./imgs/operators_kp.png)   |
+|:------------------------------:|:-----------------------------------:|
+| ![image](./imgs/rulediff_kp.png) | ![image](./imgs/operatorsdiff_kp.png) |
 
-## [TODO?] Related suggestions
-- 
+This is not the main comparison point, tbh, so I'll be quick:
+- The biggest gains are smaller with the proposed plan
+- The biggest losses are smaller with the proposed plan
+- There are more "winners" with the proposed plan and current allocations
 
-## Appendix: random Val thoughts
+## Brass Tacks
 
-- The minimum is often used in RPL price models to set the floor value
-  - This is based on the premise that, at maturity, NOs will try to hold the minimum viable amount
-    of RPL to gain access to ETH commission. If that's true, then we can use the minimum and the
-    amount of minted rETH to figure out how much RPL is needed to supply that rETH.
-  - This is also based on the idea that "most" users will be near that threshold. This is justified
-    by:
-    - Assuming some users allow themselves to drop below the threshold
-    - Noting that they are no longer eligible for RPL rewards
-    - Noting that this makes it more attractive for other NOs to be above the threshold because of
-      the higher RPL rewards
-    - In a worst case, with 100% of RPL staked, up 30% of users could allow themselves to drop below
-      threshold; at that point it becomes purely winning to stay over threshold. Realistically, it
-      should be "fewer" than that.
-    - Assuming that we have sufficient rETH demand and supply to hit our self-limit, lowering the
-      minimum as a percentage of borrowed ETH would result in a commensurate lowering of RPL market
-      cap and price. In other words, if we changed to 5% from 10%, the price of RPL would halve in
-      the models.
-      - This point can be attacked by refusing the assumption. If we _don't_ get enough rETH demand
-        and supply, then lowering the minimum allows for more capital efficiency -- ergo, we can
-        better attract NOs, rETH holders or both.
-  - The minimum serves as secondary collateral, and is sometimes considered in risk analyses. It has
-    the benefit that it can theoretically be auctioned rapidly. That said, do note that it's a much
-    worse collateral asset for ETH-denominated debt.
-  - I will not be focusing on the minimum in this writeup
-- The maximum does not have a direct impact on RPL price in floor value models
-  - Some models use "staked RPL" as a multiplier term, on the basis of it being illiquid
-    - I don't think this is terribly accurate since minipools can be exited to get full liquidity on
-      100% of staked RPL. Ie, the moat provided by being staked is negligible.
-  - There is a loose consensus that people will trend to the minimum in the long run
-- I have tried to come up with reasons why the maximum should be what it currently is. I don't come
-  up with anything convincing, but here's my best points:
-  - History. Highest yielding amount and minimum withdrawal amount were set to the same value to
-    avoid gaming at the beginning of new periods pre-Redstone.
-    - I think we should mostly ignore this
-  - History/fairness -- people invested with a specific ruleset
-    - I sympathize heavily here. I don't think we should frivolously change things. That said, in a
-      post-Shapella world where NOs can exit if they strongly disagree, I don't think we need to
-      be overly avoidant if changes can improve the protoocol
-  - Rewarding alignment
-    - The maximum serves as "protected speculation" for heavily RPL-tilted individuals
-    - A strong protocol _also_ helps RPL-tilted individuals, arguably more so
+### RPL Value
+Some people have mentioned fears along the lines of "reducing the rewards for high-RPL-allocation
+NOs will cause them to sell and RPL value to plummet".\
+I don't see this at all. 
+
+Let's work out an extreme example with the current and proposed rulesets. We'll assume the worst
+case: an NO with 1 16-ETH minipool and the max yielding 24 ETH worth of RPL staked. For this first
+cut, we'll assume an unchanging RPL/ETH ratio. 
+
+Right now this NO is getting:
+- 5.62% ETH APR (courtesy of Rocket Watch)
+- 8.08% RPL APR (ditto)
+- For a total blended APR of 7.10% (`(24*.0808 + 16*.0562)/40`)
+
+With the proposed plan, they'd get:
+- 5.62% ETH APR
+- 3.08% RPL APR
+- For a total blended APR of 4.10%
+
+Fair enough, that's a hefty drop... But! Let's think about why our NO is choosing this massive
+amount of RPL exposure far above the minimum (15x!). There's really only one reason, which is that
+they hope that the RPL value will go up. I doubt we'll find many bulls who are expecting less than
+a 2x ratio improvement in two years (we'll pretend it's smoothly linear and call that 1.41x per
+year). Let's use that and redo the example. 
+
+Right now this NO is getting:
+- 5.62% ETH APR
+- 8.08% RPL APR
+- For a total blended APR of 33.68% (`(24*.0808*1.41 + 24*0.41 + 16*.0562)/40`)
+
+With the proposed plan, they'd get:
+- 5.62% ETH APR (courtesy of Rocket Watch)
+- 3.08% RPL APR (ditto)
+- For a total blended APR of 29.45% (`(24*.0308*1.41 + 24*0.41 + 16*.0562)/40`)
+
+There _is_ a difference there, but it's _not_ dramatic, because the main factor is ratio growth.
+
+So what do I expect if not a large-scale sell-off from these folks?
+One of:
+- Hold it anyhow - they're here for the ratio gains
+- Put it to use in defi - an RPL loan might pay close to RPL yield at the minimum, for example,
+  which would be over 15%
+- If, and ONLY if, the NOs were already uncertain about their RPL exposure, this might push them to
+  sell some amount. That could go into LEB8s, in order to get much higher RPL rewards (alongside the
+  ETH rewards), or it might leave the RP system.
+
+Finally, I'll note that this proposal helps us attract NOs better. That lets us meet demand better.
+That may come back as improved fundamental value for RPL. In our example, it would only take going
+from an expectation of 2x to an expectation of 2.19x to _prefer_ the proposed plan -- despite being
+at literally the worst case allocation for this rewards change.
+
+### [DRAFT] Why change? People entered with this ruleset.
+
+I believe consistency is important. We shouldn't change things just because we can. That said, I
+also don't believe we should totally shackle ourselves forever based on past decisions.
+
+Let's start with another question -- where does the current ruleset come from?
+- The minimum
+  - Initial design by fireeyes -- no insight into reasoning
+  - Often used in RPL price models to set the fundamental floor value of RPL 
+  - When we added LEB8s, we wanted to keep the fundamental floor value in those models unchanged,
+    which is why we went with keeping it constant as a percent of borrowed ETH
+- The maximum
+  - Initial design by fireeyes -- no insight into reasoning [?? IS THIS RIGHT?]
+  - There was a rather stressful vote when adding LEB8s about whether the maximum should be 150% of
+    borrowed ETH, 150% of bonded ETH, or flat per minipool
+  - During that vote, there were attempts to justify the original 150% number for 16-ETH (so that 
+    we could better understand what it meant to minimize change). The best reason I saw was that it
+    served as "protected speculation" for heavily RPL-aligned individuals.
+  - There was an interaction with the minimum threshold to withdraw until Redstone. It was possible
+    to instantly stake RPL and have that affect rewards, so if people could withdraw at will, they
+    could get all the benefits of max stake while only having the RPL staked for a moment. [?? IS 
+    THIS RIGHT? DID WE HAVE THE TIMELOCK BEFORE REDSTONE?]
+- Keeping the rules the same
+  - All else being equal, stability is good
+  - Right now we're rewarding speculating with in the protocol, rather than creating rETH supply
+    - This is _not_ aligned with the protocol's needs, which is a suitably important reason to make
+      changes.
+  - Now that we're post-Shapella, people can exit if the rules truly don't suit them. This makes it
+    less critical to keep things exactly the same
