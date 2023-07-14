@@ -39,8 +39,8 @@ July 2023
   - Reward primarily based on borrowed ETH, as this is what allows RP to meet rETH demand
   - Discourage large-scale speculation while getting RPL yield from the protocol
     - Encourages speculative holdings either exposed to inflation, or active in defi
-  - Avoid making RPL-staking high-touch. Importantly, there should be essentially no downside to
-    being slightly above the minimum
+  - Keep active rebalancing for good performance minimal. Importantly, there should be essentially
+    no downside to being slightly above the minimum (including opportunity cost)
 - Move the minimum to withdraw to 15% borrowed ETH (the end of the linear region)
   - This minimizes how "locked" users are, while also acknowledging that RPL is highly volatile; we
     don't want to encourage users to end up below the "minimum" used to start a minipool
@@ -83,7 +83,7 @@ July 2023
   proposed rules, that variation is down to ~3x (technically, the log gains continue indefinitely
   but with aggressively lowering marginal benefit; here I used 12 ETH worth of RPL staked on an LEB8
   as a realistic "limit")
-- The proposed plan's plan _strongly_ favors people that are RPL-hesitant and want to join with low
+- The proposed plan _strongly_ favors people that are RPL-hesitant and want to join with low
   exposure. For folks at the minimum, they'd see their rewards ~2.44x
   - This also makes it easier to attract new NOs since the higher rewards can defray the up-front
     RPL price risk
@@ -180,7 +180,7 @@ Let's start with another question -- where does the current ruleset come from?
     THIS RIGHT? DID WE HAVE THE TIMELOCK BEFORE REDSTONE?]
 - Keeping the rules the same
   - All else being equal, stability is good
-  - Right now we're rewarding speculating with in the protocol, rather than creating rETH supply
+  - Right now we're rewarding speculating within the protocol, rather than creating rETH supply
     - This is _not_ aligned with the protocol's needs, which is a suitably important reason to make
       changes.
   - Now that we're post-Shapella, people can exit if the rules truly don't suit them. This makes it
