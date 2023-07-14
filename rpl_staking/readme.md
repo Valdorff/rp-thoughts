@@ -53,12 +53,27 @@ July 2023
     - One fairly modest suggestion that's been floated is to make an exception for claimAndStake.
       The premise here is that there is little room for gaming with these amounts, and many folks
       might inadvertently lock their stake by doing this.
+- Phase in the new rules slowly
+  - For rewards, this can be achieved by calculating the "share of the pie" for both rule sets, and
+    then adding them together in a changing proportion.
+    - Period X after the vote: `0.17*x*proposed_share + 0.17*(6-x)*current_share`  
+    - After period 5, simply used proposed_share
+  - For the withdrawal threshold, it's a little complicated. First, it requires a pDAO guardian
+    action, so we don't want to do a ton of changes. Second, the current setting is based off of
+    bonded ETH, _not_ borrowed ETH. This means 16-ETH minipool holders will have a higher withdrawal
+    threshold than intended. Still, it will be much lower than the current one (less than a third).
+    - After Period X=3 rewards go out, set withdrawal threshold to 100% bonded ETH
+    - After Period X=6 rewards go out, set withdrawal threshold to 45% bonded ETH
+      - This is equivalent to the desired 15% borrowed ETH for LEB8s; unfortunately, it's 45%
+        borrowed ETH for 16-ETH minipools, but that's the best we can do without a SC change
+    - In the next planned Smart Contract release, update to be based on borrowed ETH
+      - Once active, set withdrawal threshold to 15% borrowed ETH
 
 ## A more detailed comparisons between rule sets
 
 ### [DRAFT] Current vs Knoshua
 |   ![image](./imgs/rule_kc.png)   |   ![image](./imgs/operators_kc.png)   |
-|:------------------------------:|:-----------------------------------:|
+|:--------------------------------:|:-----------------------------------:|
 | ![image](./imgs/rulediff_kc.png) | ![image](./imgs/operatorsdiff_kc.png) |
 
 - When providing the same amount of rETH supply (aka, at one point on the x axis), the current rules
@@ -75,7 +90,7 @@ July 2023
 
 ### [TODO] Current vs Proposed
 |   ![image](./imgs/rule_pc.png)   |   ![image](./imgs/operators_pc.png)   |
-|:------------------------------:|:-----------------------------------:|
+|:--------------------------------:|:-----------------------------------:|
 | ![image](./imgs/rulediff_pc.png) | ![image](./imgs/operatorsdiff_pc.png) |
 
 - When providing the same amount of rETH supply (aka, at one point on the x axis), the current rules
@@ -95,7 +110,7 @@ July 2023
 
 ### [TODO] Proposed vs Knoshua
 |   ![image](./imgs/rule_kp.png)   |   ![image](./imgs/operators_kp.png)   |
-|:------------------------------:|:-----------------------------------:|
+|:--------------------------------:|:-----------------------------------:|
 | ![image](./imgs/rulediff_kp.png) | ![image](./imgs/operatorsdiff_kp.png) |
 
 This is not the main comparison point, tbh, so I'll be quick:
