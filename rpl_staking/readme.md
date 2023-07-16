@@ -41,6 +41,7 @@ July 2023
     - Encourages speculative holdings either exposed to inflation, or active in defi
   - Keep active rebalancing for good performance minimal. Importantly, there should be essentially
     no downside to being slightly above the minimum (including opportunity cost)
+  - The rules will apply to all validators including new ones and currently running ones.
 - Move the minimum to withdraw to 15% borrowed ETH (the end of the linear region)
   - This minimizes how "locked" users are, while also acknowledging that RPL is highly volatile; we
     don't want to encourage users to end up below the "minimum" used to start a minipool
@@ -120,56 +121,71 @@ This is not the main comparison point, tbh, so I'll be quick:
 
 ## Brass Tacks
 
-### RPL Value
-Some people have mentioned fears along the lines of "reducing the rewards for high-RPL-allocation
-NOs will cause them to sell and RPL value to plummet".\
+### Expanded Rationale
+This is touched on some in [the proposed plan](#the-proposed-plan) section, but it's worth giving a
+bit more space. Funds should be used to achieve protocol goals - ie, they should be used to convince
+people to do the things that benefit RP.
+
+- We need the ability to meet rETH demand
+  - We should scale rewards on pETH, which is directly related to meeting rETH demand.
+    - This implies we'll favor LEB8s over EB16s because they more efficiently meet rETH demand.
+- Having a lot of bonded RPL on a node is not better for the protocol than having near the minimum
+  - RPL-as-collateral: any collateral use case _must_ work with the minimum, as attackers aren't
+    likely to put up more than is needed (there's details about RPL's limitations here, but the main
+    point is sufficient).
+  - Some amount of RPL beyond the minimum is a convenience -- a buffer so the NO doesn't need to be
+    highly active. We should keep that if possible, as the proposed plan aims to.
+  - "Protected speculation" is a term I once used for the "benefit" of RPL rewards at high
+    node collateral. Our system of inflation is opinionated and does _not_ reward speculation
+    outside the protocol; I don't see a benefit to reward it within the protocol either, as it
+    doesn't achieve protocol goals.
+
+
+### RPL Value (a model combining appreciation and rewards)
+Some people have mentioned fears of this proposal causing a sell-off from RPL-heavy folks.
 I don't see this at all. 
 
-Let's work out an extreme example with the current and proposed rulesets. We'll assume the worst
-case: an NO with 1 16-ETH minipool and the max yielding 24 ETH worth of RPL staked. For this first
-cut, we'll assume an unchanging RPL/ETH ratio. 
+We can model expected price appreciation against ETH as an APR. For example, if you expect price to
+double within 2 years, you can get an apr of `2^(1/2) - 1 = 1.41 - 1 = 41%`. If you make that your
+risk adjusted expectation (eg, you'll call it 1.8x to make up for high risk, even though you think
+it has a 2x EV), you can include that too (in this case that would be 34%).
 
-Right now this NO is getting:
-- 5.62% ETH APR (courtesy of Rocket Watch)
-- 8.08% RPL APR (ditto)
-- For a total blended APR of 7.10% (`(24*.0808 + 16*.0562)/40`)
+| ![image](./imgs/apr_and_appreciation.png) |          ![image](./imgs/apr_and_appreciation_zoom.png)           |
+|:-----------------------------------------:|:-----------------------------------------------------------------:|
 
-With the proposed plan, they'd get:
-- 5.62% ETH APR
-- 3.08% RPL APR
-- For a total blended APR of 4.10%
+These charts use the above per-year expectation as the x-axis.
 
-Fair enough, that's a hefty drop... But! Let's think about why our NO is choosing this massive
-amount of RPL exposure far above the minimum (15x!). There's really only one reason, which is that
-they hope that the RPL value will go up. I doubt we'll find many bulls who are expecting less than
-a 2x ratio improvement in two years (we'll pretend it's smoothly linear and call that 1.41x per
-year). Let's use that and redo the example. 
+The blue line is current "Net RPL" based on RPL rewards plus that expected appreciation. The orange
+line is the node that loses the most by swapping to the proposed plan (only EB16s with exactly 24
+ETH worth of RPL each).
 
-Right now this NO is getting:
-- 5.62% ETH APR
-- 8.08% RPL APR
-- For a total blended APR of 33.68% (`(24*.0808*1.41 + 24*0.41 + 16*.0562)/40`)
+The light gray line is how much APR those assets could get as ETH instead. The dark gray line is how
+much ROI those assets could get as ETH instead _iff_ it activates the maximum amount of RPL.
 
-With the proposed plan, they'd get:
-- 5.62% ETH APR (courtesy of Rocket Watch)
-- 3.08% RPL APR (ditto)
-- For a total blended APR of 29.45% (`(24*.0308*1.41 + 24*0.41 + 16*.0562)/40`)
+To determine if someone who's currently holding should sell based off of the proposed plan:
+- Choose a per-year expectation (essentially an amount of bullishness)
+- Choose a reference, based on if selling to ETH would activate RPL (one of the two gray lines)
+- At your per-year expectation, go up to the blue line
+  - If it's below your reference, you should sell under the current plan
+- At your per-year expectation, go up to the orange line
+  - If it's below your reference AND the blue line was above your reference, the proposed plan may
+    be a rational reason to sell
 
-There _is_ a difference there, but it's _not_ dramatic, because the main factor is ratio growth.
+Based on that process, we see that the dark gray line is above orange but below blue in a very
+narrow range -- from 1.03x to 1.08x per-year ratio expectation.
 
-So what do I expect if not a large-scale sell-off from these folks?
-One of:
-- Hold it anyhow - they're here for the ratio gains
-- Put it to use in defi - an RPL loan might pay close to RPL yield at the minimum, for example,
-  which would be over 15%
-- If, and ONLY if, the NOs were already uncertain about their RPL exposure, this might push them to
-  sell some amount. That could go into LEB8s, in order to get much higher RPL rewards (alongside the
-  ETH rewards), or it might leave the RP system.
+❗❗This means that anyone expecting more than 8% yearly appreciation should not
+be moved to sell because of this plan change.
 
-Finally, I'll note that this proposal helps us attract NOs better. That lets us meet demand better.
-That may come back as improved fundamental value for RPL. In our example, it would only take going
-from an expectation of 2x to an expectation of 2.19x to _prefer_ the proposed plan -- despite being
-at literally the worst case allocation for this rewards change.
+RPL-heavy folks tend to be RPL-bullish. I expect very few (if any) RPL heavy people have
+expectations below 1.08x per-year on the ratio. Note also that if there's some initial selling
+depressing RPL price, which drives price down a bit, then the remaining holders may actually have
+higher per-year expectations as the price dropped, but the holder's "perceived fair value" may be
+unsupervised.
+
+It's worth noting this is just a model - the map is not the territory. It's likely some folks are
+spooked by change, and perhaps by "number go down" on the rewards front. Nonetheless, I don't see
+any reason to expect a large-scale sell-off.
 
 ### [DRAFT] Why change? People entered with this ruleset.
 

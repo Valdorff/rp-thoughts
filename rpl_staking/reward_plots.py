@@ -256,8 +256,8 @@ def current_node_plots(df):
     fig.savefig('./imgs/operatorsdiff_kp.png', bbox_inches='tight')
 
 
-def behavior_modeling():
-    ratio_expectation = np.arange(.3, 3.0)
+def apr_and_appreciation():
+    ratio_expectation = np.arange(.3, 2.0, .05)
     current_rpl_apr = 0.0808
     worst_proposed_rpl_apr = 0.0308
 
@@ -270,15 +270,24 @@ def behavior_modeling():
     ax.plot(ratio_expectation, rpl_net_apr_current, label='Current')
     ax.plot(ratio_expectation, rpl_net_apr_worst_proposed, label='Worst Proposed')
     ax.axhline(.0562, label='EB16 ETH yield', color='k', alpha=0.5)
+    ax.axhline(
+        .0562 + (2.4 / 8) * current_rpl_apr * 2.4,
+        label='EB16 ETH yield\nplus yield from activating RPL',
+        color='k',
+        alpha=0.7)
     ax.set_xlabel('Per-year ratio expectation')
-    ax.set_ylabel('Net "APR" including per-year ratio expectation')
+    ax.set_ylabel('Net "APR" including per-year ratio appreciation expectation')
     ax.legend()
     ax.grid()
-    plt.show()
+    # plt.show()
+    fig.savefig('./imgs/apr_and_appreciation.png', bbox_inches='tight')
+    ax.set_xlim([.93, 1.12])
+    ax.set_ylim([-.02, .27])
+    fig.savefig('./imgs/apr_and_appreciation_zoom.png', bbox_inches='tight')
 
 
 def main():
-    # behavior_modeling()  # work in progress
+    apr_and_appreciation()
 
     df = pd.read_csv('staking_snapshot.csv')
     df = df[df['provided_eth'] > 0]
@@ -303,7 +312,6 @@ def main():
         prop_total=sum(df['proposal_rule_weight']))
 
     current_node_plots(df)
-    plt.show()
 
 
 if __name__ == '__main__':
