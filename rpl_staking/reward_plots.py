@@ -180,7 +180,7 @@ def current_node_plots(df):
     ax.yaxis.set_major_formatter(fmt)
     ylims = ax.get_ylim()
     ax.set_ylabel('Portion of all Rewards')
-    ax.set_xlabel('Matched ETH')
+    ax.set_xlabel('Node (sorted by matched ETH)')
     fig.savefig('./imgs/operators_kc.png', bbox_inches='tight')
 
     fig, ax = plt.subplots(1)
@@ -188,7 +188,7 @@ def current_node_plots(df):
     ax.yaxis.set_major_formatter(mtick.PercentFormatter(xmax=1))
     ylimsdiff = ax.get_ylim()
     ax.set_ylabel('Knoshua rule rewards as a percentage\nof Current rule rewards')
-    ax.set_xlabel('Matched ETH')
+    ax.set_xlabel('Node (sorted by matched ETH)')
     ax.violinplot(
         (df['knosh_pie'] / df['curr_pie']).dropna(),
         positions=[-200],
@@ -207,7 +207,7 @@ def current_node_plots(df):
     ax.yaxis.set_major_formatter(fmt)
     ax.set_ylim(ylims)
     ax.set_ylabel('Portion of all Rewards')
-    ax.set_xlabel('Matched ETH')
+    ax.set_xlabel('Node (sorted by matched ETH)')
     fig.savefig('./imgs/operators_pc.png', bbox_inches='tight')
 
     fig, ax = plt.subplots(1)
@@ -215,7 +215,7 @@ def current_node_plots(df):
     ax.yaxis.set_major_formatter(mtick.PercentFormatter(xmax=1))
     ax.set_ylim(ylimsdiff)
     ax.set_ylabel('Proposed rule rewards as a percentage\nof Current rule rewards')
-    ax.set_xlabel('Matched ETH')
+    ax.set_xlabel('Node (sorted by matched ETH)')
     ax.violinplot(
         (df['prop_pie'] / df['curr_pie']).dropna(),
         positions=[-200],
@@ -234,7 +234,7 @@ def current_node_plots(df):
     ax.yaxis.set_major_formatter(fmt)
     ax.set_ylim(ylims)
     ax.set_ylabel('Portion of all Rewards')
-    ax.set_xlabel('Matched ETH')
+    ax.set_xlabel('Node (sorted by matched ETH)')
     fig.savefig('./imgs/operators_kp.png', bbox_inches='tight')
 
     fig, ax = plt.subplots(1)
@@ -242,7 +242,7 @@ def current_node_plots(df):
     ax.yaxis.set_major_formatter(mtick.PercentFormatter(xmax=1))
     ax.set_ylim(ylimsdiff)
     ax.set_ylabel('Knoshua rule rewards as a percentage\nof Proposed rule rewards')
-    ax.set_xlabel('Matched ETH')
+    ax.set_xlabel('Node (sorted by matched ETH)')
     ax.violinplot(
         (df['knosh_pie'] / df['prop_pie']).dropna(),
         positions=[-200],
@@ -253,7 +253,30 @@ def current_node_plots(df):
     fig.savefig('./imgs/operatorsdiff_kp.png', bbox_inches='tight')
 
 
+def behavior_modeling():
+    ratio_expectation = np.arange(.3, 3.0)
+    current_rpl_apr = 0.0808
+    worst_proposed_rpl_apr = 0.0308
+
+    # get aprs including expectations
+    rpl_net_apr_current = 1.0 * (ratio_expectation - 1) + current_rpl_apr * ratio_expectation
+    rpl_net_apr_worst_proposed = (
+        1.0 * (ratio_expectation - 1) + worst_proposed_rpl_apr * ratio_expectation)
+
+    fig, ax = plt.subplots(1)
+    ax.plot(ratio_expectation, rpl_net_apr_current, label='Current')
+    ax.plot(ratio_expectation, rpl_net_apr_worst_proposed, label='Worst Proposed')
+    ax.axhline(.0562, label='EB16 ETH yield', color='k', alpha=0.5)
+    ax.set_xlabel('Per-year ratio expectation')
+    ax.set_ylabel('Net "APR" including per-year ratio expectation')
+    ax.legend()
+    ax.grid()
+    plt.show()
+
+
 def main():
+    # behavior_modeling()  # work in progress
+
     df = pd.read_csv('staking_snapshot.csv')
     df = df[df['provided_eth'] > 0]
     df['neth_pct'] = df['staked_rpl_value_in_eth'] / df['provided_eth']
