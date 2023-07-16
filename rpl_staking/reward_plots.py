@@ -119,9 +119,9 @@ def single_pool_plots(curr_total, knosh_total, prop_total):
     # prop vs current
     fig, ax = plt.subplots(1, sharex='all', sharey='all')
     ax.plot(x, df8['current_rule_weight'], label='curr leb8', c='r')
-    ax.plot(x, df8['proposal_rule_weight'], label='prop leb8', c='b')
+    ax.plot(x, df8['proposal_rule_weight'], label='prop leb8', c='g')
     ax.plot(x, df16['current_rule_weight'], label='curr eb16', c='r', ls='--')
-    ax.plot(x, df16['proposal_rule_weight'], label='prop eb16', c='b', ls='--')
+    ax.plot(x, df16['proposal_rule_weight'], label='prop eb16', c='g', ls='--')
     fmt = mtick.FuncFormatter(ppm)
     ax.set_yticks([0, .00005, .0001, .00015])
     ax.yaxis.set_major_formatter(fmt)
@@ -144,10 +144,10 @@ def single_pool_plots(curr_total, knosh_total, prop_total):
 
     # knosh vs prop
     fig, ax = plt.subplots(1, sharex='all', sharey='all')
-    ax.plot(x, df8['knosh_rule_weight'], label='knosh leb8', c='r')
-    ax.plot(x, df8['proposal_rule_weight'], label='prop leb8', c='b')
-    ax.plot(x, df16['knosh_rule_weight'], label='knosh eb16', c='r', ls='--')
-    ax.plot(x, df16['proposal_rule_weight'], label='prop eb16', c='b', ls='--')
+    ax.plot(x, df8['knosh_rule_weight'], label='knosh leb8', c='b')
+    ax.plot(x, df8['proposal_rule_weight'], label='prop leb8', c='g')
+    ax.plot(x, df16['knosh_rule_weight'], label='knosh eb16', c='b', ls='--')
+    ax.plot(x, df16['proposal_rule_weight'], label='prop eb16', c='g', ls='--')
     fmt = mtick.FuncFormatter(ppm)
     ax.set_yticks([0, .00005, .0001, .00015])
     ax.yaxis.set_major_formatter(fmt)
@@ -173,14 +173,15 @@ def current_node_plots(df):
     # knoshua vs current
     fmt = mtick.FuncFormatter(ppmpct)
     fig, ax = plt.subplots(1)
-    ax.plot(df['curr_pie'], ls='', marker='o', alpha=.5, c='r')
-    ax.plot(df['knosh_pie'], ls='', marker='o', alpha=.5, c='b')
+    ax.plot(df['curr_pie'], ls='', marker='o', alpha=.5, c='r', label='curr')
+    ax.plot(df['knosh_pie'], ls='', marker='o', alpha=.5, c='b', label='knosh')
     ax.set_yscale('log')
     ax.grid(which='both')
     ax.yaxis.set_major_formatter(fmt)
     ylims = ax.get_ylim()
     ax.set_ylabel('Portion of all Rewards')
     ax.set_xlabel('Node (sorted by matched ETH)')
+    ax.legend()
     fig.savefig('./imgs/operators_kc.png', bbox_inches='tight')
 
     fig, ax = plt.subplots(1)
@@ -200,14 +201,15 @@ def current_node_plots(df):
 
     # prop vs current
     fig, ax = plt.subplots(1)
-    ax.plot(df['curr_pie'], ls='', marker='o', alpha=.5, c='r')
-    ax.plot(df['prop_pie'], ls='', marker='o', alpha=.5, c='g')
+    ax.plot(df['curr_pie'], ls='', marker='o', alpha=.5, c='r', label='curr')
+    ax.plot(df['prop_pie'], ls='', marker='o', alpha=.5, c='g', label='prop')
     ax.set_yscale('log')
     ax.grid(which='both')
     ax.yaxis.set_major_formatter(fmt)
     ax.set_ylim(ylims)
     ax.set_ylabel('Portion of all Rewards')
     ax.set_xlabel('Node (sorted by matched ETH)')
+    ax.legend()
     fig.savefig('./imgs/operators_pc.png', bbox_inches='tight')
 
     fig, ax = plt.subplots(1)
@@ -227,14 +229,15 @@ def current_node_plots(df):
 
     # knosh vs prop
     fig, ax = plt.subplots(1)
-    ax.plot(df['prop_pie'], ls='', marker='o', alpha=.5, c='g')
-    ax.plot(df['knosh_pie'], ls='', marker='o', alpha=.5, c='b')
+    ax.plot(df['prop_pie'], ls='', marker='o', alpha=.5, c='g', label='prop')
+    ax.plot(df['knosh_pie'], ls='', marker='o', alpha=.5, c='b', label='knosh')
     ax.set_yscale('log')
     ax.grid(which='both')
     ax.yaxis.set_major_formatter(fmt)
     ax.set_ylim(ylims)
     ax.set_ylabel('Portion of all Rewards')
     ax.set_xlabel('Node (sorted by matched ETH)')
+    ax.legend()
     fig.savefig('./imgs/operators_kp.png', bbox_inches='tight')
 
     fig, ax = plt.subplots(1)
