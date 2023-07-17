@@ -32,7 +32,7 @@ July 2023
   - If you're below 10% borrowed ETH, weight is 0
   - From 10%-15% borrowed ETH, weight is linear with the amount of borrowed ETH
   - Above 15%, weight follows a logarithmic curve, rising forever, but ever-more-slowly
-- The NO share of inflation gets split up per-vote-weight
+- The NO share of inflation gets split up as weight/total_summed_weight
 
 ## The proposed plan
 - Take up the "Proposed rules" above in order to:
