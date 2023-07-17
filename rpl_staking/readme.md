@@ -69,6 +69,9 @@ July 2023
         borrowed ETH for 16-ETH minipools, but that's the best we can do without a SC change
     - In the next planned Smart Contract release, update to be based on borrowed ETH
       - Once active, set withdrawal threshold to 15% borrowed ETH
+- Don't impact voting -- keep that using 0.5*sqrt(min(rpl, 150%_bonded_eth_value_in_rpl))
+  - Not taking a position on whether this should change, but if that's desired it can be an
+    independent proposal
 
 ## A more detailed comparisons between rule sets
 
