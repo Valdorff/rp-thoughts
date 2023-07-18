@@ -122,6 +122,10 @@ This is not the main comparison point, tbh, so I'll be quick:
 - The biggest losses are smaller with the proposed plan
 - There are more "winners" with the proposed plan and current allocations
 
+### Try it out!
+There's a calculator you can use to see the share received by a node at
+https://www.desmos.com/calculator/5i9fwrkwzx
+
 ## Brass Tacks
 
 ### Expanded Rationale
