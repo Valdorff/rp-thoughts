@@ -124,7 +124,12 @@ This is not the main comparison point, tbh, so I'll be quick:
 
 ### Try it out!
 There's a calculator you can use to see the share received by a node at
-https://www.desmos.com/calculator/5i9fwrkwzx
+https://www.desmos.com/calculator/o71k2vz1qt
+
+It takes in the number of LEB8s, the number of EB16s, and the amount of RPL staked (in ETH).
+It returns out how many millionths of the total reward you'd get under each system, assuming the
+current allocations; the higher this number is, the more the node will earn. Note, no graph is
+expected -- the results are the ppm numbers on lines 10, 12, and 14.
 
 ## Brass Tacks
 
