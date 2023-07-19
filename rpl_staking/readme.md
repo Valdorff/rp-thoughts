@@ -138,19 +138,25 @@ This is touched on some in [the proposed plan](#the-proposed-plan) section, but 
 bit more space. Funds should be used to achieve protocol goals - ie, they should be used to convince
 people to do the things that benefit RP.
 
+- We are spending money badly 
+  - Having a lot of bonded RPL on a node is no better for the protocol than a bond near the minimum
+  - We currently spend 55.2% of rewards on stake beyond 30% pETH (see `heavy_spend()` in
+    `rewards_plot.py`). We had a lot of complaints about oDAO spend (15% of inflation). This is 35%
+    of inflation.
+  - RPL-as-collateral: any collateral use case _must_ work with the minimum
+    - For MEV, attackers aren't likely to put up more than is required
+    - For correlated slashing, RPL liquidity won't allow effective liquidation of even the minimum,
+      let alone additional RPL beyond the minimum.
+  - "Protected speculation" is a term I once used for the "benefit" of RPL rewards at high node
+    collateral. Our system of inflation is opinionated and does _not_ reward speculation outside the
+    protocol; I don't see a benefit to reward it within the protocol either, as it doesn't achieve
+    protocol goals.
+  - Note: Some amount of RPL beyond the minimum is a convenience -- a buffer so the NO doesn't need
+    to be highly active. We should keep that if possible, as the proposed plan aims to.
+    
 - We need the ability to meet rETH demand
   - We should scale rewards on pETH, which is directly related to meeting rETH demand.
     - This implies we'll favor LEB8s over EB16s because they more efficiently meet rETH demand.
-- Having a lot of bonded RPL on a node is not better for the protocol than having near the minimum
-  - RPL-as-collateral: any collateral use case _must_ work with the minimum, as attackers aren't
-    likely to put up more than is needed (there's details about RPL's limitations here, but the main
-    point is sufficient).
-  - Some amount of RPL beyond the minimum is a convenience -- a buffer so the NO doesn't need to be
-    highly active. We should keep that if possible, as the proposed plan aims to.
-  - "Protected speculation" is a term I once used for the "benefit" of RPL rewards at high
-    node collateral. Our system of inflation is opinionated and does _not_ reward speculation
-    outside the protocol; I don't see a benefit to reward it within the protocol either, as it
-    doesn't achieve protocol goals.
 
 
 ### RPL Value (a model combining appreciation and rewards)
