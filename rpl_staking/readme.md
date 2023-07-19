@@ -161,12 +161,13 @@ people to do the things that benefit RP.
 
 ### RPL Value (a model combining appreciation and rewards)
 Some people have mentioned fears of this proposal causing a sell-off from RPL-heavy folks.
-I don't see this at all. 
+I don't see this at all. This proposal better aligns incentives and is a win for everyone.
 
+#### The model
 We can model expected price appreciation against ETH as an APR. For example, if you expect price to
-double within 2 years, you can get an apr of `2^(1/2) - 1 = 1.41 - 1 = 41%`. If you make that your
-risk adjusted expectation (eg, you'll call it 1.8x to make up for high risk, even though you think
-it has a 2x EV), you can include that too (in this case that would be 34%).
+double within 2 years, you can get an apr of `2^(1/2) - 1 = 1.41 - 1 = 41%`. If you use your risk
+adjusted expectation (eg, you'll call it 1.8x to make up for high risk, even though you think it has
+a 2x EV), you can include that too (in this case that would be 34%).
 
 | ![image](./imgs/apr_and_appreciation.png) |          ![image](./imgs/apr_and_appreciation_zoom.png)           |
 |:-----------------------------------------:|:-----------------------------------------------------------------:|
@@ -180,6 +181,7 @@ ETH worth of RPL each).
 The light gray line is how much APR those assets could get as ETH instead. The dark gray line is how
 much ROI those assets could get as ETH instead _iff_ it activates the maximum amount of RPL.
 
+#### Applying the model
 To determine if someone who's currently holding should sell based off of the proposed plan:
 - Choose a per-year expectation (essentially an amount of bullishness)
 - Choose a reference, based on if selling to ETH would activate RPL (one of the two gray lines)
@@ -192,18 +194,40 @@ To determine if someone who's currently holding should sell based off of the pro
 Based on that process, we see that the dark gray line is above orange but below blue in a very
 narrow range -- from 1.03x to 1.08x per-year ratio expectation.
 
-❗❗This means that anyone expecting more than 8% yearly appreciation should not
-be moved to sell because of this plan change.
+❗❗This means that anyone expecting more than 8% yearly appreciation should not be moved to sell
+because of this plan change.
 
 RPL-heavy folks tend to be RPL-bullish. I expect very few (if any) RPL heavy people have
-expectations below 1.08x per-year on the ratio. Note also that if there's some initial selling
-depressing RPL price, which drives price down a bit, then the remaining holders may actually have
-higher per-year expectations as the price dropped, but the holder's "perceived fair value" may be
-unsupervised.
+expectations below 1.08x per-year on the ratio. Note also that individuals selling is somewhat
+self-correcting. If an investor has a price point they expect to come about, then price drops
+actually move them further to the right on the "per-year ratio appreciation expectation" scale,
+which means they are even less likely to sell (this is intuitive - if you think you're holding a
+$20 bill, you won't give it away for $10, and you _certainly_ won't give it away for $5).
 
-It's worth noting this is just a model - the map is not the territory. It's likely some folks are
-spooked by change, and perhaps by "number go down" on the rewards front. Nonetheless, I don't see
-any reason to expect a large-scale sell-off.
+#### How lower rewards can be a win (specific example)
+We'll run the model backwards here. Let's assume a person with EB16s at 100% collateral that
+believes RPL will 2x in 2 years.
+
+- Their APR loss in going from the current to the proposed rules is 2.8% APR
+- This can be multiplied by their "per-year ratio appreciation expectation" of 1.41 to get their
+  break-even RPL appreciation improvement
+- `1.41*.028 = 4.0%`
+
+This is a modest, but real improvement. Does it seem realistic that the proposal would have such an
+impact? To me it does, but this is very far into subjective. Some factors that could help:
+- Higher rewards attract more minipool creation, which helps us meet rETH demand
+- Higher rewards create a minipool queue, which boosts rETH APR and helps _create_ rETH demand
+- Better-aligned incentives improve trust in the protocol
+  - Makes the protocol more investable
+  - Since NOs must hodl RPL, that can also attract NOs
+
+#### The model is a model
+This is _just_ a model - the map is not the territory. It's likely some folks are spooked by change,
+and perhaps by "number go down" on the rewards front. On the flip side, it's also possible that
+some folks are galvanized by improvements and setting RP up for growth.
+
+I don't see any reason to expect a large-scale sell-off. I believe this proposal makes RP better and
+helps us attract more NOs. I believe better RP is (eventually, on average) reflected in RPL.
 
 ### [DRAFT] Why change? People entered with this ruleset.
 

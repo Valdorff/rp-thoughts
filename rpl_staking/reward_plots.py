@@ -275,23 +275,14 @@ def apr_and_appreciation():
         label='EB16 ETH yield\nplus yield from activating RPL',
         color='k',
         alpha=0.7)
-    ax.set_xlabel('Per-year ratio expectation')
-    ax.set_ylabel('Net "APR" including per-year ratio appreciation expectation')
+    ax.set_xlabel('Per-year ratio appreciation expectation')
+    ax.set_ylabel('Net "APR" including\nper-year ratio appreciation expectation')
     ax.legend()
     ax.grid()
-    # plt.show()
     fig.savefig('./imgs/apr_and_appreciation.png', bbox_inches='tight')
     ax.set_xlim([.93, 1.12])
     ax.set_ylim([-.02, .27])
     fig.savefig('./imgs/apr_and_appreciation_zoom.png', bbox_inches='tight')
-
-    apr_diff = current_rpl_apr - worst_proposed_rpl_apr
-    fig, ax = plt.subplots(1)
-    ax.plot(ratio_expectation, )
-    ax.set_xlabel('Per-year ratio appreciation expectation')
-    ax.set_ylabel('Net per-year gains including\nrewards and ratio appreciation')
-    ax.legend()
-    ax.grid()
 
 
 def heavy_spend(df_og):
