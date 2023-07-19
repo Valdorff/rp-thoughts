@@ -285,6 +285,28 @@ def apr_and_appreciation():
     ax.set_ylim([-.02, .27])
     fig.savefig('./imgs/apr_and_appreciation_zoom.png', bbox_inches='tight')
 
+    apr_diff = current_rpl_apr - worst_proposed_rpl_apr
+    fig, ax = plt.subplots(1)
+    ax.plot(ratio_expectation, )
+    ax.set_xlabel('Per-year ratio appreciation expectation')
+    ax.set_ylabel('Net per-year gains including\nrewards and ratio appreciation')
+    ax.legend()
+    ax.grid()
+
+
+def heavy_spend(df_og):
+    df = df_og.copy()
+    # get amount of spend going to staked RPL beyond 30% pETH
+    heavy_cutoff_peth = 0.3
+    df['earning_peth_pct'] = df['peth_pct'] * (1.5 / df['neth_pct'])
+    df['earning_peth_pct'] = df[['peth_pct', 'earning_peth_pct']].min(axis=1)
+    df['heavy_pct'] = df['earning_peth_pct'] - heavy_cutoff_peth
+    df['heavy_pct'] = df['heavy_pct'].clip(lower=0)
+    df['curr_heavypie'] = df['curr_pie'] * df['heavy_pct']
+    print(
+        f"Spending on stake beyond {100*heavy_cutoff_peth}% pETH: {100*sum(df['curr_heavypie']):.1f}%"
+    )
+
 
 def main():
     apr_and_appreciation()
@@ -305,6 +327,8 @@ def main():
     assert np.isclose(sum(df['curr_pie']), 1)
     assert np.isclose(sum(df['knosh_pie']), 1)
     assert np.isclose(sum(df['prop_pie']), 1)
+
+    heavy_spend(df)
 
     single_pool_plots(
         curr_total=sum(df['current_rule_weight']),
