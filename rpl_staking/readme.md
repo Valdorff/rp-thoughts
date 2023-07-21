@@ -112,16 +112,6 @@ July 2023
 - The proposed plan strongly favors LEB8s. This aligns RPL rewards to what helps the protocol (the
   ability to meet rETH demand).
 
-### [TODO] Proposed vs Knoshua
-|   ![image](./imgs/rule_kp.png)   |   ![image](./imgs/operators_kp.png)   |
-|:--------------------------------:|:-----------------------------------:|
-| ![image](./imgs/rulediff_kp.png) | ![image](./imgs/operatorsdiff_kp.png) |
-
-This is not the main comparison point, tbh, so I'll be quick:
-- The biggest gains are smaller with the proposed plan
-- The biggest losses are smaller with the proposed plan
-- There are more "winners" with the proposed plan and current allocations
-
 ### Try it out!
 There's a calculator you can use to see the share received by a node at
 https://www.desmos.com/calculator/o71k2vz1qt
