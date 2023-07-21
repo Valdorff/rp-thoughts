@@ -261,12 +261,15 @@ def apr_and_appreciation():
 
     # hypothetical nodes switching RPL to an LEB8; node is large and at 152% nETH
     #   ppm values come from https://www.desmos.com/calculator/o71k2vz1qt
-    before_current = 300 * 16 * 1.14 * .055 + .7 * .05 * 19.55e6 * .0174 * 45544e-6
-    after_current = 300 * 16 * 1.14 * .055 + 8 * 1.42 * .055 + .7 * .05 * 19.55e6 * .0174 * 45620e-6
-    swap_yield_current = (after_current - before_current) / 8
+    before_current152 = 300 * 16 * 1.14 * .055 + .7 * .05 * 19.55e6 * .0174 * 45544e-6
+    after_current152 = 300 * 16 * 1.14 * .055 + 8 * 1.42 * .055 + .7 * .05 * 19.55e6 * .0174 * 45620e-6
+    swap_yield_current152 = (after_current152 - before_current152) / 8
     before_prop = 300 * 16 * 1.14 * .055 + .7 * .05 * 19.55e6 * .0174 * 17411e-6
     after_prop = 300 * 16 * 1.14 * .055 + 8 * 1.42 * .055 + .7 * .05 * 19.55e6 * .0174 * 17488e-6
     swap_yield_prop = (after_prop - before_prop) / 8
+    before_current148 = 300 * 16 * 1.14 * .055 + .7 * .05 * 19.55e6 * .0174 * 44937e-6
+    after_current148 = 300 * 16 * 1.14 * .055 + 8 * 1.42 * .055 + .7 * .05 * 19.55e6 * .0174 * 44886e-6
+    swap_yield_current148 = (after_current148 - before_current148) / 8
 
     current_rpl_apr = .7 * .05 * 19.55e6 * .0174 * 45544e-6 / 7300
     worst_proposed_rpl_apr = current_rpl_apr * (0.0308 / 0.0808)
@@ -277,17 +280,18 @@ def apr_and_appreciation():
         1.0 * (ratio_expectation - 1) + worst_proposed_rpl_apr * ratio_expectation)
 
     fig, ax = plt.subplots(1)
-    ax.plot(ratio_expectation, rpl_net_apr_current, label='Current')
-    ax.plot(ratio_expectation, rpl_net_apr_worst_proposed, label='Worst Proposed')
-    ax.axhline(swap_yield_current, label='Swap yield (current)', color='k', alpha=0.5)
-    ax.axhline(swap_yield_prop, label='Swap yield (proposed)', color='k', alpha=0.7)
+    ax.plot(ratio_expectation, rpl_net_apr_current, label='Current', c='r')
+    ax.plot(ratio_expectation, rpl_net_apr_worst_proposed, label='Worst Proposed', c='g')
+    ax.axhline(swap_yield_current152, label='Swap yield (curr152)', c='r', alpha=0.5, ls='--')
+    ax.axhline(swap_yield_current148, label='Swap yield (curr148)', c='r', alpha=0.5, ls=':')
+    ax.axhline(swap_yield_prop, label='Swap yield (proposed)', c='g', alpha=0.5, ls='--')
     ax.set_xlabel('Per-year ratio appreciation expectation')
     ax.set_ylabel('Net "APR" including\nper-year ratio appreciation expectation')
     ax.legend()
     ax.grid()
     fig.savefig('./imgs/apr_and_appreciation.png', bbox_inches='tight')
-    ax.set_xlim([1.075, 1.195])
-    ax.set_ylim([.159, .221])
+    ax.set_xlim([.8, 1.2])
+    ax.set_ylim([-.06, .21])
     fig.savefig('./imgs/apr_and_appreciation_zoom.png', bbox_inches='tight')
 
 
@@ -302,6 +306,15 @@ def heavy_spend(df_og):
     df['curr_heavypie'] = df['curr_pie'] * df['heavy_pct']
     print(
         f"Spending on stake beyond {100*heavy_cutoff_peth}% pETH: {100*sum(df['curr_heavypie']):.1f}%"
+    )
+
+
+def top_off(df_og):
+    df = df_og.copy()
+    df['top_off_rpl_value_in_eth'] = ((.1 / df['peth_pct']) - 1) * df['staked_rpl_value_in_eth']
+    df['top_off_rpl_value_in_eth'].clip(lower=0, inplace=True)
+    print(
+        f"A total of {df['top_off_rpl_value_in_eth'].sum()} ETH worth of RPL would be needed to top everyone off"
     )
 
 
@@ -326,6 +339,7 @@ def main():
     assert np.isclose(sum(df['prop_pie']), 1)
 
     heavy_spend(df)
+    top_off(df)
 
     single_pool_plots(
         curr_total=sum(df['current_rule_weight']),

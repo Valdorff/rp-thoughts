@@ -153,79 +153,92 @@ people to do the things that benefit RP.
   - We should scale rewards on pETH, which is directly related to meeting rETH demand.
     - This implies we'll favor LEB8s over EB16s because they more efficiently meet rETH demand.
 
+### Which NOs are sensitive to RPL yield?
+I'll separate current NOs (grouped by withdrawal address) into 4 distinct groups:
+- Below threshold -- these folks are below the threshold under both systems
+- Insensitive bulls -- these folks hold significant RPL at 0% yield
+  - Defined as holding at least 5% nETH of RPL liquid on their node/withdrawal wallets
+  - Note: I'm undercounting these. People can and do hold RPL in wallets other than node and
+    withdrawal address, which are the only places I look
+- Rewards increase -- these folks are incentivized more with the proposal
+- Potential sensitives -- these are the folks where we need to analyze how the proposal will affect
+  their strategies going forward; anyone that doesn't fit into the categories above
 
-### RPL Value (a model combining appreciation and rewards)
+There's a 4th group which is potential sensitives that have chosen _not_ to participate under the
+current ruleset. For them the analysis is simple -- RPL yield will increase ~2.4x for minimum
+minipools, which should make them more attractive and nudge people on the edge. No good way to get
+this number imo.
+
+I'll separate RPL along similar lines with two differences:
+- The potential insensitives have 2 types of RPL
+  - Assume the user swaps RPL to make LEB8s, until at some point they have better RPL rewards per
+    RPL than they currently do. Since they currently accept their current RPL, we know they are not
+    sensitive beyond this point. It's possible they are insensitive sooner, but this is the bright
+    line we can draw with confidence
+  - We use that bright line to split into a sensitive and insensitive part of the RPL holdings
+- RPL holders outside the system are included, who can't be counted in an NO chart
+
+![image](./imgs/category_pies.png)
+
+By count, the number of people that are potentially sensitive is modest (under 10%). By RPL weight,
+we see that at _most_ 5.5% of RPL is potentially sensitive to this RPL apr change.
+
+I don't think we have a great way to get insight into what the minimum RPL apr needed for the
+potential_sensitives is -- any number from 0-100% of current aligns with their visible actions.
+That said, there's almost certainly a spread in that range. Purely on intuition, I'd expect in the
+50-75% range, which would be 0.8-3.2% of RPL in the sensitive range respectively.
+
+### RPL Value for potential sensitives
 Some people have mentioned fears of this proposal causing a sell-off from RPL-heavy folks.
 I don't see this at all. This proposal better aligns incentives and is a win for everyone.
 
-#### The model
-We can model expected price appreciation against ETH as an APR. For example, if you expect price to
-double within 2 years, you can get an apr of `2^(1/2) - 1 = 1.41 - 1 = 41%`. If you use your risk
-adjusted expectation (eg, you'll call it 1.8x to make up for high risk, even though you think it has
-a 2x EV), you can include that too (in this case that would be 34%).
+See [the full model here](model_yield_and_appreciation.md) -- I've removed it from here as I don't
+think it was communicating effectively, and I've replaced most of it with the above.
 
-The other thing we need to model is what the best results we can get from selling RPL are.\
-To model this, we'll start with a very RPL-heavy (152% bonded ETH) node that has 300 EB16s. Then
-we'll compare the yield for one year vs the yield for one year if they sell 8 ETH worth of RPL in
-order to make an LEB8. We will value RPL rewards at the current ETH ratio -- this isn't right based
-on our x-axis, but we'll ignore for simplicity here (the effect is small vs on the RPL principal).
+I do want to bring in a few outcomes:
+- Users that might swap rationally believe RPL ratio trajectory is from 0.93x to 1.16x per year
+  - Fairly neutral with some "mildly bullish"
+  - For context if that pace kept up 3 years, RPL would be at 80%/156% the current ratio
+- The current ruleset has "brakes" around 150%
+  - Down brakes - happy: if you're barely interested in selling to make new LEB8s at 151% you will
+    stop selling at 150% as you will no longer be activating new RPL yield
+  - Up brakes - sad: If you're barely interested in holding at 149%, you will sell over 150% as that
+    RPL carries no yield
 
-```
-before_current = 300 * 16 * 1.14 * .055 + .7 * .05 * 19.55e6 * .0174 * 45544e-6 = 843.20 ETH/yr
-after_current = 300 * 16 * 1.14 * .055 + 8 * 1.42 * .055 + .7 * .05 * 19.55e6 * .0174 * 45620e-6 = 844.73 ETH/yr
-swap_yield_current = (after_current - before_current) / 8 = 19.12%
-before_prop = 300 * 16 * 1.14 * .055 + .7 * .05 * 19.55e6 * .0174 * 17411e-6 = 508.25 ETH/yr
-after_prop = 300 * 16 * 1.14 * .055 + 8 * 1.42 * .055 + .7 * .05 * 19.55e6 * .0174 * 17488e-6 = 509.80 ETH/yr
-swap_yield_prop = (after_prop - before_prop) / 8 = 19.27%
-```
-Note that there's very little difference in yield gain from switching 8 ETH worth of RPL to a new
-LEB8 between the two rulesets.
+#### Conclusions
+We can now better define the maximum possible RPL rationally sold as:
+- Held by potential sensitives from the [NO pie chart](#which-nos-are-sensitive-to-rpl-yield)
+  - Currently above 10% borrowed ETH, currently below 150% bonded ETH, not holding a lot of liquid RPL
+- Believe RPL trajectory is roughly neutral to mildly bullish 
+- In the 5.5% potential sensitive slice from the [RPL weighted pie chart](#which-nos-are-sensitive-to-rpl-yield)
+- This currently represents a worst case of just over 17k ETH (~$33M)
 
-| ![image](./imgs/apr_and_appreciation.png) |          ![image](./imgs/apr_and_appreciation_zoom.png)           |
-|:-----------------------------------------:|:-----------------------------------------------------------------:|
+Trying to guess at "expected" instead of worst case:
+- Maybe 0.8-3.2% of RPL would be interested in selling - let's take the average 2% 
+  - 6.3k ETH, or ~$12M
+- There would be new buying from folks on the low end
+  - High APR incentivizes topping off
+    - Currently we'd need about 1350 ETH, or $2.6M to top everyone off
+  - High APR incentivizes new joiners
+    - This is a wild card that is hard to estimate
+    - 2000 attracted minimum LEB8s would put us at even buy and sell pressure
+    - Let's guess 500 LEB8s entering at 12% = 1440 ETH, or $2.7M
+- There may be new buying due to increased trust from alignment
+  - This is likely a small effect from some existing NOs -- it takes involvement to even notice this
+- If this is right, we'd be looking at 3.5k ETH of sell pressure (about $5.3M) over the 6 month
+  transition period.
 
-#### Reading these charts
-- The x-axis is per-year ratio appreciation expectation as explained in [the model](#the-model)
-- The blue line is current "Net RPL" based on RPL rewards plus that expected appreciation
-- The orange line is the node that loses the most by swapping to the proposed plan (only EB16s with
-  exactly 24 ETH worth of RPL each).
-- The gray line is the best yield benefit to swapping from RPL to an LEB8 w/the current rules as
-  explained in [the model](#the-model)
-- The black line is the best yield benefit to swapping from RPL to an LEB8 w/the proposed rules
-- For the current rules: if we are on the blue line below the black line, it may make sense to swap
-  RPL to make an LEB8. This happens if our expected ratio appreciation is < ~11% per year 
-- For the proposed rules: if we are on the orange line below the gray line, it may make sense to
-  swap RPL to make an LEB8. This happens if our expected ratio appreciation is < ~16% per year 
+### Liquid RPL trends
+As a sanity check, we can look into our expectation that RPL-heavy NOs tend to value APR less by
+looking into trends in liquid RPL holdings. Liquid RPL gets _zero_ yield, so people that hold
+significant amounts aren't terribly sensitive to that yield. Note that for the plot
+(but not the fit line) I've clipped y values to 4.0 to make the chart legible.
 
-#### Conclusions from this model
-Based on the above, we can bound the people that "should" be nudged into a lower RPL allocation to
-those that believe RPL will grow more than 11% per year, but less than 16% per year. **This is a
-_narrow_ band, so we wouldn't expect a lot of people to be in that band.**
+![image](./imgs/liquid_rpl.png)
 
-#### How lower rewards can be a win (specific example)
-We'll run the model backwards here. Let's assume a person with EB16s at 100% collateral that
-believes RPL will 2x in 2 years.
-
-- Their APR loss in going from the current to the proposed rules is ~2.6% APR
-- This can be multiplied by their "per-year ratio appreciation expectation" of 1.41 to get their
-  break-even RPL appreciation improvement
-- `1.41*.026 = 3.7%`
-
-This is a modest, but real improvement. Does it seem realistic that the proposal would have such an
-impact? To me it does, but this is very far into subjective. Some factors that could help:
-- Higher rewards attract more minipool creation, which helps us meet rETH demand
-- Higher rewards create a minipool queue, which boosts rETH APR and helps _create_ rETH demand
-- Better-aligned incentives improve trust in the protocol
-  - Makes the protocol more investable
-  - Since NOs must hodl RPL, that can also attract NOs
-
-#### The model is a model
-This is _just_ a model - the map is not the territory. It's likely some folks are spooked by change,
-and perhaps by "number go down" on the rewards front. On the flip side, it's also possible that
-some folks are galvanized by improvements and setting RP up for growth.
-
-I don't see any reason to expect a large-scale sell-off. I believe this proposal makes RP better and
-helps us attract more NOs. I believe better RP is (eventually, on average) reflected in RPL.
+We see exactly the expected trend. More staked RPL tends to go along with more bullish (higher
+expectations of RPL price appreciation), which tends to go with less sensitivity to RPL APR and a
+higher willingness to hold liquid RPL (no yield).
 
 ### [DRAFT] Why change? People entered with this ruleset.
 
