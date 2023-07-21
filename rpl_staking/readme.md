@@ -45,15 +45,20 @@ July 2023
 - Move the minimum to withdraw to 15% borrowed ETH (the end of the linear region)
   - This minimizes how "locked" users are, while also acknowledging that RPL is highly volatile; we
     don't want to encourage users to end up below the "minimum" used to start a minipool
-- Keep some kind of time lock around staking to avoid gaming reward snapshot times
+- Change the time lock to add withdrawal friction
+  - Make withdrawal a 2-step process. Set X RPL to "withdrawing"; these RPL are no longer eligible
+    for rewards or voting. After a time period (make a settings; start it at 28 days), the RPL may
+    be withdrawn.
+  - There were worries that allowing withdrawal to lower thresholds would cause a lot of RPL to be
+    withdrawn. While that can happen today, it has a lot of organic friction from exiting minipools
+    and recreating them -- its worth noting that (A) RP doesn't control the exit/entrance queues,
+    (B) RP doesn't control gas prices, and (C) while people are exiting/entering they are not
+    earning rewards for themselves or rETH. The proposed lock time allows us to control the amount
+    of friction entirely. This sort of system is very common in Cosmos staking.
+  - Get rid of the cooldown on stake. Allow stake-on-behalf without limitations.
   - There has been talk about tracking stake at all times instead of just at the snapshot time; I
     believe this would be extremely challenging in a post-oDAO world, and we should be designing
     with that in mind
-  - The current lock (can't unstake for 28 days after staking) is functional, which is a fairly
-    strong argument for keeping it as is
-    - One fairly modest suggestion that's been floated is to make an exception for claimAndStake.
-      The premise here is that there is little room for gaming with these amounts, and many folks
-      might inadvertently lock their stake by doing this.
 - Phase in the new rules slowly
   - For rewards, this can be achieved by calculating the "share of the pie" for both rule sets, and
     then adding them together in a changing proportion.
