@@ -159,49 +159,52 @@ double within 2 years, you can get an apr of `2^(1/2) - 1 = 1.41 - 1 = 41%`. If 
 adjusted expectation (eg, you'll call it 1.8x to make up for high risk, even though you think it has
 a 2x EV), you can include that too (in this case that would be 34%).
 
+The other thing we need to model is what the best results we can get from selling RPL are.\
+To model this, we'll start with a very RPL-heavy (152% bonded ETH) node that has 300 EB16s. Then
+we'll compare the yield for one year vs the yield for one year if they sell 8 ETH worth of RPL in
+order to make an LEB8. We will value RPL rewards at the current ETH ratio -- this isn't right based
+on our x-axis, but we'll ignore for simplicity here (the effect is small vs on the RPL principal).
+
+```
+before_current = 300 * 16 * 1.14 * .055 + .7 * .05 * 19.55e6 * .0174 * 45544e-6 = 843.20 ETH/yr
+after_current = 300 * 16 * 1.14 * .055 + 8 * 1.42 * .055 + .7 * .05 * 19.55e6 * .0174 * 45620e-6 = 844.73 ETH/yr
+swap_yield_current = (after_current - before_current) / 8 = 19.12%
+before_prop = 300 * 16 * 1.14 * .055 + .7 * .05 * 19.55e6 * .0174 * 17411e-6 = 508.25 ETH/yr
+after_prop = 300 * 16 * 1.14 * .055 + 8 * 1.42 * .055 + .7 * .05 * 19.55e6 * .0174 * 17488e-6 = 509.80 ETH/yr
+swap_yield_prop = (after_prop - before_prop) / 8 = 19.27%
+```
+Note that there's very little difference in yield gain from switching 8 ETH worth of RPL to a new
+LEB8 between the two rulesets.
+
 | ![image](./imgs/apr_and_appreciation.png) |          ![image](./imgs/apr_and_appreciation_zoom.png)           |
 |:-----------------------------------------:|:-----------------------------------------------------------------:|
 
-These charts use the above per-year expectation as the x-axis.
+#### Reading these charts
+- The x-axis is per-year ratio appreciation expectation as explained in [the model](#the-model)
+- The blue line is current "Net RPL" based on RPL rewards plus that expected appreciation
+- The orange line is the node that loses the most by swapping to the proposed plan (only EB16s with
+  exactly 24 ETH worth of RPL each).
+- The gray line is the best yield benefit to swapping from RPL to an LEB8 w/the current rules as
+  explained in [the model](#the-model)
+- The black line is the best yield benefit to swapping from RPL to an LEB8 w/the proposed rules
+- For the current rules: if we are on the blue line below the black line, it may make sense to swap
+  RPL to make an LEB8. This happens if our expected ratio appreciation is < ~11% per year 
+- For the proposed rules: if we are on the orange line below the gray line, it may make sense to
+  swap RPL to make an LEB8. This happens if our expected ratio appreciation is < ~16% per year 
 
-The blue line is current "Net RPL" based on RPL rewards plus that expected appreciation. The orange
-line is the node that loses the most by swapping to the proposed plan (only EB16s with exactly 24
-ETH worth of RPL each).
-
-The light gray line is how much APR those assets could get as ETH instead. The dark gray line is how
-much ROI those assets could get as ETH instead _iff_ it activates the maximum amount of RPL.
-
-#### Applying the model
-To determine if someone who's currently holding should sell based off of the proposed plan:
-- Choose a per-year expectation (essentially an amount of bullishness)
-- Choose a reference, based on if selling to ETH would activate RPL (one of the two gray lines)
-- At your per-year expectation, go up to the blue line
-  - If it's below your reference, you should sell under the current plan
-- At your per-year expectation, go up to the orange line
-  - If it's below your reference AND the blue line was above your reference, the proposed plan may
-    be a rational reason to sell
-
-Based on that process, we see that the dark gray line is above orange but below blue in a very
-narrow range -- from 1.03x to 1.08x per-year ratio expectation.
-
-❗❗This means that anyone expecting more than 8% yearly appreciation should not be moved to sell
-because of this plan change.
-
-RPL-heavy folks tend to be RPL-bullish. I expect very few (if any) RPL heavy people have
-expectations below 1.08x per-year on the ratio. Note also that individuals selling is somewhat
-self-correcting. If an investor has a price point they expect to come about, then price drops
-actually move them further to the right on the "per-year ratio appreciation expectation" scale,
-which means they are even less likely to sell (this is intuitive - if you think you're holding a
-$20 bill, you won't give it away for $10, and you _certainly_ won't give it away for $5).
+#### Conclusions from this model
+Based on the above, we can bound the people that "should" be nudged into a lower RPL allocation to
+those that believe RPL will grow more than 11% per year, but less than 16% per year. **This is a
+_narrow_ band, so we wouldn't expect a lot of people to be in that band.**
 
 #### How lower rewards can be a win (specific example)
 We'll run the model backwards here. Let's assume a person with EB16s at 100% collateral that
 believes RPL will 2x in 2 years.
 
-- Their APR loss in going from the current to the proposed rules is 2.8% APR
+- Their APR loss in going from the current to the proposed rules is ~2.6% APR
 - This can be multiplied by their "per-year ratio appreciation expectation" of 1.41 to get their
   break-even RPL appreciation improvement
-- `1.41*.028 = 4.0%`
+- `1.41*.026 = 3.7%`
 
 This is a modest, but real improvement. Does it seem realistic that the proposal would have such an
 impact? To me it does, but this is very far into subjective. Some factors that could help:

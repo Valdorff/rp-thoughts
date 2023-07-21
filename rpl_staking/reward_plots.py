@@ -258,8 +258,18 @@ def current_node_plots(df):
 
 def apr_and_appreciation():
     ratio_expectation = np.arange(.3, 2.0, .05)
-    current_rpl_apr = 0.0808
-    worst_proposed_rpl_apr = 0.0308
+
+    # hypothetical nodes switching RPL to an LEB8; node is large and at 152% nETH
+    #   ppm values come from https://www.desmos.com/calculator/o71k2vz1qt
+    before_current = 300 * 16 * 1.14 * .055 + .7 * .05 * 19.55e6 * .0174 * 45544e-6
+    after_current = 300 * 16 * 1.14 * .055 + 8 * 1.42 * .055 + .7 * .05 * 19.55e6 * .0174 * 45620e-6
+    swap_yield_current = (after_current - before_current) / 8
+    before_prop = 300 * 16 * 1.14 * .055 + .7 * .05 * 19.55e6 * .0174 * 17411e-6
+    after_prop = 300 * 16 * 1.14 * .055 + 8 * 1.42 * .055 + .7 * .05 * 19.55e6 * .0174 * 17488e-6
+    swap_yield_prop = (after_prop - before_prop) / 8
+
+    current_rpl_apr = .7 * .05 * 19.55e6 * .0174 * 45544e-6 / 7300
+    worst_proposed_rpl_apr = current_rpl_apr * (0.0308 / 0.0808)
 
     # get aprs including expectations
     rpl_net_apr_current = 1.0 * (ratio_expectation - 1) + current_rpl_apr * ratio_expectation
@@ -269,19 +279,15 @@ def apr_and_appreciation():
     fig, ax = plt.subplots(1)
     ax.plot(ratio_expectation, rpl_net_apr_current, label='Current')
     ax.plot(ratio_expectation, rpl_net_apr_worst_proposed, label='Worst Proposed')
-    ax.axhline(.0562, label='EB16 ETH yield', color='k', alpha=0.5)
-    ax.axhline(
-        .0562 + (2.4 / 8) * current_rpl_apr * 2.4,
-        label='EB16 ETH yield\nplus yield from activating RPL',
-        color='k',
-        alpha=0.7)
+    ax.axhline(swap_yield_current, label='Swap yield (current)', color='k', alpha=0.5)
+    ax.axhline(swap_yield_prop, label='Swap yield (proposed)', color='k', alpha=0.7)
     ax.set_xlabel('Per-year ratio appreciation expectation')
     ax.set_ylabel('Net "APR" including\nper-year ratio appreciation expectation')
     ax.legend()
     ax.grid()
     fig.savefig('./imgs/apr_and_appreciation.png', bbox_inches='tight')
-    ax.set_xlim([.93, 1.12])
-    ax.set_ylim([-.02, .27])
+    ax.set_xlim([1.075, 1.195])
+    ax.set_ylim([.159, .221])
     fig.savefig('./imgs/apr_and_appreciation_zoom.png', bbox_inches='tight')
 
 
