@@ -158,6 +158,7 @@ I'll separate current NOs (grouped by withdrawal address) into 4 distinct groups
 - Below threshold -- these folks are below the threshold under both systems
 - Insensitive bulls -- these folks hold significant RPL at 0% yield
   - Defined as holding at least 5% nETH of RPL liquid on their node/withdrawal wallets
+    - This includes RPL over 150% bonded ETH, as it can be immediately withdrawn
   - Note: I'm undercounting these. People can and do hold RPL in wallets other than node and
     withdrawal address, which are the only places I look
 - Rewards increase -- these folks are incentivized more with the proposal
@@ -181,12 +182,12 @@ I'll separate RPL along similar lines with two differences:
 ![image](./imgs/category_pies.png)
 
 By count, the number of people that are potentially sensitive is modest (under 10%). By RPL weight,
-we see that at _most_ 5.5% of RPL is potentially sensitive to this RPL apr change.
+we see that at _most_ 2.8% of RPL is potentially sensitive to this RPL apr change.
 
 I don't think we have a great way to get insight into what the minimum RPL apr needed for the
 potential_sensitives is -- any number from 0-100% of current aligns with their visible actions.
 That said, there's almost certainly a spread in that range. Purely on intuition, I'd expect in the
-50-75% range, which would be 0.8-3.2% of RPL in the sensitive range respectively.
+50-75% range, which would be 1.4-2% of RPL in the sensitive range respectively.
 
 ### RPL Value for potential sensitives
 Some people have mentioned fears of this proposal causing a sell-off from RPL-heavy folks.
@@ -210,22 +211,22 @@ We can now better define the maximum possible RPL rationally sold as:
 - Held by potential sensitives from the [NO pie chart](#which-nos-are-sensitive-to-rpl-yield)
   - Currently above 10% borrowed ETH, currently below 150% bonded ETH, not holding a lot of liquid RPL
 - Believe RPL trajectory is roughly neutral to mildly bullish 
-- In the 5.5% potential sensitive slice from the [RPL weighted pie chart](#which-nos-are-sensitive-to-rpl-yield)
+- In the 2.8% potential sensitive slice from the [RPL weighted pie chart](#which-nos-are-sensitive-to-rpl-yield)
 - This currently represents a worst case of just over 17k ETH (~$33M)
 
 Trying to guess at "expected" instead of worst case:
-- Maybe 0.8-3.2% of RPL would be interested in selling - let's take the average 2% 
-  - 6.3k ETH, or ~$12M
+- Maybe 1.4-2% of RPL would be interested in selling - let's take the average 1.7% 
+  - 5.6k ETH, or ~$10.7M
 - There would be new buying from folks on the low end
   - High APR incentivizes topping off
-    - Currently we'd need about 1350 ETH, or $2.6M to top everyone off
+    - Currently, we'd need about 1350 ETH, or $2.6M to top everyone off
   - High APR incentivizes new joiners
     - This is a wild card that is hard to estimate
     - 2000 attracted minimum LEB8s would put us at even buy and sell pressure
     - Let's guess 500 LEB8s entering at 12% = 1440 ETH, or $2.7M
 - There may be new buying due to increased trust from alignment
   - This is likely a small effect from some existing NOs -- it takes involvement to even notice this
-- If this is right, we'd be looking at 3.5k ETH of sell pressure (about $5.3M) over the 6 month
+- If this is right, we'd be looking at 2.8k ETH of sell pressure (about $5.3M) over the 6 month
   transition period.
 
 ### Liquid RPL trends

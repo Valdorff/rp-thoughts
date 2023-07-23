@@ -9,7 +9,6 @@ def main():
     df = pd.read_csv('staking_snapshot_2.csv')
     df = df[df['provided_eth'] > 0]
     df['neth_pct'] = df['staked_rpl_value_in_eth'] / df['provided_eth']
-    df['neth_pct_no_yield'] = df['neth_pct'] - 1.5  # part 1; then we need liquid rpl
     df['peth_pct'] = df['staked_rpl_value_in_eth'] / df['matched_eth']
     df['current_rule_weight'] = df.apply(lambda row: current_rules(row), axis=1)
     df['proposal_rule_weight'] = df.apply(lambda row: proposal_rules(row), axis=1)
@@ -21,7 +20,8 @@ def main():
     assert np.isclose(sum(df['curr_pie']), 1)
     assert np.isclose(sum(df['prop_pie']), 1)
 
-    df.groupby('withdrawal_address').agg(
+    # index will now be withdrawal address
+    df = df.groupby('withdrawal_address').agg(
         staked_rpl_value_in_eth=('staked_rpl_value_in_eth', np.sum),
         provided_eth=('provided_eth', np.sum),
         matched_eth=('matched_eth', np.sum),
@@ -32,11 +32,16 @@ def main():
         liquid_rpl_node_value_in_eth=('liquid_rpl_node_value_in_eth', np.sum),
         # avoid double-counting RPL in withdrawal address
         liquid_rpl_withdrawal_value_in_eth=('liquid_rpl_withdrawal_value_in_eth', np.mean),
-        # not exact if nodes in a withdrawal address are differently sized; close enough estimate
+        # not exact if nodes in a withdrawal address are differently sized; bad estimate, which we redo below
         peth_pct=('peth_pct', np.mean),
         neth_pct=('neth_pct', np.mean),
-        neth_pct_no_yield=('neth_pct_no_yield', np.mean),
     )
+    # redoing these percents now that we've grouped...
+    df['neth_pct'] = df['staked_rpl_value_in_eth'] / df['provided_eth']
+    df['neth_pct_no_yield'] = (df['neth_pct'] - 1.5).clip(
+        lower=0)  # part 1; then we need liquid rpl
+    df['peth_pct'] = df['staked_rpl_value_in_eth'] / df['matched_eth']
+
     df['liquid_rpl_value_in_eth'] = (
         df['liquid_rpl_node_value_in_eth'] + df['liquid_rpl_withdrawal_value_in_eth'])
     df['liquid_staked_proportion'] = df['liquid_rpl_value_in_eth'] / df['staked_rpl_value_in_eth']
@@ -67,9 +72,10 @@ def main():
 
     # pie chart of the different groups of withdrawal addresses
     df['category'] = 'potential_sensitives'
-    df.loc[df['peth_pct'] < .1, 'category'] = 'below_threshold'
-    df.loc[df['neth_pct_no_yield'] > 0.05, 'category'] = 'insensitive_bulls'
+    # note that these categorizations need to be in reverse priority order
     df.loc[df['prop_pie'] > df['curr_pie'], 'category'] = 'rewards_increase'
+    df.loc[df['neth_pct_no_yield'] > 0.05, 'category'] = 'insensitive_bulls'
+    df.loc[df['peth_pct'] < .1, 'category'] = 'below_threshold'
     df['potsens_sensitive_rpl_value_in_eth'] = 0.
     df['potsens_insensitive_rpl_value_in_eth'] = 0.
 
@@ -93,8 +99,8 @@ def main():
             row['matched_eth'] += 24
             row['peth_pct'] = row['staked_rpl_value_in_eth'] / row['matched_eth']
 
-        df.at[i, 'potsens_insensitive_rpl_value_in_eth'] = last_rpl
-        df.at[i, 'potsens_sensitive_rpl_value_in_eth'] = (
+        df.at[df.index[i], 'potsens_insensitive_rpl_value_in_eth'] = last_rpl
+        df.at[df.index[i], 'potsens_sensitive_rpl_value_in_eth'] = (
             df.iloc[i]['staked_rpl_value_in_eth'] + df.iloc[i]['liquid_rpl_value_in_eth'] -
             last_rpl)
 
