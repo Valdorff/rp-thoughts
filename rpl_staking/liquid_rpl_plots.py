@@ -36,6 +36,11 @@ def main():
         peth_pct=('peth_pct', np.mean),
         neth_pct=('neth_pct', np.mean),
     )
+
+    # add patricio liquid RPL manually
+    df.at['0x92a510f62A2A2b608b37179f909186F9A048bc92',
+          'liquid_rpl_node_value_in_eth'] = 949711.98 * .017
+
     # redoing these percents now that we've grouped...
     df['neth_pct'] = df['staked_rpl_value_in_eth'] / df['provided_eth']
     df['neth_pct_no_yield'] = (df['neth_pct'] - 1.5).clip(
