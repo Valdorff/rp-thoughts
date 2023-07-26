@@ -94,20 +94,18 @@ def main():
         accepted_pie_per_rpl = row['curr_pie'] / row['staked_rpl_value_in_eth']
         row['staked_rpl_value_in_eth'] = row['staked_rpl_value_in_eth'] + row[
             'liquid_rpl_value_in_eth']
-        last_rpl = row['staked_rpl_value_in_eth']
         while ((proposal_rules(row) / total_proposal_weight) /
                row['staked_rpl_value_in_eth']) < accepted_pie_per_rpl:
-            if row['staked_rpl_value_in_eth'] < 8:
+            if row['staked_rpl_value_in_eth'] - 8 < max(0.15 * row['matched_eth'], 0.10 * (row['matched_eth'] + 24)):
                 break
-            last_rpl = row['staked_rpl_value_in_eth']
             row['staked_rpl_value_in_eth'] -= 8
             row['matched_eth'] += 24
             row['peth_pct'] = row['staked_rpl_value_in_eth'] / row['matched_eth']
 
-        df.at[df.index[i], 'potsens_insensitive_rpl_value_in_eth'] = last_rpl
+        df.at[df.index[i], 'potsens_insensitive_rpl_value_in_eth'] = row['staked_rpl_value_in_eth']
         df.at[df.index[i], 'potsens_sensitive_rpl_value_in_eth'] = (
             df.iloc[i]['staked_rpl_value_in_eth'] + df.iloc[i]['liquid_rpl_value_in_eth'] -
-            last_rpl)
+            row['staked_rpl_value_in_eth'])
 
     labels = ['below_threshold', 'insensitive_bulls', 'rewards_increase', 'potential_sensitives']
     labels2 = labels + ['potsens:insensitive_part', 'unstaked_other']
