@@ -1,5 +1,6 @@
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
+import matplotlib.ticker as mtick
 import numpy as np
 import pandas as pd
 
@@ -74,6 +75,7 @@ def intended_spend(curr_pie_d, prop_pie_d):
     ax.set_xlabel('% of Borrowed ETH')
     ax.set_ylabel('% of NO Rewards')
     ax.legend(handles=leg_handles)
+    ax.yaxis.set_major_formatter(mtick.PercentFormatter(xmax=1, decimals=0))
     fig.suptitle('Current Spend per Bin')
     fig.savefig('./imgs/no_bar_bins_curr.png', bbox_inches='tight')
 
@@ -87,6 +89,7 @@ def intended_spend(curr_pie_d, prop_pie_d):
     ax.set_xlabel('% of Borrowed ETH')
     ax.set_ylabel('% of NO Rewards')
     ax.legend(handles=leg_handles)
+    ax.yaxis.set_major_formatter(mtick.PercentFormatter(xmax=1, decimals=0))
     fig.suptitle('Proposed Spend per Bin')
     fig.savefig('./imgs/no_bar_bins_prop.png', bbox_inches='tight')
 
@@ -109,7 +112,7 @@ def intended_spend(curr_pie_d, prop_pie_d):
     no_prop_pie_weights = [vals[0], sum(vals[1:4]), sum(vals[4:])]
     ax.pie(no_prop_pie_weights, labels=pie_labels, colors=c_ls, autopct='%1.1f%%', pctdistance=.8)
     fig.suptitle('Proposed spend per RPL category (in % of borrowed ETH)')
-    fig.savefig('./imgs/no_pie_bins_curr.png', bbox_inches='tight')
+    fig.savefig('./imgs/no_pie_bins_prop.png', bbox_inches='tight')
 
     # pie plots showing all spend including NO spend categorized
     fig, ax = plt.subplots(1)
@@ -133,6 +136,7 @@ def intended_spend(curr_pie_d, prop_pie_d):
         p.set_fc(c_ls[i])
     for i, p in enumerate(patches[3:]):
         p.set_fc(overall_spend_patches[i + 1].get_fc())
+    fig.suptitle('Current Spend')
     fig.savefig('./imgs/overall_spend_pie_curr.png', bbox_inches='tight')
 
     fig, ax = plt.subplots(1)
@@ -156,6 +160,7 @@ def intended_spend(curr_pie_d, prop_pie_d):
         p.set_fc(c_ls[i])
     for i, p in enumerate(patches[3:]):
         p.set_fc(overall_spend_patches[i + 1].get_fc())
+    fig.suptitle('Proposed Spend')
     fig.savefig('./imgs/overall_spend_pie_prop.png', bbox_inches='tight')
 
     plt.show()
