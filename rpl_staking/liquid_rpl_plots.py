@@ -96,7 +96,8 @@ def main():
             'liquid_rpl_value_in_eth']
         while ((proposal_rules(row) / total_proposal_weight) /
                row['staked_rpl_value_in_eth']) < accepted_pie_per_rpl:
-            if row['staked_rpl_value_in_eth'] - 8 < max(0.15 * row['matched_eth'], 0.10 * (row['matched_eth'] + 24)):
+            if row['staked_rpl_value_in_eth'] - 8 < max(0.15 * row['matched_eth'],
+                                                        0.10 * (row['matched_eth'] + 24)):
                 break
             row['staked_rpl_value_in_eth'] -= 8
             row['matched_eth'] += 24
