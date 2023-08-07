@@ -17,7 +17,7 @@ August 2023
     **[new]**
   - Converting an EB16 to an LEB8 will increase rewards (even if you already had enough staked RPL)
     **[new]**
-  - You need at least 10% borrowed ETH to get rewards **[unchanged]**
+  - You need staked RPL value of ≥10% borrowed ETH to get RPL rewards **[unchanged]**
   - Staking more RPL means more rewards **[unchanged]**, now without a maximum **[new]**
   - Beyond 15% borrowed ETH, additional rewards go up slower and slower **[new]**
 - The minimum to withdraw will be 15% borrowed ETH
@@ -93,7 +93,7 @@ Scenario 2: You have 2 EB16s and 20 ETH worth of RPL staked
 ## Details
 ### The actual reward math
 Rewards will be based on weight
-- If you're below 10% borrowed ETH, weight is 0
+- If your staked RPL value in ETH is below 10% borrowed ETH, weight is 0
 - From 10%-15% borrowed ETH, weight is linear with the amount of borrowed ETH
   - 🧮 `weight = 100 * staked_rpl_value_in_eth`
 - Above 15%, weight follows a logarithmic curve, rising forever, but ever-more-slowly
