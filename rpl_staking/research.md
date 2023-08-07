@@ -1,13 +1,13 @@
-# [DRAFT] RPL Staking Analysis and Initial Suggestion
+# RPL Staking Analysis and Initial Suggestion
 July 2023
 
 ## High level RPL-staking options
 
-### [DRAFT] Visualized rule sets
+### Visualized rule sets
 
 ![image](./imgs/rule_summary.png)
 
-### [DRAFT] Current rules
+### Current rules
 
 - "Minimum" RPL stake is 10% of borrowed ETH (aka protocol ETH, pETH, matched ETH)
   - You must be over this threshold _including_ a new minipool to launch a new minipool
@@ -16,7 +16,7 @@ July 2023
   - Up to this much RPL at rewards snapshot time can be eligible for RPL rewards
 - The NO share of inflation gets split up per-effective-RPL
 
-### [DRAFT] "Knoshua" rules
+### "Knoshua" rules
 - "Minimum" RPL stake is 10% of borrowed ETH (aka protocol ETH, pETH, matched ETH)
   - You must be over this threshold _including_ a new minipool to launch a new minipool
   - You must be over this threshold at rewards snapshot time to be eligible for RPL rewards
@@ -24,7 +24,7 @@ July 2023
 - If you're below 10% of borrowed ETH, you get no rewards
 - The NO share of inflation gets split up per-effective-RPL
 
-### [DRAFT] Proposed rules
+### Proposed rules
 - "Minimum" RPL stake is 10% of borrowed ETH (aka protocol ETH, pETH, matched ETH)
   - You must be over this threshold _including_ a new minipool to launch a new minipool
   - You must be over this threshold at rewards snapshot time to be eligible for RPL rewards
@@ -80,7 +80,7 @@ July 2023
 
 ## A more detailed comparisons between rule sets
 
-### [DRAFT] Current vs Knoshua
+### Current vs Knoshua
 |   ![image](./imgs/rule_kc.png)   |   ![image](./imgs/operators_kc.png)   |
 |:--------------------------------:|:-----------------------------------:|
 | ![image](./imgs/rulediff_kc.png) | ![image](./imgs/operatorsdiff_kc.png) |
@@ -97,7 +97,7 @@ July 2023
 - Knoshua's plan strongly favors LEB8s. This aligns RPL rewards to what helps the protocol (the
   ability to meet rETH demand).
 
-### [TODO] Current vs Proposed
+### Current vs Proposed
 |   ![image](./imgs/rule_pc.png)   |   ![image](./imgs/operators_pc.png)   |
 |:--------------------------------:|:-----------------------------------:|
 | ![image](./imgs/rulediff_pc.png) | ![image](./imgs/operatorsdiff_pc.png) |
@@ -225,10 +225,16 @@ Trying to guess at "expected" instead of worst case:
     - This is a wild card that is hard to estimate
     - Let's guess 500 LEB8s entering at 12% = 1440 ETH, or $2.7M
       - 920 such LEB8s would put us at even buy and sell pressure
+- There may be new buying from folks to maximize yield. Similar to how we have some potential
+  sensitives that may reduce RPL exposure to maximize yield (since their rewards decrease at their
+  current allocation), we will  also have some potential sensitives that may _increase_ RPL exposure
+  to maximize yield (since their rewards increase at their current allocation). This effect is
+  completely ignored for this analysis, and would be a pure benefit.
 - There may be new buying due to increased trust from alignment
   - Likely a small effect isolated to some existing NOs -- it takes involvement to even notice this
 - With these estimates, we'd be looking at 1.2k ETH of sell pressure (about $2.3M) over the 6 month
   transition period.
+
 
 ### Liquid RPL trends
 As a sanity check, we can look into our expectation that RPL-heavy NOs tend to value APR less by
@@ -242,7 +248,7 @@ We see exactly the expected trend. More staked RPL tends to go along with more b
 expectations of RPL price appreciation), which tends to go with less sensitivity to RPL APR and a
 higher willingness to hold liquid RPL (no yield).
 
-### [DRAFT] Why change? People entered with this ruleset.
+### Why change? People entered with this ruleset.
 
 I believe consistency is important. We shouldn't change things just because we can. That said, I
 also don't believe we should totally shackle ourselves forever based on past decisions.

@@ -1,3 +1,6 @@
+# RPL Staking Rework Proposal
+August 2023
+
 ## Summary
 ### Goals
 - Concentrate spend on RP goals, particularly incentivizing NOs to create rETH supply by
@@ -40,9 +43,9 @@ $19.2M per year going to NOs.
 
 The proposal focuses a _lot_ more spend on incentivizing minipool creation, while still spending a
 significant amount on the speculative and hands-off categories of RPL staking (compare with Dev
-spend, for example). The current outsized speculation category (previously larger than Dev, oDAO,
-IMC, GMC, and Reserves _combined_) has been significantly reduced so that we can spend a lot more on
-achieving the protocol goal of attracting minipool creation (and rETH supplying).
+spend, for example). The current outsized speculation category (larger than Dev, oDAO, IMC, GMC, and
+Reserves _combined_) has been significantly reduced so that we can spend a lot more on achieving the
+protocol goal of attracting minipool creation (and rETH supplying).
 
 For a step-by-step breakdown, look [in the detail section](#how-rp-currently-spends-no-rewards).
 
@@ -114,7 +117,7 @@ intended. Still, it will be much lower than the current one (less than a third).
     but that's the best we can do without a SC change
 - In the next planned Smart Contract release, update to:
   - have 2-step withdrawals w/28 day withdrawing time
-  - be based on borrowed ETH w/15% borrowed ETH threshold\
+  - be based on borrowed ETH w/15% borrowed ETH threshold
 
 ### How RP currently spends NO rewards
 Let's start by looking at what staked RPL we reward:
@@ -140,17 +143,42 @@ new minipools. Let's put that in the context of our total spend:
 | ![image](./imgs/overall_spend_pie_curr.png) | ![image](./imgs/overall_spend_pie_prop.png) |
 |:-------------------------------------------:|:-------------------------------------------:|
 
-As you can see, we're still spending a fair amount on the speculative and hands-off categories of
-RPL staking (compare with Dev spend, eg). That said, it's no longer as extreme as in the current 
+The proposal focuses a lot more spend on incentivizing minipool creation, while still spending a
+significant amount on the speculative and hands-off categories of RPL staking (compare with Dev
+spend, for example). The current outsized speculation category (larger than Dev, oDAO, IMC, GMC, and
+Reserves combined) has been significantly reduced so that we can spend a lot more on achieving the
+protocol goal of attracting minipool creation (and rETH supplying).
 
 ### What else has been looked at around this proposal?
 - There was a very active [discord
   thread](https://discord.com/channels/405159462932971535/1129516706323234916/1129516793279549505)
   for about 3 weeks starting on 2023-07-14
-- 
-
-### TODO
-- point to discord discussion and how long it's been open
-- point to research (clean it up)
-- point to peteris steelman and my refutation
-- point to the fact that no model has been brought up with downsides - purely fear/uncertainty/doubt
+- The discord thread was kicked off with a research document that evolved along with the active
+  discussion. You can check out the latest version of that document [here](./research.md).
+  - The initial proposal got a number of tweaks based on community feedback in this process
+    (shoutout to the many people that participated in discussion - this community is the bomb!) 
+  - One aspect that got a lot of attention was the potential for damage to RPL price, especially
+    self-reinforcing damage. No convincing trigger for this RPL price damage was suggested beyond
+    narrative fear/uncertainty/doubt. The research document has a section that shows the _small_
+    portion of RPL that might potentially be rationally sensitive to the proposed change in rewards.
+- Pieter wrote a [steelman argument](https://hackmd.io/@pieterastra/HkpTLBhqh) against the proposal
+  based on personas
+  - I responded in [discord](https://discord.com/channels/405159462932971535/1129516706323234916/1134193421100257331),
+    and the high level conclusion bullets bear highlighting, imo:
+    1. I acknowledge there are real, potentially large, risks involved with change
+    1. I believe there are also real, potentially large, risks involved with refusal to change
+    1. As such, I don't think our mainline choices should be driven by either of those. I do think
+      it's critical to think about how to minimize those risks (making things digestible, talking to
+      achieve significant consensus, ramping things in, etc, etc).
+- Despite repeatedly asking for a model showing that rational actors would sell significantly, no
+  such model was ever presented. One self-quote on that front:
+    > Yes. But let's be very clear that we do have at least my prediction about what will happen,
+    which knoshua contributed to as well.
+    > 
+    > So I'd like to see a model on a similar level take the other side. If we can only make
+    realistic models show no big sell-off and have to resort to "well anything is possible" to
+    show a big sell-off... That's got weight to it too.
+    > 
+    > [Three community members] have all presented possible scenarios and explicitly flagged them
+    as things you don't consider likely, or aren't predicting. 🤷‍♂️
+  
