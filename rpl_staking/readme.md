@@ -15,7 +15,7 @@ August 2023
 - Rewards will scale differently (see [details below](#the-actual-reward-math) for the math)
   - Adding a minipool will increase RPL rewards (even if you already had enough staked RPL)
     **[new]**
-  - Converting an EB16 to an LEB8 will increase rewards (even if you already had enough staked RPL)
+  - Converting an EB16 to two LEB8s will increase rewards (even if you already had enough staked RPL)
     **[new]**
   - You need staked RPL value of ≥10% borrowed ETH to get RPL rewards **[unchanged]**
   - Staking more RPL means more rewards **[unchanged]**, now without a maximum **[new]**
