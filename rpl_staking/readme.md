@@ -58,10 +58,15 @@ what it means _immediately_.
   sense because these folks are a little hesitant; we're using greater rewards to convince them to
   join and/or make more minipools.
 - You can check out the plots below to get a feel for the impact in your case
-- For full detail, there's a simulator at https://www.desmos.com/calculator/f94bvquuxd
-  - You enter the number of 8/16 ETH minipools, and the amount of staked RPL
+- For full detail, there's a simulator at https://www.desmos.com/calculator/b5gdrnwowc
+  - Ignore the graph component - no way to hide it, but we won't be using it
+  - You enter the number of 8/16 ETH minipools (as m8 and m16 respectively) 
+  - You enter the value of staked RPL in ETH as r (note that you can enter an expression like
+    `300*.015` if you know your amount of RPL and the ratio instead) 
   - You read off your share of the pie (in millionths) on line 10 for the current structure and
     line 12 for the proposed structure
+  - You read off the advantage of the proposal on line 14 (2 means you get double the rewards, 0.5
+    means you get half the rewards, etc.)
 - Note: since the calculations are based on the amount of borrowed ETH and staked RPL, there's no
   way to use splitting across multiple nodes to get more rewards
 
@@ -82,7 +87,7 @@ Scenario 2: You have 2 EB16s and 20 ETH worth of RPL staked
 - That's 10 ETH worth per EB16
 - Look at the 10 on the x-axis and find where it crosses the dashed EB16 line
 - Around 80% - a moderate yield loss for this NO... maybe it's time to consider swapping to LEB8s?
-- You can get further detail by using the [simulator](https://www.desmos.com/calculator/f94bvquuxd)
+- You can get further detail by using the [simulator](https://www.desmos.com/calculator/b5gdrnwowc)
   mentioned above
   - Input m8=0, m16=2, r=20. You see that under the current system you receive 126.5ppm of the net
     NO rewards, and with the proposed system you'd be at 105.9ppm
