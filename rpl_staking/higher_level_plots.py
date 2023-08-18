@@ -4,7 +4,7 @@ import matplotlib.ticker as mtick
 import numpy as np
 import pandas as pd
 
-from reward_plots import current_rules, proposal_rules
+from reward_plots import current_rules, ppm, proposal_rules
 
 
 def intended_spend(curr_pie_d, prop_pie_d):
@@ -222,9 +222,64 @@ def no_spending_by_bin():
     assert np.isclose(sum(curr_pie_d.values()), 1)
     assert np.isclose(sum(prop_pie_d.values()), 1)
 
-    return curr_pie_d, prop_pie_d
+    return curr_pie_d, prop_pie_d, sum(df['proposal_rule_weight'])
+
+
+def rewards_summary(prop_total):
+    xstep = .001
+    x = np.arange(0, 8, xstep)
+    df8 = pd.DataFrame({
+        'staked_rpl_value_in_eth': x,
+        'provided_eth': [8] * len(x),
+        'matched_eth': [24] * len(x)
+    })
+    df8['neth_pct'] = df8['staked_rpl_value_in_eth'] / df8['provided_eth']
+    df8['peth_pct'] = df8['staked_rpl_value_in_eth'] / df8['matched_eth']
+    df8['proposal_rule_weight'] = df8.apply(lambda row: proposal_rules(row), axis=1)
+    df8['proposal_rule_weight'] /= prop_total
+
+    df16 = pd.DataFrame({
+        'staked_rpl_value_in_eth': x,
+        'provided_eth': [16] * len(x),
+        'matched_eth': [16] * len(x)
+    })
+    df16['neth_pct'] = df16['staked_rpl_value_in_eth'] / df16['provided_eth']
+    df16['peth_pct'] = df16['staked_rpl_value_in_eth'] / df16['matched_eth']
+    df16['proposal_rule_weight'] = df16.apply(lambda row: proposal_rules(row), axis=1)
+    df16['proposal_rule_weight'] /= prop_total
+
+    fig, subs = plt.subplots(2, 2, sharex='all', sharey='col')
+
+    subs[0][0].plot(x, df8['proposal_rule_weight'])
+    subs[0][0].set_ylabel('LEB8 RPL Rewards\n(ppm of NO rewards)')
+    subs[1][0].plot(x, df16['proposal_rule_weight'])
+    subs[1][0].set_ylabel('EB16 RPL Rewards\n(ppm of NO rewards)')
+    subs[1][0].set_xlabel('ETH value of staked RPL')
+
+    fmt = mtick.FuncFormatter(ppm)
+    subs[0][0].set_yticks([0, .00005, .0001])
+    subs[0][0].yaxis.set_major_formatter(fmt)
+    subs[1][0].yaxis.set_major_formatter(fmt)
+
+    no_share_eth_value_yr = 10370  # as of 8/17/2023
+    subs[0][1].plot(x, no_share_eth_value_yr * df8['proposal_rule_weight'].diff() / xstep)
+    subs[0][1].set_ylabel('LEB8 Marginal APR')
+    subs[1][1].plot(x, no_share_eth_value_yr * df16['proposal_rule_weight'].diff() / xstep)
+    subs[1][1].set_ylabel('EB16 Marginal APR')
+    subs[1][1].set_xlabel('ETH value of staked RPL')
+
+    fmt = mtick.PercentFormatter(xmax=1, decimals=0)
+    subs[0][1].set_ylim((-.01, .21))
+    subs[0][1].yaxis.set_major_formatter(fmt)
+    subs[1][1].yaxis.set_major_formatter(fmt)
+
+    for sub in subs.flat:
+        sub.grid()
+    # fig.savefig('./imgs/rewards_summary.png', bbox_inches='tight')
+    plt.show()
 
 
 if __name__ == '__main__':
-    a, b = no_spending_by_bin()
-    intended_spend(curr_pie_d=a, prop_pie_d=b)
+    a, b, total_proposal_weight = no_spending_by_bin()
+    # intended_spend(curr_pie_d=a, prop_pie_d=b)
+    rewards_summary(total_proposal_weight)
