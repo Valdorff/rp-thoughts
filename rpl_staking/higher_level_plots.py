@@ -162,8 +162,7 @@ def intended_spend(curr_pie_d, prop_pie_d):
         p.set_fc(overall_spend_patches[i + 1].get_fc())
     fig.suptitle('Proposed Spend')
     fig.savefig('./imgs/overall_spend_pie_prop.png', bbox_inches='tight')
-
-    plt.show()
+    # plt.show()
 
 
 def no_spending_by_bin():
@@ -275,11 +274,12 @@ def rewards_summary(prop_total):
 
     for sub in subs.flat:
         sub.grid()
-    # fig.savefig('./imgs/rewards_summary.png', bbox_inches='tight')
-    plt.show()
+    fig.set_figwidth(10)
+    fig.savefig('./imgs/rewards_summary.png', bbox_inches='tight')
+    # plt.show()
 
 
 if __name__ == '__main__':
     a, b, total_proposal_weight = no_spending_by_bin()
-    # intended_spend(curr_pie_d=a, prop_pie_d=b)
+    intended_spend(curr_pie_d=a, prop_pie_d=b)
     rewards_summary(total_proposal_weight)
