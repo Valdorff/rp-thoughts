@@ -70,9 +70,23 @@ what it means _immediately_.
 - Note: since the calculations are based on the amount of borrowed ETH and staked RPL, there's no
   way to use splitting across multiple nodes to get more rewards
 
-### Plots of rewards per pool 
-The plot below on the left shows the rewards for a single minipool based on amount of staked RPL. \
+### Plots of rewards and APR per pool
+
+The plots on the left show the rewards for a single minipool based on amount of staked RPL.
+
+The plots on the right show what that means in terms of marginal APR - in other words, if you have x
+ETH worth of RPL staked and stake a tiny bit more, how much yield will you get on that tiny bit.
+
+All of these plots are based on a recent snapshot of staked RPL.
+
+![image](./imgs/rewards_summary.png)
+
+### Plots comparing current and proposed rewards 
+The plot below on the left shows the rewards for a single minipool based on amount of staked RPL.
+
 The plot on the right shows the difference for those same minipools under the two systems.
+
+Both of these plots are based on a recent snapshot of staked RPL.
 
 | ![image](./imgs/rule_pc.png) | ![image](./imgs/rulediff_pc.png) |
 |:----------------------------:|:--------------------------------:|
