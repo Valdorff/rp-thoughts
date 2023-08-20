@@ -46,7 +46,7 @@ def epi_rules(row):
         return 0
     if row['staked_rpl_value_in_eth'] < (0.15 * row['matched_eth']):
         return row['staked_rpl_value_in_eth']
-    return row['matched_eth'] * (.2 + (row['peth_pct'] - .225) / (10 * row['peth_pct']))
+    return row['matched_eth'] * (.15 + (row['peth_pct'] - .15) / (7 * row['peth_pct']))
 
 
 proposal_rules = epi_rules
