@@ -31,13 +31,25 @@ def knosh_rules(row):
         return 0.1 * row['matched_eth']
 
 
-# The one I'm currently favoring
-def proposal_rules(row):
+# # The one I'm currently favoring
+# def proposal_rules(row):
+#     if row['staked_rpl_value_in_eth'] < (0.1 * row['matched_eth']):
+#         return 0
+#     if row['staked_rpl_value_in_eth'] < (0.15 * row['matched_eth']):
+#         return (100 * row['peth_pct']) * row['matched_eth']
+#     return (15 - 1.3863 + 2 * np.log(100 * row['peth_pct'] - 13)) * row['matched_eth']
+
+
+# Epineph's rule from https://docs.google.com/document/d/1q0NVFWdh-3XDukX7G9BMkUE50OEC-r8IcFEEfPUB7Yo/edit
+def epi_rules(row):
     if row['staked_rpl_value_in_eth'] < (0.1 * row['matched_eth']):
         return 0
     if row['staked_rpl_value_in_eth'] < (0.15 * row['matched_eth']):
-        return (100 * row['peth_pct']) * row['matched_eth']
-    return (15 - 1.3863 + 2 * np.log(100 * row['peth_pct'] - 13)) * row['matched_eth']
+        return row['staked_rpl_value_in_eth']
+    return row['matched_eth'] * (.2 + (row['peth_pct'] - .225) / (10 * row['peth_pct']))
+
+
+proposal_rules = epi_rules
 
 
 def single_pool_plots(curr_total, knosh_total, prop_total):
