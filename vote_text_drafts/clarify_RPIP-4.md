@@ -5,13 +5,13 @@
 
 # Clarify Voting Criteria (RPIP-4) [eligible voters: all nodes]
 
+This vote will determine eligible voters for future pDAO governance votes.
+
 There are two concurrent votes to clarify voting criteria:
 - `Clarify Voting Criteria (RPIP-4) [eligible voters: all nodes]`
 - `Clarify Voting Criteria (RPIP-4) [eligible voters: nodes w/RPL ≥10% borrowed ETH]`
 
 These votes are identical except that different strategies were used to determine voter eligibility.
-
-This vote will determine eligible voters for future pDAO governance votes.
 
 ### Context around the situation
 
@@ -23,7 +23,7 @@ This is currently interpreted by people multiple ways, including at least:
 - It's ambiguous.
 
 The voting body _was_ changed with Atlas release - whether that was ok depends on where you land above.
-Since this is about voting, we can't simply vote to figure out what we want -- the set of people that should vote on that is in question (ie, this is a bootstrap problem). This is why the approach is to vote using both possible voting bodies to get this clarified.
+Since this is about voting, we can't do a single vote to figure out what we want -- the set of people that should vote on that is in question (ie, this is a bootstrap problem). This is why the approach is to vote using both possible voting bodies to get this clarified.
 
 
 ### Outcomes
@@ -35,8 +35,8 @@ Since this is about voting, we can't simply vote to figure out what we want -- t
 
 
 ### Further context
-- Please read:
-  - Val suggests a clarification and [polls for overwhelming consensus](https://dao.rocketpool.net/t/rpip-4-effective-rpl-10/2068/7?u=valdorff) -- it's clear that there's no overwhelming consensus
-  - Patches suggests the concurrent vote path, which enjoyed strong support in the [poll](https://dao.rocketpool.net/t/rpip-4-effective-rpl-10/2068/41?u=valdorff)
-- [Full forum thread](https://dao.rocketpool.net/t/rpip-4-effective-rpl-10/2068?u=valdorff) that included both of the highlighted posts. Note that the initial topic is slightly different and that incidentally raised this point of ambiguity.
-- Selected discord discussions: [1](https://discord.com/channels/405159462932971535/405163713063288832/1148270849401565315),  [2](https://discord.com/channels/405159462932971535/774497904559783947/1150386963153698898)
+- Val suggests a clarification and [polls for overwhelming consensus](https://dao.rocketpool.net/t/rpip-4-effective-rpl-10/2068/7) -- it's clear that there's no overwhelming consensus
+- Patches suggests the concurrent vote path, which enjoyed strong support in the [poll](https://dao.rocketpool.net/t/rpip-4-effective-rpl-10/2068/41)
+- Deep dive:
+  - [Full forum thread](https://dao.rocketpool.net/t/rpip-4-effective-rpl-10/2068) that included both of the highlighted posts. Note that the initial topic is slightly different and that incidentally raised this point of ambiguity.
+  - Selected discord discussions: [1](https://discord.com/channels/405159462932971535/405163713063288832/1148270849401565315),  [2](https://discord.com/channels/405159462932971535/774497904559783947/1150386963153698898)
