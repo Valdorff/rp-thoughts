@@ -3,15 +3,15 @@
 > - Nodes w/RPL ≥10% borrowed ETH shall be eligible voters
 > - Abstain
 
-# Clarify Voting Criteria (RPIP-4) [eligible voters: all nodes]
+# Determine Voting Criteria (RPIP-4) [eligible voters: all nodes]
 
 This vote will determine eligible voters for future pDAO governance votes.
 
-There are two concurrent votes to clarify voting criteria:
-- `Clarify Voting Criteria (RPIP-4) [eligible voters: all nodes]`
-- `Clarify Voting Criteria (RPIP-4) [eligible voters: nodes w/RPL ≥10% borrowed ETH]`
+There are two concurrent votes to determine voting criteria:
+- `Determine Voting Criteria (RPIP-4) [eligible voters: all nodes]`
+- `Determine Voting Criteria (RPIP-4) [eligible voters: nodes w/RPL ≥10% borrowed ETH]`
 
-These votes are identical except that different strategies were used to determine voter eligibility.
+These votes are identical except that different strategies were used to determine voter eligibility. Vote power was calculated the same way, etc.
 
 ### Context around the situation
 
@@ -22,16 +22,14 @@ This is currently interpreted by people multiple ways, including at least:
 - Effective stake is defined in the RPIP using the function at the time. Fixing the bugged function (and vote weight) was inappropriate without pDAO input.
 - It's ambiguous.
 
-The voting body _was_ changed with Atlas release - whether that was ok depends on where you land above.
-Since this is about voting, we can't do a single vote to figure out what we want -- the set of people that should vote on that is in question (ie, this is a bootstrap problem). This is why the approach is to vote using both possible voting bodies to get this clarified.
-
+Before Atlas, `getNodeEffectiveRPLStake()` counted all RPL below 150%. After Atlas, this function returned 0 if the node had less RPL staked than the value of 10% of borrowed ETH. The voting body _was_ changed with Atlas release - whether that was ok depends on where you land above. Since this is about voting, we can't do a single vote to figure out what we want -- the set of people that should vote on that is in question (ie, this is a bootstrap problem). This is why the approach is to vote using both possible voting bodies to determine eligibility moving forward.
 
 ### Outcomes
-- If both concurrent votes (`Clarify Voting Criteria (RPIP-4) [eligible voters: all nodes]` and `Clarify Voting Criteria (RPIP-4) [eligible voters: nodes w/RPL ≥10% borrowed ETH]`) have matching results, the RPIP Editors are instructed to clarify RPIP-4 and RPIP-8 per those results
+- If both concurrent votes (`Determine Voting Criteria (RPIP-4) [eligible voters: all nodes]` and `Determine Voting Criteria (RPIP-4) [eligible voters: nodes w/RPL ≥10% borrowed ETH]`) have matching results, the RPIP Editors are instructed to clarify RPIP-4 and RPIP-8 per those results
   -  Implementation for [eligible voters: all nodes](https://github.com/rocket-pool/RPIPs/pull/86) (commit f0be7ac)
   -  Implementation for [eligible voters: nodes w/RPL ≥10% borrowed ETH](https://github.com/rocket-pool/RPIPs/pull/85) (commit a967777)
 - If the votes do not match, or quorum fails on either vote, no action is taken
-  - Other votes will remain blocked until a future successful attempt to clarify the voting body
+  - Other votes will remain blocked until a future successful attempt to determine the voting body
 
 
 ### Further context
