@@ -33,6 +33,7 @@ Before Atlas, `getNodeEffectiveRPLStake()` counted all RPL below 150%. After Atl
 
 
 ### Further context
+- [Ongoing forum conversation](https://dao.rocketpool.net/t/rpip-4-discussion-who-should-vote/2249)
 - Val suggests a clarification and [polls for overwhelming consensus](https://dao.rocketpool.net/t/rpip-4-effective-rpl-10/2068/7) -- it's clear that there's no overwhelming consensus
 - Patches suggests the concurrent vote path, which enjoyed strong support in the [poll](https://dao.rocketpool.net/t/rpip-4-effective-rpl-10/2068/41)
 - Deep dive:
