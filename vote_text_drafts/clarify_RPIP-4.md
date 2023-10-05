@@ -26,8 +26,8 @@ Before Atlas, `getNodeEffectiveRPLStake()` counted all RPL below 150%. After Atl
 
 ### Outcomes
 - If both concurrent votes (`Determine Voting Criteria (RPIP-4) [eligible voters: all nodes]` and `Determine Voting Criteria (RPIP-4) [eligible voters: nodes w/RPL ≥10% borrowed ETH]`) have matching results, the RPIP Editors are instructed to clarify RPIP-4 and RPIP-8 per those results
-  -  Implementation for [eligible voters: all nodes](https://github.com/rocket-pool/RPIPs/pull/86) (commit f0be7ac)
-  -  Implementation for [eligible voters: nodes w/RPL ≥10% borrowed ETH](https://github.com/rocket-pool/RPIPs/pull/85) (commit a967777)
+  -  Implementation for [eligible voters: all nodes](https://github.com/rocket-pool/RPIPs/pull/85) (commit a967777)
+  -  Implementation for [eligible voters: nodes w/RPL ≥10% borrowed ETH](https://github.com/rocket-pool/RPIPs/pull/86) (commit f0be7ac)
 - If the votes do not match, or quorum fails on either vote, no action is taken
   - Other votes will remain blocked until a future successful attempt to determine the voting body
 
