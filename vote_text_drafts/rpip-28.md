@@ -1,7 +1,7 @@
 # Deposits Under the Minimum
 
 ### Outcomes
- If this vote passes, it will be possible to make a minipool deposit when under the "minimum" RPL threshold by depositing the ETH and staking (at least) the minimum amount needed for a single minipool of that type. Note that this requires a smart contract change, so it won't take effect until included in a larger smart contract release.
+ If this vote passes, it will be possible to make a minipool deposit when under the "minimum" RPL threshold by depositing the ETH and staking (at least) the minimum amount of RPL needed for a single minipool of that type. Note that this requires a smart contract change, so it won't take effect until it is included in a larger smart contract release.
 
 ### Rationale
 It is currently possible to create a new node to deposit a minipool. In other words, this feature does _not_ change the ability for a Node Operator to create a new minipool - they'll be able to create one for the same amount of ETH and RPL. What it _will_ impact is the convenience. A handful of folks have said they would have created more minipool(s) if they could've added them to their existing node while being under the minimum. This would help us provide more rETH supply, while not trading off much of anything.
