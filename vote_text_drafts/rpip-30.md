@@ -3,7 +3,7 @@
 > - Against
 > - Abstain
 
-This vote aims to align RPL reward spend with supplying rETH.
+This vote aims to align RPL reward spend with rETH capacity created.
 
 ### Summary
 - RPL rewards will scale differently, with a focus on aligning RPL rewards with supplying rETH
@@ -25,7 +25,7 @@ _Please_ read the Intro document's [context section](https://github.com/Valdorff
   - Staking more RPL means more rewards [unchanged], though now without a maximum
   - Beyond 15% borrowed ETH, additional rewards go up slower and slower
   - The rewards changes will be phased in slowly over 6 months
-- The minimum to withdraw will be 15% borrowed ETH
+- It will be possible to withdraw down to 15% borrowed ETH
 - Make withdrawal a 2-step process
   - Set X RPL to "withdrawing"; these RPL are no longer eligible for rewards or voting 
   - After 28 days, the RPL may be withdrawn
