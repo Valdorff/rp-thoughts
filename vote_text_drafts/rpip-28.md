@@ -11,14 +11,14 @@ It is currently possible to create a new node to deposit a minipool. In other wo
 - [Forum thread](https://dao.rocketpool.net/t/allow-minipool-deposits-while-under-min-rpl/2100)
 
 # Rocket Pool Vote Text Checklist
-- [ ] Vote text should include the following:
-  - [ ] A short one-line summary intended to display effectively on the snapshot vote-listing page.
-  - [ ] Context as to the reason for the vote.
-  - [ ] A clear and concrete explanation of the possible outcomes of the voting process.
-  - [ ] Links to relevant resources or further context.
-  - [ ] A link to a relevant discussion thread on the Rocket Pool forums.
-- [ ] Ensure that all URLs point to the intended destinations.
-- [ ] Ensure the vote text is presented in a neutral manner.
-  - [ ] The issue of framing bias has been considered and mitigated where possible.
-- [ ] RPIP Editors have reviewed vote text.
+- [x] Vote text should include the following:
+  - [x] A short one-line summary intended to display effectively on the snapshot vote-listing page.
+  - [x] Context as to the reason for the vote.
+  - [x] A clear and concrete explanation of the possible outcomes of the voting process.
+  - [x] Links to relevant resources or further context.
+  - [x] A link to a relevant discussion thread on the Rocket Pool forums.
+- [x] Ensure that all URLs point to the intended destinations.
+- [x] Ensure the vote text is presented in a neutral manner.
+  - [x] The issue of framing bias has been considered and mitigated where possible.
+- [x] RPIP Editors have reviewed vote text.
 - [ ] Ensure a relevant representative of Rocket Pool Ltd has approved the vote text.ate in terms of layout.
