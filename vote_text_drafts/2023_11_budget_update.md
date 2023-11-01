@@ -3,6 +3,8 @@
 > - Against
 > - Abstain
 
+# 2023-11 Budget Update (RPIP-10)
+
 This vote aims to correct a budget implementation error and further increase the IMC budget.
 
 ### Outcomes

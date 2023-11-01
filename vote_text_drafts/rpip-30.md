@@ -3,6 +3,8 @@
 > - Against
 > - Abstain
 
+# RPL Staking Rework (RPIP-30)
+
 This vote aims to align RPL reward spend with rETH capacity created.
 
 ### Summary

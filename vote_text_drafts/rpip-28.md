@@ -1,4 +1,9 @@
-# Deposits Under the Minimum
+> Vote options:
+> - For
+> - Against
+> - Abstain
+
+# Deposits Under the Minimum (RPIP-28)
 
 ### Outcomes
  If this vote passes, it will be possible to make a minipool deposit when under the "minimum" RPL threshold by depositing the ETH and staking (at least) the minimum amount of RPL needed for a single minipool of that type. Note that this requires a smart contract change, so it won't take effect until it is included in a larger smart contract release.
