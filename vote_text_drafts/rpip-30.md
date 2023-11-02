@@ -9,33 +9,32 @@ This vote aims to align RPL reward spend with rETH capacity created.
 
 ### Summary
 - RPL rewards will scale differently, with a focus on aligning RPL rewards with supplying rETH
-- It will be possible to withdraw down to 15% borrowed ETH
-- We will ramp to both of the above states
-- Withdrawing will be a 2-step process where RPL is set to "withdrawing" for 28 days before it can
-  be withdrawn
+- It will be possible to withdraw down to 15% borrowed ETH (this threshold is currently 150% of bonded ETH)
+- We will transition to the new states over time (some implementation time, six reward periods of ramping, and fully implementing the withdrawal changes will need a smart contract release)
+- Withdrawing will become a 2-step process where RPL is set to "withdrawing" for 28 days before it can be withdrawn
 
 ### Rationale
-The main goal is to align the DAO's spending on RPL rewards with the DAO's goals. In particular, we'll continue to send 70% of inflation to Node Operators, but align it far more with amount of minted rETH.
+The goal is to align the DAO's spending on RPL rewards with the DAO's goals. In particular, we'll continue to send 70% of inflation to Node Operators, but better align it far more with the amount of minted rETH.
 
-_Please_ read the Intro document's [context section](https://github.com/Valdorff/rp-thoughts/tree/main/rpl_staking) for a visual representation of spending before and after this change. 
+_Please_ read the Intro document's [context section](https://github.com/Valdorff/rp-thoughts/tree/main/rpl_staking#context) for a visual representation of spending before and after this change. 
 
-### Detailed Outcomes
+### Outcomes if vote passes
 - RPL rewards will scale differently
   - Adding a minipool will increase RPL rewards (even if you already had enough staked RPL)
   - Converting an EB16 to two LEB8s will increase rewards (even if you already had enough staked RPL)
-  - You need staked RPL value of ≥10% borrowed ETH to get RPL rewards [unchanged]
-  - Staking more RPL means more rewards [unchanged], though now without a maximum (note that marginal APR gets lower and lower as more is staked)
+  - You will still need staked RPL value of ≥10% borrowed ETH to get RPL rewards [unchanged]
+  - Staking more RPL will mean more rewards [unchanged], though now without a maximum (note that marginal APR gets lower and lower as more is staked)
   - Beyond 15% borrowed ETH, additional rewards go up slower and slower
   - The rewards changes will be phased in slowly over 6 months
 - It will be possible to withdraw down to 15% borrowed ETH
-- Make withdrawal a 2-step process
+- RPL withdrawal will become a 2-step process
   - Set X RPL to "withdrawing"; these RPL are no longer eligible for rewards or voting 
   - After 28 days, the RPL may be withdrawn
-  - Remove the current "28-day withdrawal lock when you stake RPL" 
-  - Phase in the new rules partially over time, then fully with the next smart contract release
+  - The new rules will be partially phased in over time, and then fully implemented with the next smart contract release
   - Note that this will apply to all withdrawals, even ones that would currently be instant
-  - Note that this doesn't apply to claiming rewards, as that isn't a withdrawal
-- These changes apply equally to both existing and new NOs
+  - Note that this will not apply to claiming rewards, as that isn't a withdrawal
+- Once the 2-step process is implemented, the current "28-day withdrawal lock when you stake RPL" will be removed 
+- These changes will apply equally to both existing and new NOs
 
 ### Context
 - [Intro document](https://github.com/Valdorff/rp-thoughts/tree/main/rpl_staking) 

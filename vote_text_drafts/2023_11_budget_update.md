@@ -7,16 +7,16 @@
 
 This vote aims to correct a budget implementation error and further increase the IMC budget.
 
-### Outcomes
-- Correct the mismatch between intent and implementation in an [earlier vote](https://vote.rocketpool.net/#/proposal/0x510383ca82a0096fa670a260692cf7a4097e199ce4f731dc4efd97a21f19f988)
-  - One-time payment to make up for not matching intent for several periods
-  - Correct the split to match intent moving forward for both IMC and GMC
-- Further increase the IMC’s split by 16%
+### Outcomes if vote passes
+- The mismatch between intent and implementation in an [earlier vote](https://vote.rocketpool.net/#/proposal/0x510383ca82a0096fa670a260692cf7a4097e199ce4f731dc4efd97a21f19f988) will be corrected
+  - Forward-looking, the split will be corrected to match intent for both IMC and GMC
+  - Backward-looking, a one-time payment will be made to the IMC from the pDAO treasury to make up for the periods since the mismatch
+- The IMC's split of the pDAO's incoming funds will be increased by 16%
 
 ### Rationale
-The earlier vote had a math error in the implementation (as noted on the [forum](https://dao.rocketpool.net/t/intended-vs-actual-budget-mismatch-in-rpip-10/2053?u=valdorff)). This vote undoes that both moving forward and retroactively via a one-time transfer.
+The earlier vote had a math error in the implementation (as noted on the [forum](https://dao.rocketpool.net/t/intended-vs-actual-budget-mismatch-in-rpip-10/2053?u=valdorff)). This vote is to resolve the error both moving forward and retroactively via a one-time transfer.
 
-In addition, this vote increases the IMC's portion of the inflation split by 16%, which is roughly "50% of funds that were initially going to the oDAO that now go to the pDAO". This value was arrived at mostly from a [forum poll](https://dao.rocketpool.net/t/justification-for-moving-odao-inflation-to-the-imc/1939/12), but taking a conservative step as a starting point. The IMC will gain additional freedom, and there's been significant discussion around using some of that freedom to provide more RPL liquidity.  
+In addition, this vote increases the IMC's portion of the inflation split by 16%, which is roughly "50% of funds that were initially going to the oDAO that now go to the pDAO". This value was arrived at mostly from a [forum poll](https://dao.rocketpool.net/t/justification-for-moving-odao-inflation-to-the-imc/1939/12), but taking a conservative step as a starting point.  
 
 
 ### Context 
