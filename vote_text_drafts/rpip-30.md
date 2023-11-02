@@ -24,15 +24,17 @@ _Please_ read the Intro document's [context section](https://github.com/Valdorff
   - Adding a minipool will increase RPL rewards (even if you already had enough staked RPL)
   - Converting an EB16 to two LEB8s will increase rewards (even if you already had enough staked RPL)
   - You need staked RPL value of ≥10% borrowed ETH to get RPL rewards [unchanged]
-  - Staking more RPL means more rewards [unchanged], though now without a maximum
+  - Staking more RPL means more rewards [unchanged], though now without a maximum (note that marginal APR gets lower and lower as more is staked)
   - Beyond 15% borrowed ETH, additional rewards go up slower and slower
   - The rewards changes will be phased in slowly over 6 months
 - It will be possible to withdraw down to 15% borrowed ETH
 - Make withdrawal a 2-step process
   - Set X RPL to "withdrawing"; these RPL are no longer eligible for rewards or voting 
   - After 28 days, the RPL may be withdrawn
-  - Remove the current 28-day withdrawal lock when you stake RPL 
+  - Remove the current "28-day withdrawal lock when you stake RPL" 
   - Phase in the new rules partially over time, then fully with the next smart contract release
+  - Note that this will apply to all withdrawals, even ones that would currently be instant
+  - Note that this doesn't apply to claiming rewards, as that isn't a withdrawal
 - These changes apply equally to both existing and new NOs
 
 ### Context

@@ -21,7 +21,7 @@ In addition, this vote increases the IMC's portion of the inflation split by 16%
 
 ### Context 
 - [Forum thread](https://dao.rocketpool.net/t/mc-budget-update-proposal/2319)
-- [PR implementing changes](https://github.com/rocket-pool/RPIPs/pull/75/files)
+- [PR implementing changes](https://github.com/rocket-pool/RPIPs/pull/106/files)
 
 # Rocket Pool Vote Text Checklist
 - [ ] Vote text should include the following:
