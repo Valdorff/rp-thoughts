@@ -37,7 +37,7 @@ _Please_ read the Intro document's [context section](https://github.com/Valdorff
 - These changes will apply equally to both existing and new NOs
 
 ### Context
-- [Intro document](https://github.com/Valdorff/rp-thoughts/tree/main/rpl_staking) 
+- Intro document [live on Val's rp-thoughts repo](https://github.com/Valdorff/rp-thoughts/tree/main/rpl_staking) or [archived printout in RPIP repo](https://github.com/rocket-pool/RPIPs/blob/main/assets/rpip-30/rpl_staking_readme.pdf) 
 - [Forum thread](https://dao.rocketpool.net/t/rpl-staking-rework-proposal/2090)
 - [Full RPIP](https://github.com/rocket-pool/RPIPs/blob/main/RPIPs/RPIP-30.md)
 - [Deep dive links](https://github.com/Valdorff/rp-thoughts/tree/main/rpl_staking#what-else-has-been-looked-at-around-this-proposal) (a section within the intro document)
