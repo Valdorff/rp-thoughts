@@ -69,13 +69,14 @@ implied_ratio_rent = RPL_supply*desired_RPL_apy/ETH_revenue - implied_ratio_comp
 implied_ratio = implied_ratio_component_staking + implied_ratio_component_rent
 ```
 
-mathing
+```
+math scratchpad work
 RPL_revenue/RPL_supply = apy
 ETH_revenue*implied_ratio/RPL_supply = apy
 ETH_revenue*(implied_ratio_rent+implied_ratio_component_staking)/RPL_supply = apy
 (implied_ratio_rent+implied_ratio_component_staking) = RPL_supply*apy/ETH_revenue
 implied_ratio_rent = RPL_supply*apy/ETH_revenue - implied_ratio_component_staking
-
+```
 
 ### Variations/extensions
 - Instead of nodes being stake/rent-based, could be minipools
