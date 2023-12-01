@@ -81,7 +81,10 @@ implied_ratio_rent = RPL_supply*apy/ETH_revenue - implied_ratio_component_stakin
 - Instead of nodes being stake/rent-based, could be minipools
   - Shouldn't change any relationships, just implementation (since people could have one of each node type, as an alternative)
 - Can only kick RPL renters when we have "enough" supply
-
+- Allow the rent to be paid in ETH and just exchange it for RPL before rewards? Or don't bother? Shouldn't really matter.
+- What happens if the rent is too high for people to want to pay it?? I think that actually breaks the whole thing, which isn't great. This is inherited from the current system where the minimum bond is fixed -- here the rental fee derives from that, so it is similarly brittle.
+  - We would need a heuristic to choose when to (raise or reduce) the (minimum_rpl_bond and rental fee).
+  - !! Actually... maybe I'm overthinking this. For an LEB8, we're proposing a fee of `0.003*24=.072 ETH/2yrs`. Meanwhile the benefit is commission of `solo_apr*24*.14 ETH/yr`. We can simply say "break-even rent is when the benefit equals the cost", which means: `.072/2 = solo_apr*24*.14`; ` solo_apr = .072/(2*24*.14) = .0107`. So this rent should be attractive as long as solo_apr is above that (plus some amount to account for gas and protocol risk). We could probably have a heuristic for the pDAO to update the rent based on solo apr.
 
 ## Early sandbox version of the idea
 RPL ticket -- burn a one-time amount to enter. Doesn't serve as collateral.
