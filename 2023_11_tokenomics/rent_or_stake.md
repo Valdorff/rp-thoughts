@@ -40,6 +40,8 @@ Staking Minipools: 825,837.13 ETH
 ```
 Ok, so we said the rational choice is to rent. Let's assume 10% of people do it and see where that puts us. The total cost of the 90% staking is `.05*(1-.7)*(.1*(.9*560k)) = 756 ETH/yr`. The 10% would pay rental fees of `.003*.1*560k/2yr = 84 ETH/yr`. This means that the cost to hold RPL is now actually `.0015*borrowed_ETH/year*(1-84/756)=.00133*borrowed_ETH/year` -- essentially, if the price of RPL vs ETH stays steady, it's now 11.1% cheaper to be a staker than a renter. 
 
+TODO: redo but competing with CSM
+
 At 50% renting, we get a total cost of staking of `.05*(1-.7)*(.1*(.5*560k)) = 420 ETH/yr`. The 10% would pay rental fees of `.003*.5*560k/2yr = 420 ETH/yr` -- here the cost of holding RPL is zero, while the renters are still paying not-zero. In this case, the only reason to rent is a bet against RPL over the next 2 years. Note that this isn't crazy at all -- the rent is only 3% the stake amount over 2 years.
 
 ## Valuation
