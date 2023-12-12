@@ -1,11 +1,10 @@
+This idea is meant to address "Rapid Research Incubator" topic #2 and #1
+  - #2 alternative value capture for RPL:
+    - The bond remains a form of value capture
+    - Rent received is a new form of value capture
+  - #1 by breaking the hard requirement that NOs be RPL stakers, the market is able to balance RPL staking attractiveness and NO attractiveness. When holding RPL isn't seen as attractive, people will prefer to rent. This in turn will make RPL more attractive. Similarly, if holding is seen as more attractive than rating, most people will stake -- in the extreme we get the current state.
 
-
-
-The premise of this idea is that there is a cost to holding RPL for a period of time, and we should be able to really quantify it and... charge people that amount.
-
-Let's start by explaining the idea, and then trying to put numbers to it.
-
-## The general idea
+## The general idea 
 - There are 2 classes of nodes
   - RPL stakers
   - RPL renters
@@ -45,40 +44,9 @@ TODO: redo but competing with CSM
 At 50% renting, we get a total cost of staking of `.05*(1-.7)*(.1*(.5*560k)) = 420 ETH/yr`. The 10% would pay rental fees of `.003*.5*560k/2yr = 420 ETH/yr` -- here the cost of holding RPL is zero, while the renters are still paying not-zero. In this case, the only reason to rent is a bet against RPL over the next 2 years. Note that this isn't crazy at all -- the rent is only 3% the stake amount over 2 years.
 
 ## Valuation
-Let's pretend the 10% renter case is where things settle out. How would we do a valuation model for RPL here?
+This isn't obvious to me right now.
 
-We're currently using something like the following (pretending it's all LEB8):
-```
-implied_ratio = (rETH_TVL * RPL_value_per_pool) / (RPL_supply * protocol_ETH_per_pool)
-implied_ratio = ((560,000 * 1.0907) * 2.4) / (19.9e6 * 24) = .00307
-```
-In this case, the "RPL_value_per_pool" term will be 2.4*.9, since only 90% of pools provide RPL. The rest should hold steady.
-But! We somehow need to account for having revenue :thinking:.
-
-
-### Lol... this math is dramatically wrong fails, but it's bedtime
-If you have a desired APY for your capital in general, we could do: 
-```
-implied_ratio_component_staking = (rETH_TVL * RPL_value_per_pool) / (RPL_supply * protocol_ETH_per_pool)
-implied_ratio_rent = RPL_supply*apy/ETH_revenue - implied_ratio_component_staking
-implied_ratio = implied_ratio_component_staking + implied_ratio_component_rent
-```
-
-```
-implied_ratio_component_staking = (rETH_TVL * RPL_value_per_pool) / (RPL_supply * protocol_ETH_per_pool) = ((560,000 * 1.0907) * (2.4*.9)) / (19.9e6 * 24) = .00276
-implied_ratio_rent = RPL_supply*desired_RPL_apy/ETH_revenue - implied_ratio_component_staking = (19.9e6*.03/84) - .00276 = 7107 - .00276
-... xD that aint right
-implied_ratio = implied_ratio_component_staking + implied_ratio_component_rent
-```
-
-```
-math scratchpad work
-RPL_revenue/RPL_supply = apy
-ETH_revenue*implied_ratio/RPL_supply = apy
-ETH_revenue*(implied_ratio_rent+implied_ratio_component_staking)/RPL_supply = apy
-(implied_ratio_rent+implied_ratio_component_staking) = RPL_supply*apy/ETH_revenue
-implied_ratio_rent = RPL_supply*apy/ETH_revenue - implied_ratio_component_staking
-```
+There's clearly the bond value, which is degraded by less RPL staked. That said, there is increased rewards value in the form of rent.
 
 ### Variations/extensions
 - Instead of nodes being stake/rent-based, could be minipools
