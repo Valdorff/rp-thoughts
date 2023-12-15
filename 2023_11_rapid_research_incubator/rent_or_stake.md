@@ -93,6 +93,7 @@ Ok. So here's the thing. If the value does add like this, it breaks each of the 
   - This makes renting slightly more attractive as there's a chance of free time. That also means staking is slightly less attractive. The main benefit here is to protocol stability when supply is needed. 
 - Allow the rent to be paid in ETH and just exchange it for RPL before rewards? Or don't bother exchanging? Shouldn't really matter.
 - What happens if the rent is too high for people to want to pay it?? I think this could hinder growth. The solution would be to reduce rent if needed to hit growth goals. There is definitely a balance here -- as we saw, there's a benefit to RPL of having a lower percentage renters and a benefit to RPL of having more TVL. 
+- Note that we _do_ have a principal agent problem. The only collateral is illiquid. This could be ok (with forced exits, eg) or we could have something like rETH collateral if we felt it was really necessary.
 
 ## Acknowledgements
 Thanks to NeverAnIsland for proposing the rental valuation model and bouncing some ideas with me. 
