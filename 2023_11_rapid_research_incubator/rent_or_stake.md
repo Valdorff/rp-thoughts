@@ -14,7 +14,8 @@ This idea is meant to address "Rapid Research Incubator" topic #2 and #1
     - This creates significant alignment; assuming renters rent evenly over time, renters would average being one year away from expiry 
   - If rent expires, anyone can force-exit them
   - During last 6 months of rent, can pay rent again to extend expiry time by 2 years
-  - Get vote power TBD, based on their rent
+  - Get vote power TBD, based on their rent? Should be much lower.
+  - Can only pay rent if there's a need for supply. Eg: deposit pool is full for new rent, or deposit pool is at least 1/4 full for rent extension
 - RPL stakers
   - Stake at least Y% of borrowed ETH as RPL in order to deposit
   - Get RPL rewards if over Y% of borrowed ETH at the end of a period
@@ -42,12 +43,10 @@ Staking Minipools: 825,837.13 ETH
 ```
 Let's assume 10% of people rent and see where that puts us. The total cost of the 90% staking is `.05*(1-.7)*(.1*(.9*560k)) = 756 ETH/yr`. The 10% would pay rental fees of `.005*.1*560k/2yr = 140 ETH/yr`. This means that the cost to hold RPL is now actually `.0015*borrowed_ETH/year*(1-140/756)=.00122*borrowed_ETH/year` -- essentially, if the price of RPL vs ETH stays steady, it's now 18.7% cheaper to be a staker than a renter. 
 
-At 10% renting, we get a total cost of staking of `.05*(1-.7)*(.1*(.5*560k)) = 420 ETH/yr`. The 10% would pay rental fees of `.005*.5*560k/2yr = 700 ETH/yr` -- here the cost of holding RPL is negative, while the renters are paying a positive amount. It may still be justifiable to prefer rent -- the rent is only 0.5% the stake amount over 2 years and certainty is a valuable commodity.
+At 50% renting, we get a total cost of staking of `.05*(1-.7)*(.1*(.5*560k)) = 420 ETH/yr`. The 50% would pay rental fees of `.005*.5*560k/2yr = 700 ETH/yr` -- here the cost of holding RPL is negative, while the renters are paying a positive amount. It may still be justifiable to prefer rent -- the rent is only 0.5% the stake amount over 2 years and certainty is a valuable commodity.
 
 ## Valuation
-Ok. So I _think_ I have a way to think about value, but I'm not particularly confident and would love other thoughts on it.
-
-Essentially, I think there are 2 completely separate sources of value, and they can simply be added
+This has changed from a previous state (available in git history) that included a staking and renting value component.
 
 ### Value from stakers
 Here I'll use the same model as in the current system:
@@ -64,27 +63,23 @@ Let's do it out for today under 3 situations, assuming exact minimum RPL per poo
 - 90% renters: `(560k * (2.4*.1))/(19.9M * 24) = .00028 ETH per RPL`
 
 ### Value from renters
-- `rental_fees_ETH = inflation_RPL * ETH_per_RPL`
-- `ETH_per_RPL = rental_fees_ETH/inflation_RPL`
-
-Here the premise is that the incoming rent is being paid with the available RPL from RPL inflation. This is sensible cuz at maturity "all" RPL is staked so where else could RPL for rent be coming from? Note that in reality it would be less than all inflation, as stakers might need to keep a little to top off.
-
-Let's do it out for today under 3 situations, assuming that at maturity all RPL inflation is sold (worst case):
-- 0% renters: `(.005*0*560k/2yr)/(19.9M*.05) = 0 ETH per RPL`
-- 10% renters: `(.005*.1*560k/2yr)/(19.9M*.05) = .00014 ETH per RPL`
-- 50% renters: `(.005*.5*560k/2yr)/(19.9M*.05) = .00070 ETH per RPL`
-- 90% renters: `(.005*.9*560k/2yr)/(19.9M*.05) = .00127 ETH per RPL`
+Renters do not factor into RPL value directly. Instead, they (a) support TVL growth and (b) generate revenue for RPL stakers, which makes staking more attractive.
 
 ### Total value
-To get total value, you simply add up the matching rows. You'll notice we hit the highest value at 0% renters. Why then, dear reader, do we want any renters at all? Growth. Right now we're (very) supply limited. Imagine that turning renting on gets us to 50% renters because we double our TVL, now we're comparing:
+So. Why do we want any renters at all?
 
-No rent: `(560k * 2.4)/(19.9M * 24) + (.005*0*560k/2yr)/(19.9M*.05) = .00281 ETH per RPL`
-Vs double size and 50% rent: `((2*560k) * (2.4*.5))/(19.9M * 24) + (.005*.5*(2*560k)/2yr)/(19.9M*.05) = .00421 ETH per RPL`
+The first purpose is growth. Right now we're (very) supply limited. Imagine that turning renting on gets us to 50% renters because we double our TVL, now we're comparing:
 
-Note that, if we surpass our growth desires, we can ramp up rent to reduce the percentage of minipools from renters. This is a fantastic problem to have.
+No rent: `(560k * 2.4)/(19.9M * 24) = .00281 ETH per RPL`\
+Vs double size and 50% rent: `((2*560k) * (2.4*.5))/(19.9M * 24) = .00281 ETH per RPL`
 
-### A point of confusion
-Ok. So here's the thing. If the value does add like this, it breaks each of the individual models, which find a total price for RPL to fulfill a condition. That said, they _do_ both contribute value and I cannot justify just using one model cuz then we get really silly conclusions (eg, "regardless of how much rent RPL holders get each year, RPL is considered equally valuable"). So... this vibes right and is directionally sensible, but doesn't really make full math sense. Thoughts welcome.
+This means that we've been able to support a much larger set without any damage to RPL value. It _also_ means that RPL stakers will be getting rent. We've done similar math above, so we know this is about 1400 ETH/yr (that maps to an oversimplified 0.06 extra ETH per LEB8 per year). This isn't neither earth-shattering nor negligible; back of the envelope math got me a 6.5% increase to ETH revenue for LEB8s in this scenario. 
+
+If this is the right way to think about value, we realize a few things:
+- stakers benefit RPL value a lot more
+  - renters incentivize more stakers 
+- there is little benefit to allowing new renters unless we need more supply (eg, deposit pool is full)
+- if we reach/approach our self-limit, we don't need to allow renting
 
 ### Variations/extensions
 - Instead of nodes being stake/rent-based, could be minipools
@@ -96,4 +91,6 @@ Ok. So here's the thing. If the value does add like this, it breaks each of the 
 - Note that we _do_ have a principal agent problem. The only collateral is illiquid. This could be ok (with forced exits, eg) or we could have something like rETH collateral if we felt it was really necessary.
 
 ## Acknowledgements
-Thanks to NeverAnIsland for proposing the rental valuation model and bouncing some ideas with me. 
+Thanks to NeverAnIsland for proposing the rental valuation model and bouncing some ideas with me.
+
+Thanks to Samus for a number of minor fixes. 
