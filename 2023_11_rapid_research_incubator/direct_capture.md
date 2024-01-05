@@ -6,7 +6,7 @@ This idea is meant to address "Rapid Research Incubator" topic #2 and #1
 
 ## The general idea 
 - Split up ETH commission to a component that goes to NOs and a component that goes to RPL stakers
-  - Split up the RPL component per token
+  - Weight the RPL component per staked token
   - Note that RPL staking doesn't require minipools. This is technically the case now, but there's no reason to do it this way. 
 - The RPL component will get split up using the same method as RPL inflation rewards
 - Remove the requirement of staking RPL in order to make minipools
