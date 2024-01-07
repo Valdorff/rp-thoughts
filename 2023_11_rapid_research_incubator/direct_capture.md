@@ -1,14 +1,9 @@
-This idea is meant to address "Rapid Research Incubator" topic #2 and #1
-  - #2 alternative value capture for RPL:
-    - The bond remains a form of value capture
-    - Rent received is a new form of value capture
-  - #1 by breaking the hard requirement that NOs be RPL stakers, the market is able to balance RPL staking attractiveness and NO attractiveness. When holding RPL isn't seen as attractive, people will prefer to rent. This in turn will make RPL more attractive. Similarly, if holding is seen as more attractive than rating, most people will stake -- in the extreme we get the current state. Note also that this helps make it much easier for RP to grow TVL, which in turn has a value impact on RPL (staked and liquid).
+THIS SUBMISSION HAS BEEN RETRACTED IN FAVOR OF A SIMILAR ONE AT [direct_capture_2.md](direct_capture2.md)
 
 ## The general idea 
 - Split up ETH commission to a component that goes to NOs and a component that goes to RPL stakers
   - Weight the RPL component per staked token
   - Note that RPL staking doesn't require minipools. This is technically the case now, but there's no reason to do it this way. 
-- The RPL component will get split up using the same method as RPL inflation rewards
 - Remove the requirement of staking RPL in order to make minipools
 
 ## Getting numbers
@@ -40,11 +35,14 @@ Pros:
 - Doesn’t break voting! See below
 
 Cons:
+- :rotating_light: This would give a _lot_ of the yield currently going to NOs to either RPL-heavy NOs or pure RPL stakers. :rotating_light:
+  - This is not what we want to do (eg, as shown by the [RPIP-30](https://rpips.rocketpool.net/RPIPs/RPIP-30) vote), and instead we'd like to encourage minipool creation.
+  - This problem goes away at maturity, but we are _not_ at maturity by a wide margin
 - Pretty annoying for small RPL holders b/c value capture requires making a node, staking, claiming – lotsa gas
   - We may be able to mitigate this with an L2 that would allow RPL staking only (though ofc we’d need to get some RPL liquidity in that market now)
 - We’d essentially be getting rid of RPL-as-collateral, since it’s not required. Right now, we don’t use it anyways (except in oddball megaslashing cases, where its utility is liquidity-limited). That said, it takes away our ability to have an “instant-speed” bond.
   - Might be able to mitigate with something like a rETH bond if seen as necessary
-- 3.08% commission for NOs doesn't sound as sexy as 14% commission. While I believe my math that this is essentially the case currently, with 
+- 3.08% commission for NOs doesn't sound as sexy as 14% commission.
 
 ### Voting thoughts
 Interestingly, it seems like our vote power formulation should survive this change as is. Since vote power can only be contributed for RPL up to 150% of bonded ETH, nodes that are very heavy RPL don’t break voting. Since RPL is needed, nodes that are very heavy ETH also don’t break voting. They _do_ get more vote per RPL, but less total vote. Assuming you want to maximize vote per capital (and don’t care about exposure or expect ratio changes), you would target 150% bonded ETH for your node. Fwiw, this model looks at every way you can spend 100k ETH on just one of 8/16 ETH minipools and the vote power that comes out of it.
@@ -52,6 +50,9 @@ Interestingly, it seems like our vote power formulation should survive this chan
 ![Chart showing vote power](direct_voting.png)
 
 ### Variations
+- See [direct_capture_2.md](direct_capture2.md) for my preferred variant (preferred over this one). This uses a modified version of RPIP-30's curve to most heavily reward RPL staking alongside rETH supply creation.
+- Since we're now also giving _present_ commission to RPL, we could reduce their share. Eg, go with 50%-75% to NOs instead of the calculated 22%.
+  - This could be ~dynamic based on market share updated every ~3 periods. For example, it could be 20% if we are at or above 15% market share, 90% if we are at or below 1%, and linearly interpolated in between. 
 - We can provide a bonus to folks that do both RPL staking and Node Operation. As a rough example, we could provide double weight to RPL valued at 10% of borrowed ETH. This would help push rewards towards "create rETH supply", which is important for growth.
-  - I like something along these lines a lot, as it is a thematically smaller step, while still enabling pure RPL and pure ETH for those that want them.
-- Since we're now also giving _present_ commission to RPL, we could reduce their share. Eg, go with 50%-75% to NOs instead of the calculated 22%. At maturity, as we see ~all RPL staked and fewer very RPL-heavy NOs, we can move commission back to RPL.
+  - I like something along these thematically, but I think number selection is a challenge and it adds a knob.
+
