@@ -7,6 +7,7 @@ Using flashbots data from slot-4629154 to slot-6206500, and tweaked code from [l
 
 | ![bond_value_lost.png](bond_value_lost.png) | ![bond_value_lost_loglog.png](bond_value_lost_loglog.png) |
 |:-------------------------------------------:|:---------------------------------------------------------:|
+
 The main thing to note here is that worst-case protocol damage falls off rapidly with additional penalty. Note that not everyone is actually trying to be bad (in fact, very few are), so this is likely a bit of a doomer look at things. 
 
 To get some context for what we're willing to accept, we have previously set the deposit pool to a size that accepts a ~5% drag.
