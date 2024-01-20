@@ -125,7 +125,21 @@ if __name__ == '__main__':
     ax.legend()
     ax.grid()
     fig.savefig('./black_swan_insurance.png', bbox_inches='tight')
-    plt.show()
+
+    ind = 0
+    for ind in range(len(pct_network_slashed)):
+        if pct_network_slashed[ind] > 25:
+            break
+    fig, ax = plt.subplots(1)
+    ax.plot(pct_network_slashed[:ind], lido_pct_loss[:ind], color='#00A3FF', label='stETH')
+    ax.plot(pct_network_slashed[:ind], rp_pct_loss[:ind], color='#FD7861', label='rETH')
+    ax.set_xlabel('Percent of network slashed')
+    ax.set_ylabel('Percent loss experienced by LST')
+    ax.legend()
+    ax.grid()
+    fig.savefig('./black_swan_insurance_zoom.png', bbox_inches='tight')
+
+    # plt.show()
 
 # KNOWN IFFY ASSUMPTION
 # percent of network slashed and percent of validators in the LST protocol slashed are the same
