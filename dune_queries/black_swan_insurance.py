@@ -6,6 +6,8 @@ from web3 import HTTPProvider, Web3
 
 API_KEY = os.environ['INFURA']
 CLIENT = Web3(HTTPProvider(f"https://mainnet.infura.io/v3/{API_KEY}"))
+COLOR_LIDO = '#00A3FF'
+COLOR_RP = '#FD7861'
 
 TokenSteth = CLIENT.eth.contract(
     address=Web3.to_checksum_address("0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84"),
@@ -51,7 +53,7 @@ def validator_slash(pct_network):
 
 
 if __name__ == '__main__':
-    pct_network_slashed = np.arange(0, 100, 0.1)
+    pct_network_slashed = np.arange(0, 25, 0.1)
 
     lido_insurance = TokenSteth.functions.balanceOf(
         '0x8B3f33234ABD88493c0Cd28De33D583B70beDe35').call() / 1e18
@@ -118,28 +120,18 @@ if __name__ == '__main__':
         rp_pct_loss.append(loop_rp_pct_loss)
 
     fig, ax = plt.subplots(1)
-    ax.plot(pct_network_slashed, lido_pct_loss, color='#00A3FF', label='stETH')
-    ax.plot(pct_network_slashed, rp_pct_loss, color='#FD7861', label='rETH')
+    ax.plot(pct_network_slashed, lido_pct_loss, color=COLOR_LIDO, label='stETH')
+    ax.plot(pct_network_slashed, rp_pct_loss, color=COLOR_RP, label='rETH')
     ax.set_xlabel('Percent of network slashed')
     ax.set_ylabel('Percent loss experienced by LST')
     ax.legend()
     ax.grid()
     fig.savefig('./black_swan_insurance.png', bbox_inches='tight')
 
-    ind = 0
-    for ind in range(len(pct_network_slashed)):
-        if pct_network_slashed[ind] > 25:
-            break
-    fig, ax = plt.subplots(1)
-    ax.plot(pct_network_slashed[:ind], lido_pct_loss[:ind], color='#00A3FF', label='stETH')
-    ax.plot(pct_network_slashed[:ind], rp_pct_loss[:ind], color='#FD7861', label='rETH')
-    ax.set_xlabel('Percent of network slashed')
-    ax.set_ylabel('Percent loss experienced by LST')
-    ax.legend()
-    ax.grid()
-    fig.savefig('./black_swan_insurance_zoom.png', bbox_inches='tight')
-
     # plt.show()
 
-# KNOWN IFFY ASSUMPTION
-# percent of network slashed and percent of validators in the LST protocol slashed are the same
+# Comments
+# - 🚨 _assuming_ that % of network slashed and % slashed per LST protocol are the same
+# - after some point, other things start to matter, like quadratic leakage, getting attestations
+#   through on time, and other blockchain esoterica. I simply cut off the chart before we get to
+#   that region

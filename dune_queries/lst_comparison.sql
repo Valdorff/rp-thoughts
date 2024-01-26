@@ -1,3 +1,13 @@
+-- Used for:
+--     Trailing month APY line chart
+--     Trailing week APY line chart
+--     Single update APY line chart
+--     rETH/stETH/cbETH post-merge average number
+--     Oracle rate chart
+--     APY table with columns: time, rETH APY, stETH APY, cbETH APY, rETH APY (~7.2d),
+--         stETH APY (7d), cbETH APY (7d), rETH APY (~30.4d), stETH APY (30d),
+--         cbETH APY (30d), eth_reth_peg_filled, eth_cbeth_peg_filled
+
 WITH
 -- rETH
 blocks AS (
