@@ -53,7 +53,7 @@ def validator_slash(pct_network):
 
 
 if __name__ == '__main__':
-    pct_network_slashed = np.arange(0, 25, 0.1)
+    pct_network_slashed = np.arange(0, 25.2, 0.1)
 
     lido_insurance = TokenSteth.functions.balanceOf(
         '0x8B3f33234ABD88493c0Cd28De33D583B70beDe35').call() / 1e18
