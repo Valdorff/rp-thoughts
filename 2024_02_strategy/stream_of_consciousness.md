@@ -9,10 +9,11 @@ So my initial post had 5 bullets:
 - Universal variable commission
 
 Some quick thoughts and open questions:
-- Bond curves
+- [key] Bond curves
   - Assuming we had zero new node operator ETH, what rETH supply could we support?
   - Run for each bond curve
-- Change RPL capture from minimum bond to cut of commission
+  - Run "hot MEV market" numbers for the anchor validator and compare profitability with 10+ minipools. Confirm that there is no incentive to sock puppet for MEV theft, even in a hot MEV market.
+- [key] Change RPL capture from minimum bond to cut of commission
   - I think this is pretty nearly _required_ to really make bond curves function. We won't find enough RPL omegabulls to run pools with 1.5 ETH and 3.05 ETH worth of RPL.
   - This combines with the bond curve above to determine where we look good vs competitors
   - How much new nETH does this really bring to the table?? Is nodeset likely to give us a relevant
@@ -20,16 +21,16 @@ Some quick thoughts and open questions:
   - If we have a market-share based split, I think we might be able to _really_ juice the NO side to
     start and back it off as we capture market. This might present a way to have our cake (market
     share by big NO share) and eat it too (RPL value by big RPL share)
-- Universal variable commission
+- [support] Universal variable commission
   - This interacts with both of the above to determine where we look good vs competitors (NO-side)
   - There's a lot of room for complication here with PID stuff etc.
   - I'd prefer something very simple: eg, "if DP running weekly average is below X for 2 months,
     decrease commission 1%". It could be executed by security council with something like gate seals
     (eg, 3 one time use 1% moves up or down before pDAO has to vote to refresh their power).
-- Protect rETH from outlier bad NOs
+- [support] Protect rETH from outlier bad NOs
   - I think this is quite independent
   - I think this is a lower tier of importance
-- Exit validator on ejection balance ~31 ETH
+- [support] Exit validator on ejection balance ~31 ETH
   - I think this is quite independent
   - I think this is a lower tier of importance
 
@@ -49,4 +50,23 @@ While we're at it, some other things that I think are important
   - This is massive. Essentially, if we can make this happen, we're realistically in range of our goals.
   - If total staking market increases, we'd need to keep pace or perhaps barely outpace, but not a huge amount.
   - There is little rETH supply difference between aggressive and aggressive alt (and likely other variants like that).
-  - 
+
+---
+
+I think I want to structure this as:
+- Lead actors (bond + value capture)
+- Supporting cast
+  - UVC with broad heuristic and gate seals
+  - Validator ejection based on balance
+  - Validator ejection based on sustained bad performance (can we prove balance at a couple points in time to do this?) (metric: performs worse than rETH using CL+smoothed_EL)
+  - rETH restitution based on bad performance (ETH rewards, ETH bond)
+- The trailer (LEB6, or BPT-backed MYSO loans)
+  - Provide a budget for RPL loans (enough for 250 EB8s)
+  - Eg start really attractive: 70% LTV, 1 year, 10% up front fee, half of fee is returned if
+    - RPL is staked and used to launch minipool(s)
+  - Do this in tranches of, eg, 10 EB8 worth. This lets us see if up front fee is enough to avoid
+    short sales etc.
+- The sequel
+  - Moving to direct capture from direct capture 2
+  - Automating UVC
+  - etc
