@@ -62,6 +62,19 @@ Given that Node operation is very competitively rewarding now, we can capture as
   - In this structure, we don't need to use RPL inflation to get more people staking RPL to meet rETH demand. Insofar as folks have unstaked, they're at least doing a service to RPL stakers by giving up their share. If they're doing something like LPing, then they're further serving RP.
   - 1.5% means the oDAO and pDAO continue to receive the same amount - this just removes the portion that went back to NOs.
 
+## Variations to consider
+- Right now I have a section of commission going to RPL stakers. This could instead go to all RPL.
+  - Execution
+    - Eg: ETH goes to a treasury. Every so often the treasury buys RPL with that ETH (eg via an auction)
+    - Eg2: RPL can be burned against the treasury based on a fairly long TWAP (eg on uniswap pool). This would mean that if there's ever a dip, it's profitable to buy and burn RPL. Essentially, this is a market buy that happens on an ongoing basis.
+  - Benefits
+    - Since the capital doesn't need to be staked, that allows it to be _used_. The two main uses that come to mind are LPing and using it as collateral for a loan.
+    - This may be execution-dependent, but the methods I described above accrue value to the token. In some jurisdictions this transaltes to capital gains tax instead of income tax. 
+  - Negatives
+    - Governance is the big one imo. We would need to redefine the pDAO (which means a 2/3 vote to change the charter). We would need to figure out voters. Right now, the "RPL-staking node operator" is a really nice overall proxy. While rETH isn't directly represented there, making rETH attractive has a direct benefit to RPL via market size.
+    - Community would be the related thing. I think it would make it easier to have RPL holders/users that are less-involved with the RP community. 
+
+
 ## Possible pitfalls
 - This looks super attractive for ETH-only NOs - what happens if we get more than rETH demand can keep up with?
   - Right now the contracts use 1 ETH to stake on-chain and pass bond-1 ETH to the deposit pool where they can efficiently get validators going. There is no way to exit the minipool queue. In this scenario, a lot of these are going to be 1.5 ETH bonds, so only 0.5 ETH will be able to hit the deposit pool
