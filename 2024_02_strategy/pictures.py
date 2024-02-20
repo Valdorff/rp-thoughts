@@ -1,7 +1,22 @@
 import matplotlib.pyplot as plt
 
 
-def eth_only_roi(n_minipools, commission):
+def eth_only_rois(n_minipools, commissions):
+    orange_ls = ['#FD7861', 'g', 'b']
+    fig, ax = plt.subplots(1)
+    for i, commission in enumerate(commissions):
+        eth_only_roi(ax, n_minipools, commission, color=orange_ls[i % len(orange_ls)])
+    ax.axhline(1.5, color='#00A3FF', alpha=0.8, ls='--', label='Lido CSM')
+    ax.plot([10], [1.5], color='k', ls=':', label='High-bond asymptote')
+    ax.set_xlabel('Bonded ETH')
+    ax.set_ylabel('ROI in units of solo apr')
+    ax.grid()
+    ax.legend()
+    fig.tight_layout()
+    fig.savefig('eth_only_roi.png')
+
+
+def eth_only_roi(ax, n_minipools, commission, color='#FD7861'):
     bonded = 0
     borrowed = 0
     aggro_ls = []
@@ -44,30 +59,11 @@ def eth_only_roi(n_minipools, commission):
         safer_ls.append((bonded + commission * borrowed) / bonded)
         safer_bonded.append(bonded)
 
-    x = list(range(1, n_minipools + 1))
-    fig, (ax0, ax1) = plt.subplots(2)
-    # ax0.plot(x, aggro_ls, label='Aggressive')
-    # ax0.plot(x, safer_ls, label='A bit safer')
-    ax0.plot(x, aggroalt_ls, label='Aggressive [alt]', color='#FD7861')
-    ax0.axhline(
-        (1.5 + commission * 30.5) / 1.5, color='#FD7861', alpha=0.8, ls=':', label='asymptote')
-    ax0.axhline(1.5, color='#00A3FF', alpha=0.8, ls='--', label='Lido CSM')
-    ax0.set_xlabel('Minipool Count')
-    ax0.set_ylabel('ROI in units of solo apr')
-    ax0.grid()
-    ax0.legend()
-    # ax1.plot(aggro_bonded, aggro_ls, label='Aggressive')
-    # ax1.plot(safer_bonded, safer_ls, label='A bit safer')
-    ax1.plot(aggroalt_bonded, aggroalt_ls, color='#FD7861', label='Aggressive [alt]')
-    ax1.axhline(
-        (1.5 + commission * 30.5) / 1.5, color='#FD7861', alpha=0.8, ls=':', label='asymptote')
-    ax1.axhline(1.5, color='#00A3FF', alpha=0.8, ls='--', label='Lido CSM')
-    ax1.set_xlabel('Bonded ETH')
-    ax1.set_ylabel('ROI in units of solo apr')
-    ax1.grid()
-    ax1.legend()
-    fig.tight_layout()
-    fig.savefig('eth_only_roi.png')
+    # ax.plot(aggro_bonded, aggro_ls, label='Aggressive')
+    # ax.plot(safer_bonded, safer_ls, label='A bit safer')
+    ax.plot(
+        aggroalt_bonded, aggroalt_ls, color=color, label=f'Aggressive [alt], {100*commission:.0f}%')
+    ax.axhline((1.5 + commission * 30.5) / 1.5, color=color, alpha=0.8, ls=':')
 
 
 def eth_revenue_pies():
@@ -89,6 +85,6 @@ def eth_revenue_pies():
 
 
 if __name__ == '__main__':
-    eth_only_roi(n_minipools=60, commission=.05)
+    eth_only_rois(n_minipools=60, commissions=[.05, .04, .03])
     eth_revenue_pies()
     plt.show()

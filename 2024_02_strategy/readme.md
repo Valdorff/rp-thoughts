@@ -7,15 +7,15 @@ Let's start with desired end state:
 - All surplus value goes to RPL
 
 ## Core Concept
-We'll start by determining a good NO commission %. Remember for context that the proposed Lido CSM ROI is 1.5 (`solo_apy * (4*0.9+32*0.075)/4 = 1.5 * solo_apy`). We'll look at the aggressive-alt bond curve I [described](../2023_11_rapid_research_incubator/bond_curves.md); the summary of that idea is that we can allow smaller ETH bonds safely by enabling MEV theft penalties across a whole node (multiple minipools); smaller ETH bonds make us dramatically more capital efficient. Here it is with 5% of commission on borrowed ETH going to NOs:
+We'll start by determining a good NO commission % using the aggressive-alt bond curve I [described](../2023_11_rapid_research_incubator/bond_curves.md). The summary of that idea is that we can allow smaller ETH bonds safely by enabling MEV theft penalties across a whole node (multiple minipools); smaller ETH bonds make us dramatically more capital efficient.
+
+Remember for context that the proposed Lido CSM ROI is 1.5 (`solo_apy * (4*0.9+32*0.075)/4 = 1.5 * solo_apy`). Here is RP capital efficiency with 3%/4%/5% of commission on borrowed ETH going to NOs:
 
 ![eth_only_roi.png](eth_only_roi.png)
 
-TODO - bonded ETH plot only. Show at 3%, 4%, 5% commission.
+We see that 5% commission competes favorably with Lido CSM starting at ~11 ETH bonded (2 4-ETH minipools and 2 1.5-ETH minipools). At high bonds, we do significantly better. Even 3% was able to beat out Lido CSM (starting at 30.5 ETH, aka 2 4-ETH minipools and 15 1.5 ETH minipools). That said, I explicitly would like to err on the side of growth, so I propose using 5%.
 
-Ok. This looks really good for NOs. We see that it competes favorably with Lido CSM starting at 4 minipools with a total of ~11 ETH bonded. At high bonds, we do significantly better. Even 3% was able to beat out Lido CSM. That said, I explicitly would like to err on the side of growth, if anything.
-
-Given that Node operation is more than competitive with the above, we can capture as much value as possible in RPL. The value captured by RPL is `rpl_pie_share*total_borrowed_eth_revenue`. I propose splitting this the simplest way - each period, an RPL staker's share is `eth_revenue_for_rpl*(their_rpl_stake/total_rpl_stake)`. In other words, we're looking for the value of `rpl_pie_share` that (a) maximizes value capture and (b) meets our [self-limiting obligations](https://rpips.rocketpool.net/RPIPs/RPIP-17). This is nice because it means that voters (NOs with staked RPL) will likely have an incentive to make rETH attractive (to increase total_borrowed_eth and thus its revenue), even if it means they take a smaller share of the pie; this is a canonical example of a positive-sum game -- RPL voters can essentially opt to have a smaller slice of a bigger pie via vote.
+Given that Node Operation is more than competitive with the above, we can capture as much value as possible in RPL. The value captured by RPL is `rpl_pie_share*total_borrowed_eth_revenue`. I propose splitting this the simplest way - each period, an RPL staker's share is `eth_revenue_for_rpl*(their_rpl_stake/total_rpl_stake)`. In other words, we're looking for the value of `rpl_pie_share` that (a) maximizes value capture and (b) meets our [self-limiting obligations](https://rpips.rocketpool.net/RPIPs/RPIP-17). This is nice because it means that voters (NOs with staked RPL) will likely have an incentive to make rETH attractive (to increase total_borrowed_eth and thus its revenue), even if it means they take a smaller share of the pie; this is a canonical example of a positive-sum game -- RPL voters can essentially opt to have a smaller slice of a bigger pie via vote.
 
 ![eth_revenue_pies.png](eth_revenue_pies.png)
 
