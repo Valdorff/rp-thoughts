@@ -13,6 +13,11 @@ from 9% commission [2.52] Staked RPL
 minus 14% commission [24.08] rETH
 
 # VAL FULL
+// This has 3 users
+// a) 4 ETH, 0 RPL
+// b) 8 ETH, 100 RPL
+// c) 0 ETH, 200 RPL
+
 a) ETH from NO [4] a) node
 a) ETH from protocol [28] a) node
 a) node [4] a) from NO ETH
@@ -53,6 +58,11 @@ from 7% commission [1.96] Staked RPL
 minus 14% commission [24.08] rETH
 
 # KNOSHUA
+// This has 2 users
+// a) 4 ETH, 0 RPL
+// b) 8 ETH, 100 RPL
+
+a)
 ETH from NO [4] node
 ETH from protocol [28] node
 node [4] from NO ETH
