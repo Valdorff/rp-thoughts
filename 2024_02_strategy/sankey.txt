@@ -1,0 +1,74 @@
+https://sankeymatic.com/build/
+
+# VAL
+ETH from NO [4] node
+ETH from protocol [28] node
+node [4] from NO ETH
+node [1.4] from 5% commission
+node [2.52] from 9% commission
+node [24.08] minus 14% commission
+from NO ETH [4] NO
+from 5% commission [1.4] NO
+from 9% commission [2.52] Staked RPL
+minus 14% commission [24.08] rETH
+
+# VAL FULL
+a) ETH from NO [4] a) node
+a) ETH from protocol [28] a) node
+a) node [4] a) from NO ETH
+a) node [1.4] a) from 5% commission
+a) node [2.52] a) from 9% commission
+a) node [24.08] a) minus 14% commission
+a) from NO ETH [4] a) NO
+a) from 5% commission [1.4] a) NO
+a) from 9% commission [2.52] Staked RPL
+a) minus 14% commission [24.08] rETH
+
+b) ETH from NO [8] b) node
+b) ETH from protocol [56] b) node
+b) node [8] b) from NO ETH
+b) node [2.8] b) from 5% commission
+b) node [5.04] b) from 9% commission
+b) node [48.16] b) minus 14% commission
+b) from NO ETH [8] b) NO
+b) from 5% commission [2.8] b) NO
+b) from 9% commission [5.04] Staked RPL
+b) minus 14% commission [48.16] rETH
+
+Staked RPL [2.52] b) RPL staker
+Staked RPL [5.04] c) RPL staker
+
+# SAMUS
+ETH from NO [4] node
+ETH from protocol [28] node
+node [4] from NO ETH
+node [1.4] from 5% commission
+node [.56] from 2% bonus commission
+node [1.96] from 7% commission
+node [24.08] minus 14% commission
+from NO ETH [4] NO
+from 5% commission [1.4] NO
+from 2% bonus commission [.56] NO
+from 7% commission [1.96] Staked RPL
+minus 14% commission [24.08] rETH
+
+# KNOSHUA
+ETH from NO [4] node
+ETH from protocol [28] node
+node [4] from NO ETH
+node [2.8] from 10% base commission
+node [1.96] from 7% bonus commission
+node [23.24] minus 17% commission
+from NO ETH [4] NO
+from 10% base commission [2.8] NO
+from 7% bonus commission [1.96] NO
+minus 17% commission [23.24] rETH
+
+ETH from NO [4] node
+ETH from protocol [28] node
+node [4] from NO ETH
+node [2.8] from 10% base commission
+node [25.2] minus 7% commission
+from NO ETH [4] NO
+from 10% base commission [2.8] NO
+minus 7% commission [25.2] rETH
