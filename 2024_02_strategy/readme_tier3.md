@@ -95,3 +95,4 @@ Execution:
 - What if we change our mind about bond curve?
   - I think the curves can essentially be represented by three numbers: number of anchor minipools, anchor minipool size, additional minipool size.
   - If we change our mind, I think that'd be ok. We'd essentially want a way to designate new anchor minipools, or resize the existing ones -- the credit system might make that not-too painful?
+- Explicit non-change: there should be unbonding time for staked RPL. We already have that from RPIP-30, and I just want to explicitly note it will continue to apply and apply regardless of whether someone is RPL-only or also an NO with bonded ETH.

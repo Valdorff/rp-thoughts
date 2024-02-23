@@ -2,15 +2,18 @@ import matplotlib.pyplot as plt
 
 
 def eth_only_rois(n_minipools, commissions):
-    orange_ls = ['#FD7861', 'g', 'b']
+    orange_ls = ['b', 'g', '#FD7861']
     fig, ax = plt.subplots(1)
     for i, commission in enumerate(commissions):
         eth_only_roi(ax, n_minipools, commission, color=orange_ls[i % len(orange_ls)])
     ax.axhline(1.5, color='#00A3FF', alpha=0.8, ls='--', label='Lido CSM')
     ax.plot([10], [1.5], color='k', ls=':', label='High-bond asymptote')
+    ax.xaxis.set_major_locator(plt.MultipleLocator(32))
+    ax.xaxis.set_minor_locator(plt.MultipleLocator(8))
     ax.set_xlabel('Bonded ETH')
     ax.set_ylabel('ROI in units of solo apr')
-    ax.grid()
+    ax.grid(axis='x', which='major', color='k', linestyle='-')
+    ax.grid(axis='x', which='minor', color='gray', linestyle=':')
     ax.legend()
     fig.tight_layout()
     fig.savefig('eth_only_roi.png')
@@ -85,6 +88,6 @@ def eth_revenue_pies():
 
 
 if __name__ == '__main__':
-    eth_only_rois(n_minipools=60, commissions=[.05, .04, .03])
+    eth_only_rois(n_minipools=60, commissions=[.03, .04, .05])
     eth_revenue_pies()
     plt.show()

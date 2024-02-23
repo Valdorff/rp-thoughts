@@ -18,9 +18,9 @@ Let's start with desired end state:
 ## Core concept
 
 ### Smaller bonds for capital efficiency
-We'll start by determining a good NO commission % using the aggressive-alt bond curve I [described](../2023_11_rapid_research_incubator/bond_curves.md). The summary of that idea is that we can allow smaller ETH bonds safely by enabling MEV theft penalties across a whole node (multiple minipools); smaller ETH bonds make us dramatically more capital efficient.
+We'll start by determining a good NO commission % using the aggressive-alt bond curve I [described](../2023_11_rapid_research_incubator/bond_curves.md). The summary of that idea is that we can allow smaller ETH bonds safely by enabling MEV theft penalties across a whole node (multiple minipools); smaller ETH bonds make us dramatically more capital efficient. The proposed bond curve requires the first two minipools to have a 4-ETH bond, and allows subsequent minipools to have a 1.5-ETH bond. 
 
-Remember for context that the proposed Lido CSM ROI is 1.5 (`solo_apy * (4*0.9+32*0.075)/4 = 1.5 * solo_apy`). Here is RP capital efficiency with 3%/4%/5% of commission on borrowed ETH going to NOs:
+Remember for context that the proposed [Lido CSM ROI](https://research.lido.fi/t/bond-and-staking-fee-napkin-math/5999) is 1.5 (`solo_apy * (4*0.9+32*0.075)/4 = 1.5 * solo_apy`). Here is RP capital efficiency with 3%/4%/5% of commission on borrowed ETH going to NOs:
 
 ![eth_only_roi.png](eth_only_roi.png)
 
@@ -69,16 +69,21 @@ The key takeaways here are that the Ethereum portion stays equally attractive --
 For simplicity, I've made all ETH users have a single 4-ETH pool. Note that it really doesn't matter for this view: even if they have a mix of 4-ETH and lower bond pools, the _share_ of the revenue based on borrowed ETH will get split the same way. The users will, ofc, get better ROI as they're bonded ETH per borrowed ETH ratio decreases.
 
 ## Required support
-- Universal Variable Commision
+- Universal Variable Commission
   - The portion going to NOs and RPL stakers should be settable by vote. rETH's portion is simply 100% minus those two portions 
   - This should apply across all possible minipools (noting there's some limitations around currently existing ones)
   - I don't believe these need to be changed often enough that we benefit significantly from automating it, at least not in the short term
-- Megapools -- gas becomes increasingly problematic as pool size decreases. This bails us out.
+- Megapools
+  - Megapools are a single deployed contract that is used as the Ethereum withdrawal address for many validators. This contrasts with minipools, which have one contract per validator. Because it's one contract, we can avoid initial deployment costs per validator, have lower ongoing gas costs to distribute rewards, etc.
+  - Gas becomes increasingly problematic as pool size decreases (since a Node operator has more validators for the same invested ETH). This bails us out.
+  - Megapools require a planned Ethereum level upgrade b/c they need to be able to verify beacon chain data. 
 - Forced exits
+  - Aka, execution layer exits. This feature allows the execution layer to request an exit from the Ethereum withdrawal address of a validator. For us that's the minipool/megapool contract. Here I'm suggesting one programmatic situation where it would be used.
   - Critical to protect against loss scenarios associated with MEV theft and abandonment
   - Exit a validator when an NO's `(total_leakage + debt) >0.5 ETH`; this is about enough for ~3 months covering leakage and debt to rETH at 4% apy: `32*.04*(6/12)*1.645 = .526 ETH`
     - The debt variable could be used for underperformance penalties and MEV penalties
     - Note that we can kick one minipool at a time here, which yields a ~1.5 ETH credit.
+  - Execution layer exits require a planned Ethereum level upgrade.
 
 ## Choose your depth
 This document is the top tier of importance.
