@@ -85,6 +85,6 @@ def eth_revenue_pies():
 
 
 if __name__ == '__main__':
-    eth_only_rois(n_minipools=60, commissions=[.05, .07, .03])
+    eth_only_rois(n_minipools=60, commissions=[.05, .04, .03])
     eth_revenue_pies()
     plt.show()
