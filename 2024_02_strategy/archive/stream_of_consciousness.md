@@ -1,5 +1,5 @@
 I'll be working here to clarify my understanding of strategy.
-My initial intuitive take is in [overall_preference.py](../2023_11_rapid_research_incubator/overall_preference.md)
+My initial intuitive take is in [overall_preference.py](../../2023_11_rapid_research_incubator/overall_preference.md)
 
 So my initial post had 5 bullets:
 - Bond curves

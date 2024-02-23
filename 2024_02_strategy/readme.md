@@ -1,3 +1,12 @@
+## Table of Contents
+1. [Motivation](#motivation)
+2. [Core concept](#core-concept)
+   1. [Smaller bonds for capital efficiency](#smaller-bonds-for-capital-efficiency)
+   2. [RPL revenue for value capture](#rpl-revenue-for-value-capture)
+      1. [Flow diagram examples](#flow-diagram-examples)
+3. [Required support](#required-support)
+4. [Choose your depth](#choose-your-depth)
+
 ## Motivation
 Let's start with desired end state:
 - Pure ETH NOs compare favorably vs competitors (eg, Lido CSM) at x bonded ETH
@@ -6,7 +15,9 @@ Let's start with desired end state:
 - Attractive enough to rETHers to get us to y% market share
 - All surplus value goes to RPL
 
-## Core Concept
+## Core concept
+
+### Smaller bonds for capital efficiency
 We'll start by determining a good NO commission % using the aggressive-alt bond curve I [described](../2023_11_rapid_research_incubator/bond_curves.md). The summary of that idea is that we can allow smaller ETH bonds safely by enabling MEV theft penalties across a whole node (multiple minipools); smaller ETH bonds make us dramatically more capital efficient.
 
 Remember for context that the proposed Lido CSM ROI is 1.5 (`solo_apy * (4*0.9+32*0.075)/4 = 1.5 * solo_apy`). Here is RP capital efficiency with 3%/4%/5% of commission on borrowed ETH going to NOs:
@@ -15,48 +26,62 @@ Remember for context that the proposed Lido CSM ROI is 1.5 (`solo_apy * (4*0.9+3
 
 We see that 5% commission competes favorably with Lido CSM starting at ~11 ETH bonded (2 4-ETH minipools and 2 1.5-ETH minipools). At high bonds, we do significantly better. Even 3% was able to beat out Lido CSM (starting at 30.5 ETH, aka 2 4-ETH minipools and 15 1.5 ETH minipools). That said, I explicitly would like to err on the side of growth, so I propose using 5%.
 
-Given that Node Operation is more than competitive with the above, we can capture as much value as possible in RPL. The value captured by RPL is `rpl_pie_share*total_borrowed_eth_revenue`. I propose splitting this the simplest way - each period, an RPL staker's share is `eth_revenue_for_rpl*(their_rpl_stake/total_rpl_stake)`. In other words, we're looking for the value of `rpl_pie_share` that (a) maximizes value capture and (b) meets our [self-limiting obligations](https://rpips.rocketpool.net/RPIPs/RPIP-17). This is nice because it means that voters (NOs with staked RPL) will likely have an incentive to make rETH attractive (to increase total_borrowed_eth and thus its revenue), even if it means they take a smaller share of the pie; this is a canonical example of a positive-sum game -- RPL voters can essentially opt to have a smaller slice of a bigger pie via vote.
+### RPL revenue for value capture
+Given that Node Operation is more than competitive with the above, we can capture as much value as possible in RPL by directing revenue to it (pro rata based on RPL stake). The value captured by RPL is `rpl_pie_share*total_borrowed_eth_revenue`. In other words, self-interested holders are looking for the value of `rpl_pie_share` that (a) maximizes value capture and (b) meets our [self-limiting obligations](https://rpips.rocketpool.net/RPIPs/RPIP-17). This is nice because it means that voters (NOs with staked RPL) will likely have an incentive to make rETH attractive (to increase total_borrowed_eth and thus its revenue), even if it means they take a smaller share of the pie; this is a canonical example of a positive-sum game -- RPL voters can essentially opt to have a smaller slice of a bigger pie via vote.
 
 ![eth_revenue_pies.png](eth_revenue_pies.png)
 
-### Flow diagram example
-What does this look like in practice? Let's have a look at a small example.
-![sankeymatic_3user.png](sankeymatic_3user.png)
+#### Flow diagram examples
 
-Let's walk through this.
+This view goes 1 step past the pie chart to show what individual users receive.
+![sankeymatic_basic.png](sankeymatic_basic.png)
 
-There are 3 users:
+Let's walk through this. There are 3 users:
 - User (a) stakes 4 ETH and 0 RPL
-- User (b) stakes 8 ETH and 100 RPL
-- User (c) stakes 0 ETH and 200 RPL
+- User (b) stakes 4 ETH and 100 RPL
+- User (c) stakes 0 ETH and 100 RPL
 
 Now let's follow the flows:
-- The best units to think about here is "Solo rewards that correspond to x ETH"
-- Stage 1: we see that the NO and protocol ETH rewards are contributed
-- Stage 2: the nodes have 3 validators worth of solo rewards
-- Stage 3/4: rewards from the validators get split up
-  - The NO claims the full solo rewards from the ETH they contributed
-  - The NO gets 5% commission of the rewards from the protocol ETH
-  - 9% commission of the rewards from the protocol ETH goes to _all_ Staked RPL
-  - 86% of the rewards from the protocol ETH go to rETH
-- Stage 5: Staked RPL rewards are split up by RPL stake
+- Stage 1: We have 100% of the ETH staking revenue from rETH's ETH
+- Stage 2: We split that up per the pie chart
+- Stage 3:
+  - Ethereum-bonded Node Operators get commission on the borrowed ETH they support on the validators they run
+  - RPL stakers get commission on all borrowed ETH in the protocol, based on the amount of RPL they stake
+  - Note that since User B staked the same as User A for ETH and the same as User C for RPL, their rewards are simply the sum of Users A and C -- it's immaterial that the stakes happen "together" or not
 
-In the end:
-- User (a) earns the equivalent of 5.4 ETH of solo stake (note that `5.4/4=1.35*solo`, which matches the starting point of the first plot)
-- User (b) earns the equivalent of 13.32 ETH of solo stake. Here the APY vs solo stake is not as obvious -- it depends on the RPL ratio.
-  - Eg, if the exchange rate is 0.02, then this user would have 10 ETH of value invested earning the equivalent of 13.32 ETH of solo stake. That would mean an ROI of `13.32/(8+.02*100) = 1.332*solo`.
-  - Now consider it again with an exchange rate of 0.015. That would mean an ROI of `13.32/(8+.015*100) = 1.402*solo`.
-- User (c) earns the equivalent of 5.04 ETH of solo stake. Again, RPL ratio matters.
-  - With a ratio of 0.02: `5.04/(.02*200) = 1.26*solo`
-  - With a ratio of 0.015: `5.04/(.015*200) = 1.68*solo`
+Now let's illustrate one more thing. Here we've grown our revenue 10x by onboarding a bunch of ETH-only stakers.
+There are 21 users:
+- 19x [User (a) stakes 4 ETH and 0 RPL]
+- User (b) stakes 4 ETH and 100 RPL
+- User (c) stakes 0 ETH and 100 RPL
 
-## Required Support
-TODO - fill in
+![sankeymatic_lots_of_ETH.png](sankeymatic_lots_of_ETH.png)
 
+Again, let's follow the flows:
+- Stage 1: We're showing revenue as 1000% (to keep the relative revenue unit the same in both flow diagrams)
+- Stage 2: We split that up per the pie chart
+- Stage 3:
+  - Ethereum-bonded Node Operators get commission on the borrowed ETH they support on the validators they run
+  - RPL stakers get commission on all borrowed ETH in the protocol, based on the amount of RPL they stake
 
-## The important stuff is above this section
-🛑🛑 Please stop for a moment 🛑🛑
+The key takeaways here are that the Ethereum portion stays equally attractive -- you get the same ROI as above. The RPL portion, however, gets 10x as attractive. RPL's success is very directly tied into the success of the protocol and the TVL that it's able to attract to rETH. 
 
-If you feel comfortable with everything above this section, by all means feel free to continue. But if you don't, please focus on the part above and ask questions. The portion above is dramatically more important than the sections below.
+For simplicity, I've made all ETH users have a single 4-ETH pool. Note that it really doesn't matter for this view: even if they have a mix of 4-ETH and lower bond pools, the _share_ of the revenue based on borrowed ETH will get split the same way. The users will, ofc, get better ROI as they're bonded ETH per borrowed ETH ratio decreases.
 
-TODO - finish
+## Required support
+- UVC. The portion going to NOs and RPL stakers should be settable by vote. rETH's portion is simply 100% minus those two portions. This should apply across all possible minipools (noting there's some limitations around currently existing ones).
+  - I don't believe these need to be changed often enough that we benefit significantly from automating it, at least not in the short term.
+- Megapools -- gas becomes increasingly problematic as pool size decreases. This bails us out.
+- Forced exits:
+  - Exit a validator when an NO's `(total_leakage + debt) >0.5 ETH`; this is about enough for ~3 months covering leakage and debt to rETH at 4% apy: `32*.04*(6/12)*1.645 = .526 ETH`
+    - The debt variable could be used for underperformance penalties and MEV penalties
+    - Note that we can kick one minipool at a time here, which yields a ~1.5 ETH credit.
+
+## Choose your depth
+This document is the top tier of importance.
+
+I don't recommend moving on until you feel comfortable with the concepts in this document.
+
+- [Top tier](./readme.md)
+- [Tier 2](./readme_tier2.md)
+- [Tier 3](./readme_tier3.md)
