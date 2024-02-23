@@ -9,11 +9,11 @@
 
 ## Motivation
 Let's start with desired end state:
-- Pure ETH NOs compare favorably vs competitors (eg, Lido CSM) at x bonded ETH
-  - Depends on NO commission % on borrowed ETH
-  - Depends on borrowed ETH per bonded ETH
-- Attractive enough to rETHers to get us to y% market share
-- All surplus value goes to RPL
+- We're trying to make pure ETH NOs compare favorably vs competitors (eg, Lido CSM) starting at some minimum level of bonded ETH
+  - This depends on NO commission % on borrowed ETH
+  - This depends on borrowed ETH per bonded ETH
+- We're trying to attract enough rETHers to get us to desired market share
+- We're trying to capture all surplus value in RPL
 
 ## Core concept
 
@@ -27,7 +27,7 @@ Remember for context that the proposed Lido CSM ROI is 1.5 (`solo_apy * (4*0.9+3
 We see that 5% commission competes favorably with Lido CSM starting at ~11 ETH bonded (2 4-ETH minipools and 2 1.5-ETH minipools). At high bonds, we do significantly better. Even 3% was able to beat out Lido CSM (starting at 30.5 ETH, aka 2 4-ETH minipools and 15 1.5 ETH minipools). That said, I explicitly would like to err on the side of growth, so I propose using 5%.
 
 ### RPL revenue for value capture
-Given that Node Operation is more than competitive with the above, we can capture as much value as possible in RPL by directing revenue to it (pro rata based on RPL stake). The value captured by RPL is `rpl_pie_share*total_borrowed_eth_revenue`. In other words, self-interested holders are looking for the value of `rpl_pie_share` that (a) maximizes value capture and (b) meets our [self-limiting obligations](https://rpips.rocketpool.net/RPIPs/RPIP-17). This is nice because it means that voters (NOs with staked RPL) will likely have an incentive to make rETH attractive (to increase total_borrowed_eth and thus its revenue), even if it means they take a smaller share of the pie; this is a canonical example of a positive-sum game -- RPL voters can essentially opt to have a smaller slice of a bigger pie via vote.
+Since total rETH commission is much higher (per bonded ETH) with these lower bonds, Node Operation can be more than competitive as shown above -- and surplus revenue can be directed to RPL (pro rata based on RPL stake). The value captured by RPL is `rpl_pie_share*total_borrowed_eth_revenue`. In other words, self-interested holders are looking for the value of `rpl_pie_share` that (a) maximizes value capture and (b) meets our [self-limiting obligations](https://rpips.rocketpool.net/RPIPs/RPIP-17). This is nice because it means that voters (NOs with staked RPL) will likely have an incentive to make rETH attractive (to increase total_borrowed_eth and thus its revenue), even if it means they take a smaller share of the pie; this is a canonical example of a positive-sum game -- RPL voters can essentially opt to have a smaller slice of a bigger pie via vote.
 
 ![eth_revenue_pies.png](eth_revenue_pies.png)
 
@@ -69,10 +69,13 @@ The key takeaways here are that the Ethereum portion stays equally attractive --
 For simplicity, I've made all ETH users have a single 4-ETH pool. Note that it really doesn't matter for this view: even if they have a mix of 4-ETH and lower bond pools, the _share_ of the revenue based on borrowed ETH will get split the same way. The users will, ofc, get better ROI as they're bonded ETH per borrowed ETH ratio decreases.
 
 ## Required support
-- UVC. The portion going to NOs and RPL stakers should be settable by vote. rETH's portion is simply 100% minus those two portions. This should apply across all possible minipools (noting there's some limitations around currently existing ones).
-  - I don't believe these need to be changed often enough that we benefit significantly from automating it, at least not in the short term.
+- Universal Variable Commision
+  - The portion going to NOs and RPL stakers should be settable by vote. rETH's portion is simply 100% minus those two portions 
+  - This should apply across all possible minipools (noting there's some limitations around currently existing ones)
+  - I don't believe these need to be changed often enough that we benefit significantly from automating it, at least not in the short term
 - Megapools -- gas becomes increasingly problematic as pool size decreases. This bails us out.
-- Forced exits:
+- Forced exits
+  - Critical to protect against loss scenarios associated with MEV theft and abandonment
   - Exit a validator when an NO's `(total_leakage + debt) >0.5 ETH`; this is about enough for ~3 months covering leakage and debt to rETH at 4% apy: `32*.04*(6/12)*1.645 = .526 ETH`
     - The debt variable could be used for underperformance penalties and MEV penalties
     - Note that we can kick one minipool at a time here, which yields a ~1.5 ETH credit.
