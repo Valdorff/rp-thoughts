@@ -23,6 +23,13 @@ My favorite thing about this idea is the simplicity. It does not have many dynam
   - The second way to spend allows more fine-grained control. Here we instead increase RPL inflation and spend the RPL in ways that cause rETH demand. For example, we could increase liquidity incentives to rETH/WETH, or incentivize the use of rETH in lending markets.
   - Essentially the question is along the lines of "do I get more TVL on board by increasing the benefit a little to _all_ users, or more significantly to _some_ users"? The answer is difficult to get at and will vary with context.
 
+## Modeling
+I like to have _some_ model of value available.
+
+I made a [spreadsheet](https://docs.google.com/spreadsheets/d/18cc6smtFn1dETLRuF1RPa4sF8Fx8uOPg41eJn3AaGAA/edit#gid=0) using one methodology and taking quick looks at a handful of scenarios.
+
+This is in the spreadsheet too, but I want to re-emphasize: this fundamental value ratio != price by a long shot. See cell A24 for a whole lot of caveats 😛. Shoutout to @luominx, who made an earlier variant of this model for themselves and shared it with me.  
+
 ## Stepping stones
 We are _currently_ struggling with NO supply. I suggest one of:
 - LEB5s with current rules (and DAO-upgradable delegate)
