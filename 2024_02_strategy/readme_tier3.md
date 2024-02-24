@@ -1,17 +1,13 @@
 ## Table of Contents
-1. [Motivation](#motivation)
-2. [Core Concept](#core-concept)
-   1. [Smaller bonds for capital efficiency](#smaller-bonds-for-capital-efficiency)
-   2. [RPL revenue for value capture](#rpl-revenue-for-value-capture)
-      1. [Flow diagram examples](#flow-diagram-examples)
-3. [Required Support](#required-support)
-4. [Dynamics]
-4. Deep dive stuff
+1. [Choose your depth](#choose-your-depth)
+2. [Suggested support](#suggested-support)
+2. [Staked RPL... or all RPL](#staked-rpl-or-all-rpl)
+3. [Other considerations](#other-considerations)
 
 ## Choose your depth
 🛑🛑 Please stop for a moment 🛑🛑
 
-This document is the thrid tier of importance.
+This document is the third tier of importance.
 
 If you feel comfortable with everything in the top tier, by all means feel free to continue. But if you don't, please focus on that and ask questions. 
 
@@ -21,7 +17,7 @@ The sections below are tiny details compared to the stuff in higher tiers. Most 
 - [Tier 2](./readme_tier2.md)
 - [Tier 3](./readme_tier3.md)
 
-## Suggested Support
+## Suggested support
 - Remove opt-in upgrades
   - They add very little security as we have withdrawals now; meanwhile, they make code maintenance and testing much harder as more states are possible.
 - Voting power
