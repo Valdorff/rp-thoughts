@@ -23,28 +23,40 @@ A core tenet of this idea is simplicity. It does not have many dynamics as a res
   - The second way to spend allows more fine-grained control. Here we instead increase RPL inflation and spend the RPL in ways that cause rETH demand. For example, we could increase liquidity incentives to rETH/WETH, or incentivize the use of rETH in lending markets.
   - Essentially the question is along the lines of "do I get more TVL on board by increasing the benefit a little to _all_ users, or more significantly to _some_ users"? The answer is difficult to get at and will vary with context.
 - There is a conflict of interest with "Voters" being able to change "Voters" slice. I propose our vote also commits to a simple heuristic like:
-  - If <40% of RPL is contributing vote power in RP, we SHOULD increase this slice
-  - If <30% of RPL is contributing vote power in RP, we SHALL increase this slice
-  - if >80% of RPL is contributing vote power in RP, we SHOULD decrease this slice
-  - if >90% of RPL is contributing vote power in RP, we SHALL decrease this slice
-  - if 30-80% of RPL is contributing vote power in RP, we SHALL NOT change this slice
+  - If <40% of RPL is contributing vote power in RP, we SHALL increase this slice
+  - if >85% of RPL is contributing vote power in RP, we SHALL decrease this slice
+  - if 40-85% of RPL is contributing vote power in RP, we SHALL NOT change this slice
   - require a 2/3 or even 3/4 supermajority vote to change this
 
 ## RPL buy+burn thoughts
   - A share of ETH from commission goes to a smart contract 
   - Users may call a function to swap RPL for the ETH in the above contract
-  - Swap price is based on on-chain TWAP oracle
+  - Swap price is based on on-chain TWAP oracle (eg, [Uniswap v3](https://docs.uniswap.org/concepts/protocol/oracle))
   - Any RPL swapped this way is burned by sending it to `0x000000000000000000000000000000000000dEaD`
 
-There may be challenges around very discrete distributions, especially predictable ones like the smoothing pool distributions. A related challenge might come from large NOs that can distribute and trade in a single bundle - this could give them a protected arbitrage opportunity. One way to mitigate this genre of issue is to stream in the available funds.
+Let's visualize what being able to burn looks like in practice using real RPL price data and a simulated TWAP.
+![twap.png](./twap.png)
 
-Here's an over-simple implementation:
-- `available_eth = (unlock_rate * (current_block - last_deposit_block)) + previously_avaiable_eth`
-- When funds are deposited
-  - `previously_avaiable_eth = available_eth`
-  - Update `last_deposit_block`
-  - Set `unlock_rate` to `(balance - available_eth) / 201600` (this means if there were no additional deposits, everything would be unlocked within 28 days)
-This isn't great as deposits essentially extend the time to fully unlock funds from any one deposti back up to 28 days. This could use work, but seems tractable.
+We'd expect to burn all our available ETH at the beginning of a downturn (and thereby reduce its severity since that's not market sold). We'd also expect to continue burning against new distributions while price is on a downward slope. On an upward slope, there will be no expected burning until after the top is reached and we turn around for a bit.
+
+--
+
+There have been previous buy+burn mechanics susceptible to gaming. To that end, here's an example design that avoids discontinuties by smoothly unlocking funds for swaps.
+
+![buyburn.png](./buyburn.png)
+
+The way this works is that:
+- New distributions go into the Filling bucket
+- After one day has passed, upon the next distribution:
+  - Move Unlocking to Unlocked
+  - Move Filling to Unlocking
+  - Increment bucket_block by one day (repeat as needed until bucket_block > current_block)
+  - Put the distribution into filling
+- The contract will have `Unlocked + Unlocking + Filling` ETH in it
+- The contract will allow burning RPL against `Unlocked + (Unlocking*UnlockingRatio)`
+  - `UnlockingRatio = 1 - ((bucket_block - current_block)/blocks_in_one_day)`
+
+Gaming can be avoided by using increasingly larger TWAPs or bucket_block increments (depending on the issue seen). I suspect that 12 hours and 1 day are sufficient.
 
 ## Voter share thoughts
 I am currently suggesting rewards to be split based on number of RPL contributing to vote power. Since we provide vote power up to 150% of bonded ETH, a node would earn based on `min(1.5*bonded_eth, rpl_value_in_eth)`; their share would be that number divided by the sum of all nodes using that same equation. This is a rather new idea, and there's other variants worth looking at:
@@ -54,13 +66,11 @@ I am currently suggesting rewards to be split based on number of RPL contributin
 - Base on _active governance_ (actually voting/delegating to someone that actually voted) rather just the potential to vote.
 
 ## Modeling
-[TODO] is this unchanged? need to think more.
-
-I like to have _some_ model of value available.
-
 I made a [spreadsheet](https://docs.google.com/spreadsheets/d/18cc6smtFn1dETLRuF1RPa4sF8Fx8uOPg41eJn3AaGAA/edit#gid=0) using one methodology and taking quick looks at a handful of scenarios.
 
-This is in the spreadsheet too, but I want to re-emphasize: this fundamental value ratio != price by a long shot. See cell A24 for a whole lot of caveats 😛. Shoutout to @luominx, who made an earlier variant of this model for themselves and shared it with me.  
+Note that this assumes that Buy+Burn and voter rev-share both accrue value equally well and efficiently. This might not be entirely the case. Eg, there may be tax inefficiency on rev-share, buy+burn may only loosely create demand, the set addressable market for voters might be smaller enough that it contributes less demand per return, etc. My belief is that a simple model is more useful than a highly complicated one in most cases, and in the document I compare with the previous overly simple model as well (which also ignored plenty of details). 
+
+This is in the spreadsheet, but I want to re-emphasize this: fundamental value ratio != price by a long shot. See cell A24 for a whole lot of caveats 😛. Shoutout to @luominx, who made an earlier variant of this model for themselves and shared it with me.  
 
 ## Stepping stones
 We are _currently_ struggling with NO supply. I suggest one of:
@@ -83,3 +93,9 @@ We are _currently_ struggling with NO supply. I suggest one of:
       - (b) started an 8-ETH minipool within two weaks of the loan, and
       - (c) kept bonded ETH at the level of (b) or higher for the year the 0.25 ETH fee is sent back to them
   - The assumption is that by the end of the loan term, ETH-only would be an option, so the user could freely repay their RPL and continue participating if that's their preference. If we'd like to do 1.5 years for increased user confidence, that would be fine too.
+- Reduce/remove RPL requirement to make minipools
+  - This could only be done _after_ a successful vote to new tokenomics
+  - The premise is that assets forward price -- so if we have a new value capture mechanism, it should immediately be relevant, even before implementation.
+  - If that's the case, we're free to remove the RPL requirement. (If a zero adds complexity, this can be arbitrarily small -- eg 0.1% of borrowed ETH instead of 10%)
+  - I would recommend no change to RPL rewards alongside this stepping stone (ie, those still have a 10% borrowed cliff)
+  - I believe theory supports this. It also makes me nervous tbh. I think it's worth discussing.

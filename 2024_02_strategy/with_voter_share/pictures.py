@@ -1,4 +1,9 @@
+from datetime import datetime
+import json
+
+import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 def eth_only_rois(n_minipools, commissions):
@@ -87,7 +92,35 @@ def eth_revenue_pies():
     fig.savefig('eth_revenue_pies.png', bbox_inches='tight', pad_inches=0.2)
 
 
+def twap_example():
+    with open('rpl_price_data.json') as f:
+        dat = json.load(f)
+    tls, pricels = zip(*dat['prices'])
+    dtls = [datetime.fromtimestamp(t / 1e3) for t in tls]
+    # twap is geometric mean; we have hourly data so need a 12 sample gap for a 12 hour twap
+    pricearr = np.array(pricels)
+    twap = (pricearr[:-12] * pricearr[12:])**.5
+    # trim to a nice period for looking at
+    start, stop = 700, 1000
+    dtls = dtls[start:stop]
+    pricearr = pricearr[start:stop]
+    twap = twap[start - 12:stop - 12]
+    # plot
+    fig, ax = plt.subplots(1)
+    ax.plot(dtls, pricearr, lw=2, color='#FD7861', label='RPL price in ETH')
+    ax.plot(dtls, twap, lw=0.5, color='gray', label='12-hour TWAP')
+    ax.fill_between(dtls, twap, pricearr, color='g', where=pricearr < twap)
+    xloc = mdates.AutoDateLocator()
+    xfmt = mdates.ConciseDateFormatter(xloc)
+    ax.xaxis.set_major_locator(xloc)
+    ax.xaxis.set_major_formatter(xfmt)
+    ax.legend()
+    fig.tight_layout()
+    fig.savefig('twap.png', bbox_inches='tight', pad_inches=0.2)
+
+
 if __name__ == '__main__':
-    eth_only_rois(n_minipools=60, commissions=[.03, .04, .05])
-    eth_revenue_pies()
+    # eth_only_rois(n_minipools=60, commissions=[.03, .04, .05])
+    # eth_revenue_pies()
+    twap_example()
     plt.show()

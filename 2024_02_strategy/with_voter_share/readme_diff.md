@@ -2,13 +2,13 @@
 - Value capture
   - Removed 9% commission to staked RPL
   - Added 1% commission to voters
-  - Added 8% commission to RPL
+  - Added 8% commission to RPL buy+burn
 
 ## Tier 2
 - Dynamics: discussed a way to mitigate the conflict of interest from voters voting on voting slice 
-- Added "RPL buy+burn thoughts" section
+- Added "RPL buy+burn thoughts" section with candidate design
 - Added "Voter share thoughts" section
-- [TODO] Update value model? I think it might be the same b/c 9% is still going to RPL, even if in two chunks. Need to think a bit more.
+- Added a new "Stepping stone" possibility - remove RPL requirement in the interim
 
 ## Tier 3
 - Remove "Voting power" top bullet in "Suggested support". This is now being incentivized much more directly.
