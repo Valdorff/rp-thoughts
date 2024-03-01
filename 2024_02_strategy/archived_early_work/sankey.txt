@@ -1,0 +1,97 @@
+## Basic example
+// NO A: 4 ETH, 0 RPL
+// NO B: 4 ETH, 1 ETH of RPL
+// NO C: 4 ETH, 4 ETH of RPL
+// RPL holder D: 0 ETH, 4 ETH of RPL
+
+ETH Revenue [86] rETH
+ETH Revenue [5] NOs
+ETH Revenue [1] Voters
+ETH Revenue [8] RPL buy+burn
+
+NOs [1.67] NO A
+NOs [1.67] NO B
+NOs [1.66] NO C
+
+Voters [.33] NO B
+Voters [.67] NO C
+
+RPL buy+burn [.89] NO B
+RPL buy+burn [3.55] NO C
+RPL buy+burn [3.56] RPL Holder D
+
+
+## Heavy ETH
+// NO A#: 4 ETH, 0 RPL
+// NO B: 4 ETH, 1 ETH of RPL
+// NO C: 4 ETH, 4 ETH of RPL
+// RPL holder D: 0 ETH, 4 ETH of RPL
+
+ETH Revenue [430] rETH
+ETH Revenue [25] NOs
+ETH Revenue [5] Voters
+ETH Revenue [40] RPL buy+burn
+
+NOs [1.66] NO A1
+NOs [1.67] NO A2
+NOs [1.67] NO A3
+NOs [1.66] NO A4
+NOs [1.67] NO A5
+NOs [1.67] NO A6
+NOs [1.66] NO A7
+NOs [1.67] NO A8
+NOs [1.67] NO A9
+NOs [1.66] NO A10
+NOs [1.67] NO A11
+NOs [1.67] NO A12
+NOs [1.66] NO A13
+NOs [1.67] NO B
+NOs [1.67] NO C
+
+Voters [1.67] NO B
+Voters [3.33] NO C
+
+RPL buy+burn [4.44] NO B
+RPL buy+burn [17.78] NO C
+RPL buy+burn [17.78] RPL Holder D
+
+# Before gov share
+## Basic example
+ETH Revenue [86] rETH
+ETH Revenue [5] NOs
+ETH Revenue [9] Staked RPL
+
+NOs [2.5] User A
+NOs [2.5] User B
+
+Staked RPL [4.5] User B
+Staked RPL [4.5] User C
+
+## Heavy ETH
+ETH Revenue [860] rETH
+ETH Revenue [50] NOs
+ETH Revenue [90] Staked RPL
+
+NOs [2.5] User A1
+NOs [2.5] User A2
+NOs [2.5] User A3
+NOs [2.5] User A4
+NOs [2.5] User A5
+NOs [2.5] User A6
+NOs [2.5] User A7
+NOs [2.5] User A8
+NOs [2.5] User A9
+NOs [2.5] User A10
+NOs [2.5] User A11
+NOs [2.5] User A12
+NOs [2.5] User A13
+NOs [2.5] User A14
+NOs [2.5] User A15
+NOs [2.5] User A16
+NOs [2.5] User A17
+NOs [2.5] User A18
+NOs [2.5] User A19
+NOs [2.5] User B
+
+Staked RPL [45] User B
+Staked RPL [45] User C
