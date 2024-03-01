@@ -1,0 +1,79 @@
+// SankeyMATIC diagram inputs - Saved: 2/25/2024, 12:47:02 AM
+// https://sankeymatic.com/build/
+
+// === Nodes and Flows ===
+
+// NO A: 4 ETH, 0 RPL
+// NO B: 4 ETH, 1 ETH of RPL
+// NO C: 4 ETH, 4 ETH of RPL
+// RPL holder D: 0 ETH, 4 ETH of RPL
+
+ETH Revenue [86] rETH
+ETH Revenue [5] NOs
+ETH Revenue [1] Voters
+ETH Revenue [8] RPL buy+burn
+
+NOs [1.67] NO A
+NOs [1.67] NO B
+NOs [1.66] NO C
+
+Voters [.33] NO B
+Voters [.67] NO C
+
+RPL buy+burn [.89] NO B
+RPL buy+burn [3.55] NO C
+RPL buy+burn [3.56] RPL Holder D
+
+// === Settings ===
+
+size w 1500
+  h 800
+margin l 12
+  r 12
+  t 18
+  b 20
+bg color #ffffff
+  transparent N
+node w 12
+  h 79.5
+  spacing 100
+  border 0
+  theme a
+  color #888888
+  opacity 1
+flow curvature 0.5
+  inheritfrom source
+  color #999999
+  opacity 0.45
+layout order automatic
+  justifyorigins N
+  justifyends N
+  reversegraph N
+  attachincompletesto nearest
+labels color #000000
+  hide N
+  highlight 0.75
+  fontface sans-serif
+  linespacing 0.2
+  relativesize 110
+  magnify 100
+labelname appears Y
+  size 16
+  weight 400
+labelvalue appears Y
+  fullprecision Y
+  position below
+  weight 400
+labelposition autoalign 0
+  scheme auto
+  first before
+  breakpoint 4
+value format ',.'
+  prefix ''
+  suffix ''
+themeoffset a 9
+  b 0
+  c 0
+  d 0
+meta mentionsankeymatic N
+  listimbalances Y

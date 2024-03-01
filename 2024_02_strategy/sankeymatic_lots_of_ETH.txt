@@ -1,0 +1,91 @@
+// SankeyMATIC diagram inputs - Saved: 2/25/2024, 1:08:53 AM
+// https://sankeymatic.com/build/
+
+// === Nodes and Flows ===
+
+// NO A#: 4 ETH, 0 RPL
+// NO B: 4 ETH, 1 ETH of RPL
+// NO C: 4 ETH, 4 ETH of RPL
+// RPL holder D: 0 ETH, 4 ETH of RPL
+
+ETH Revenue [430] rETH
+ETH Revenue [25] NOs
+ETH Revenue [5] Voters
+ETH Revenue [40] RPL buy+burn
+
+NOs [1.66] NO A1
+NOs [1.67] NO A2
+NOs [1.67] NO A3
+NOs [1.66] NO A4
+NOs [1.67] NO A5
+NOs [1.67] NO A6
+NOs [1.66] NO A7
+NOs [1.67] NO A8
+NOs [1.67] NO A9
+NOs [1.66] NO A10
+NOs [1.67] NO A11
+NOs [1.67] NO A12
+NOs [1.66] NO A13
+NOs [1.67] NO B
+NOs [1.67] NO C
+
+Voters [1.67] NO B
+Voters [3.33] NO C
+
+RPL buy+burn [4.44] NO B
+RPL buy+burn [17.78] NO C
+RPL buy+burn [17.78] RPL Holder D
+
+// === Settings ===
+
+size w 1500
+  h 800
+margin l 12
+  r 12
+  t 18
+  b 20
+bg color #ffffff
+  transparent N
+node w 12
+  h 25
+  spacing 100
+  border 0
+  theme a
+  color #888888
+  opacity 1
+flow curvature 0.5
+  inheritfrom source
+  color #999999
+  opacity 0.45
+layout order automatic
+  justifyorigins N
+  justifyends N
+  reversegraph N
+  attachincompletesto nearest
+labels color #000000
+  hide N
+  highlight 0.75
+  fontface sans-serif
+  linespacing 0.2
+  relativesize 110
+  magnify 100
+labelname appears Y
+  size 16
+  weight 400
+labelvalue appears Y
+  fullprecision Y
+  position below
+  weight 400
+labelposition autoalign 0
+  scheme auto
+  first before
+  breakpoint 4
+value format ',.'
+  prefix ''
+  suffix ''
+themeoffset a 9
+  b 0
+  c 0
+  d 0
+meta mentionsankeymatic N
+  listimbalances Y
