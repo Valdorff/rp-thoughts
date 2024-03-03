@@ -46,28 +46,26 @@ The value captured by RPL is `(voter_share + rpl_buy_and_burn_share) * total_bor
 ![eth_revenue_pies.png](eth_revenue_pies.png)
 
 #### Flow diagram examples
-⚠ THIS SECTION NEEDS TO BE UPDATED TO EFFECTIVE RPL WEIGHT ⚠
-
 This view goes 1 step past the pie chart to show what individual users receive.
 ![sankeymatic_basic.png](sankeymatic_basic.png)
 
-Let's walk through this. There are 3 users:
+Let's walk through this. There are 4 users:
 - NO A: stakes 4 ETH and 0 RPL
-- NO B: stakes 4 ETH and 100 RPL
-- NO C: stakes 4 ETH and 400 RPL
-- RPL holder D: holds 400 RPL
+- NO B: stakes 4 ETH and 3 ETH worth of RPL
+- NO C: stakes 4 ETH and 10 ETH worth of RPL
+- RPL holder D: holds 4 ETH worth of RPL
 
 Now let's follow the flows:
 - Stage 1: We have 100% of the ETH staking revenue from rETH's ETH
 - Stage 2: We split that up per the pie chart
 - Stage 3:
-  - Ethereum-bonded Node Operators get commission on the borrowed ETH they support on the validators they run
-  - Voters get commission on all borrowed ETH in the protocol, based on the amount of vote power they have (`vote = srtq(min(rpl_to_reach_150pct_of_bonded ETH, staked_rpl))`)
-  - RPL holders (staked and nonstaked) benefit from market buy-side market demand
+  - Ethereum-bonded Node Operators get 5% commission on the borrowed ETH they support on the validators they run
+  - Voters get a share of revenue from all borrowed ETH in the protocol, based on the amount of effective RPL for voting they have (`weight = min(rpl_to_reach_150pct_of_bonded ETH, staked_rpl)`)
+  - RPL holders (staked and nonstaked) benefit from market buy-side market demand from the RPL buy+burn
 
 Now let's illustrate one more thing. Here we've grown our revenue 5x by onboarding a bunch of ETH-only stakers.
-There are 15 users:
-- 12x [NO A stakes 4 ETH and 0 RPL]
+There are 16 users:
+- 13x [NO A stakes 4 ETH and 0 RPL]
 - NO B stakes 4 ETH and 100 RPL
 - NO C stakes 4 ETH and 400 RPL
 - RPL Holder D holds 400 RPL
@@ -78,13 +76,15 @@ Again, let's follow the flows:
 - Stage 1: We're showing revenue as 500% (to keep the relative revenue unit the same in both flow diagrams)
 - Stage 2: We split that up per the pie chart
 - Stage 3:
-  - Ethereum-bonded Node Operators get commission on the borrowed ETH they support on the validators they run
-  - Voters get commission on all borrowed ETH in the protocol
-  - RPL holders (staked and nonstaked) benefit from market buy-side market demand; this impact should 
+  - Ethereum-bonded Node Operators get 5% commission on the borrowed ETH they support on the validators they run; note that these numbers are the same as in the chart above
+  - Voters get a share of revenue from all borrowed ETH in the protocol, based on the amount of effective RPL for voting they have.
+    - Since the revenue has 5xed, but we have the same voters, the voters each get 5x the rewards
+  - RPL holders benefit from the RPL buy+burn
+    - Since the revenue has 5xed, this benefit has 5xed as well
 
-The key takeaways here are that the Ethereum portion stays equally attractive -- you get the same ROI as above. The voter and RPL buy+burn portions, however, get 10x as attractive. RPL's success is very directly tied into the success of the protocol and the TVL that it's able to attract to rETH. 
+The key takeaways here are that the Ethereum portion stays equally attractive -- you get the same ROI as above. The voter and RPL buy+burn portions, however, get 5x as attractive. RPL's success is very directly tied into the success of the protocol and the TVL that it's able to attract to rETH. 
 
-For simplicity, I've made all ETH users have a single 4-ETH pool. Note that it really doesn't matter for this view: even if they have a mix of 4-ETH and lower bond pools, the _share_ of the revenue based on borrowed ETH will get split the same way. The users will, ofc, get better ROI as they're bonded ETH per borrowed ETH ratio decreases.
+For simplicity, I've made all ETH users have a single 4-ETH pool. Note that it really doesn't matter for this view: even if they have a mix of 4-ETH and lower bond pools, the _share_ of the revenue based on borrowed ETH will get split the same way. The NOs would, ofc, get better ROI as their bonded ETH per borrowed ETH ratio decreases.
 
 ## Required support
 - Universal Variable Commission
