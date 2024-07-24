@@ -40,7 +40,24 @@ reth_evt_atlas AS (
     bytearray_to_uint256(bytearray_substring(data, 97, 32)) as rethSupply
     FROM ethereum.logs
     WHERE contract_address = 0x07FCaBCbe4ff0d80c2b1eb42855C0131b6cba2F4
+    and block_time >= cast('2023-04-08 00:00' as timestamp)
     AND topic0 = 0x7bbbb137fdad433d6168b1c75c714c72b8abe8d07460f0c0b433063e7bf1f394
+    ORDER BY referenceBlock ASC
+),
+
+reth_evt_houston as (
+    select
+        block_time as evt_block_time,
+        block_number as evt_block_number,
+        bytearray_to_uint256(topic1) as referenceBlock,
+        bytearray_to_uint256(bytearray_substring(data, 33, 32)) as totalEth,
+        bytearray_to_uint256(bytearray_substring(data, 97, 32)) as rethSupply
+    from
+        ethereum.logs
+    where
+        contract_address = 0x6cc65bf618f55ce2433f9d8d827fc44117d81399
+        and block_time >= cast('2024-06-18 00:00' as timestamp)
+        and topic0 = 0xdd27295717c4fbd48b1840f846e18be6f0b7bd6b55608e697e53b15848cecdf9
     ORDER BY referenceBlock ASC
 ),
 
@@ -48,6 +65,8 @@ reth_evt_unified AS (
     SELECT * from reth_evt_preatlas
     UNION
     SELECT * from reth_evt_atlas
+    UNION
+    SELECT * from reth_evt_houston
     ORDER BY referenceBlock ASC
 ),
 
