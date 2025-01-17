@@ -8,17 +8,17 @@ import pandas as pd
 # center_ls = [.0034 * 2**i for i in range(center_min_index, center_max_index + 1)]
 # center_mult = 5
 
-# # price*/2_space1.5
-# center_min_index = 0
-# center_max_index = 5
-# center_ls = [.0034 * 1.5**i for i in range(center_min_index, center_max_index + 1)]
-# center_mult = 2
-
-# price*/3_space1.7 strategy
+# price*/2_space1.5
 center_min_index = 0
-center_max_index = 4
-center_ls = [.0034 * 1.7**i for i in range(center_min_index, center_max_index + 1)]
-center_mult = 3
+center_max_index = 5
+center_ls = [.0034 * 1.5**i for i in range(center_min_index, center_max_index + 1)]
+center_mult = 2
+
+# # price*/3_space1.7 strategy
+# center_min_index = 0
+# center_max_index = 4
+# center_ls = [.0034 * 1.7**i for i in range(center_min_index, center_max_index + 1)]
+# center_mult = 3
 
 c = list(mcolors.TABLEAU_COLORS)
 print(c)
